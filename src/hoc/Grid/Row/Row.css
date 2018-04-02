@@ -1,0 +1,8 @@
+.Row {
+    display: flex; 
+    flex-wrap: wrap;
+}
+
+.center {
+    align-items: center; 
+}

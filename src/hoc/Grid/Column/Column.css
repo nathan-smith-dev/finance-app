@@ -1,0 +1,51 @@
+.Column {
+    flex: 0 0 100%; 
+}
+
+@media (min-width: 576px) { 
+    .sm-25 {
+        flex: 0 0 25%; 
+    }
+    .sm-50 {
+        flex: 0 0 50%; 
+    }
+    .sm-75 {
+        flex: 0 0 75%; 
+    } 
+}
+
+@media (min-width: 768px) { 
+    .md-25 {
+        flex: 0 0 25%; 
+    }
+    .md-50 {
+        flex: 0 0 50%; 
+    }
+    .md-75 {
+        flex: 0 0 75%; 
+    }
+}
+
+@media (min-width: 992px) { 
+    .lg-25 {
+        flex: 0 0 25%; 
+    }
+    .lg-50 {
+        flex: 0 0 50%; 
+    }
+    .lg-75 {
+        flex: 0 0 75%; 
+    }
+}
+
+@media (min-width: 1200px) { 
+    .xl-25 {
+        flex: 0 0 25%; 
+    }
+    .xl-50 {
+        flex: 0 0 50%; 
+    }
+    .xl-75 {
+        flex: 0 0 75%; 
+    }
+}

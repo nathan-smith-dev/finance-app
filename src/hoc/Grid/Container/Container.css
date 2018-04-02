@@ -1,0 +1,28 @@
+.Container {
+    margin: 0 .5rem; 
+    transition: margin 0.2s; 
+}
+
+@media (min-width: 576px) { 
+    .Container {
+        margin: 0 1rem;
+    }
+}
+
+@media (min-width: 768px) { 
+    .Container {
+        margin: 0 3rem; 
+    }
+}
+
+@media (min-width: 992px) { 
+    .Container {
+        margin: 0 4rem; 
+    }
+}
+
+@media (min-width: 1200px) { 
+    .Container {
+        margin: 0 6rem; 
+    }
+}
