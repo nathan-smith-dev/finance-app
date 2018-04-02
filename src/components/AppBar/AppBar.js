@@ -18,8 +18,23 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 
 class NavBar extends Component {
     state = {
-        showSideDrawer: false
+        showSideDrawer: false, 
+        profile: {}
     }; 
+
+    componentWillMount() {
+        this.setState({ profile: {} });
+        const { userProfile, getProfile } = this.auth;
+        if (!userProfile) {
+          getProfile((err, profile) => {
+            this.setState({ profile });
+          });
+        } else {
+          this.setState({ profile: userProfile });
+        }
+    }
+
+    auth = new Auth(); 
 
     toggleSideDrawer = () => {
         this.setState({
@@ -28,11 +43,37 @@ class NavBar extends Component {
     }
 
     login = () => {
-        const auth = new Auth(); 
-        auth.login(); 
+        this.auth.login(); 
+        this.toggleSideDrawer();
+    }
+
+    logout = () => {
+        this.auth.logout(); 
+        this.toggleSideDrawer(); 
+    }
+
+    routeTo(route) {
+        this.props.history.push(route);
+        this.toggleSideDrawer(); 
     }
 
     render() {
+        let userMenuItem = (
+            <MenuItem 
+                leftIcon={<LockIcon />}
+                onClick={this.login}>Log In
+            </MenuItem>
+        ); 
+        if(this.auth.isAuthenticated()) {
+            console.log(this.state.profile); 
+            userMenuItem = (
+                <MenuItem 
+                    leftIcon={<AccountIcon />}
+                    onClick={this.logout}
+                    >{this.state.profile.name}
+                </MenuItem>
+            )
+        }
         return(
             <Fragment>
                 <AppBar 
@@ -42,23 +83,22 @@ class NavBar extends Component {
                 <Drawer open={this.state.showSideDrawer}>
                     <MenuItem 
                         rightIcon={<CloseIcon />}
-                        onClick={this.toggleSideDrawer}></MenuItem>
-                    <MenuItem 
-                        leftIcon={<LockIcon />}
-                        onClick={this.login}>Log In</MenuItem>
-                    <MenuItem 
-                        leftIcon={<AccountIcon />}
-                        >User</MenuItem>
+                        onClick={this.toggleSideDrawer}>
+                    </MenuItem>
+                    {userMenuItem}
                     <Divider />
                     <MenuItem 
                         leftIcon={<HomeIcon />}
-                        onClick={() => this.props.history.push('/')}>Home</MenuItem>
+                        onClick={() => this.routeTo('/')}>Home
+                    </MenuItem>
                     <MenuItem 
                         leftIcon={<ListIcon />}
-                        onClick={() => this.props.history.push('/expenses-income')}>Expenses / Income</MenuItem>
+                        onClick={() => this.routeTo('/expenses-income')}>Expenses / Income
+                    </MenuItem>
                     <MenuItem 
                         leftIcon={<PieIcon />}
-                        onClick={() => this.props.history.push('/finance-trends')}>Trends</MenuItem>
+                        onClick={() => this.routeTo('/finance-trends')}>Trends
+                    </MenuItem>
                 </Drawer>
             </Fragment>
         ); 
