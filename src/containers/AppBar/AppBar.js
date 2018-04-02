@@ -13,26 +13,14 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import PieIcon from 'material-ui/svg-icons/editor/pie-chart'; 
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
 import LockIcon from 'material-ui/svg-icons/action/lock'; 
-import AccountIcon from 'material-ui/svg-icons/action/account-circle'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
+
+import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
 class NavBar extends Component {
     state = {
-        showSideDrawer: false, 
-        profile: {}
+        showSideDrawer: false
     }; 
-
-    componentWillMount() {
-        this.setState({ profile: {} });
-        const { userProfile, getProfile } = this.auth;
-        if (!userProfile) {
-          getProfile((err, profile) => {
-            this.setState({ profile });
-          });
-        } else {
-          this.setState({ profile: userProfile });
-        }
-    }
 
     auth = new Auth(); 
 
@@ -67,12 +55,8 @@ class NavBar extends Component {
         if(this.auth.isAuthenticated()) {
             console.log(this.state.profile); 
             userMenuItem = (
-                <MenuItem 
-                    leftIcon={<AccountIcon />}
-                    onClick={this.logout}
-                    >{this.state.profile.name}
-                </MenuItem>
-            )
+                <UserMenuItem auth={this.auth} logout={this.logout} />
+            ); 
         }
         return(
             <Fragment>

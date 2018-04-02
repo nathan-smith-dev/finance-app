@@ -8,7 +8,7 @@ import Auth from './Auth/Auth';
 import Container from './hoc/Grid/Container/Container'; 
 import Row from './hoc/Grid/Row/Row'; 
 import Column from './hoc/Grid/Column/Column'; 
-import AppBar from './components/AppBar/AppBar'; 
+import AppBar from './containers/AppBar/AppBar'; 
 import Callback from './components/Callback/Callback'; 
 
 class App extends Component {
