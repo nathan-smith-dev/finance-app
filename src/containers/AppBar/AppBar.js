@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react'; 
 
-import Auth from '../../Auth/Auth';
-
 import { withRouter } from 'react-router-dom'; 
+import { connect } from 'react-redux'; 
 
 import AppBar from 'material-ui/AppBar'; 
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
-
 import CloseIcon from 'material-ui/svg-icons/navigation/close'; 
 import PieIcon from 'material-ui/svg-icons/editor/pie-chart'; 
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
@@ -22,8 +20,6 @@ class NavBar extends Component {
         showSideDrawer: false
     }; 
 
-    auth = new Auth(); 
-
     toggleSideDrawer = () => {
         this.setState({
             showSideDrawer: !this.state.showSideDrawer, 
@@ -31,12 +27,12 @@ class NavBar extends Component {
     }
 
     login = () => {
-        this.auth.login(); 
+        this.props.auth.login(); 
         this.toggleSideDrawer();
     }
 
     logout = () => {
-        this.auth.logout(); 
+        this.props.auth.logout(); 
         this.toggleSideDrawer(); 
     }
 
@@ -52,10 +48,9 @@ class NavBar extends Component {
                 onClick={this.login}>Log In
             </MenuItem>
         ); 
-        if(this.auth.isAuthenticated()) {
-            console.log(this.state.profile); 
+        if(this.props.auth.isAuthenticated()) {
             userMenuItem = (
-                <UserMenuItem auth={this.auth} logout={this.logout} />
+                <UserMenuItem auth={this.props.auth} logout={this.logout} />
             ); 
         }
         return(
@@ -89,4 +84,10 @@ class NavBar extends Component {
     }
 }
 
-export default withRouter(NavBar); 
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(NavBar)); 
