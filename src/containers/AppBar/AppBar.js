@@ -15,6 +15,8 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
+import * as authActions from '../../store/actions/auth'; 
+
 class NavBar extends Component {
     state = {
         showSideDrawer: false
@@ -78,6 +80,9 @@ class NavBar extends Component {
                         leftIcon={<PieIcon />}
                         onClick={() => this.routeTo('/finance-trends')}>Trends
                     </MenuItem>
+                    <MenuItem 
+                        onClick={this.props.onGetAuthProfile}>Test Actions
+                    </MenuItem>
                 </Drawer>
             </Fragment>
         ); 
@@ -90,4 +95,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(withRouter(NavBar)); 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onGetAuthProfile: () => dispatch(authActions.getAuthProfile())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar)); 
