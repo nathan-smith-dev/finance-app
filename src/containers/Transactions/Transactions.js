@@ -60,7 +60,8 @@ class Transactions extends Component {
     }
 
     sendNewTransaction = () => {
-        axios.post('https://react-finance-f20df.firebaseio.com/'+this.props.userProfile.sub+'.json', this.convertStateToDbValues())
+        const postObj = this.convertStateToDbValues(); 
+        axios.post(`${this.props.userProfile.sub}/${postObj.date.year}/${postObj.date.month}.json`, postObj)
             .then(response => {
                 console.log(response);
             }) 

@@ -9,6 +9,10 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'; 
 import authReducer from './store/reducers/auth'; 
 
+import axios from 'axios'; 
+
+axios.defaults.baseURL = 'https://react-finance-f20df.firebaseio.com/'; 
+
 const composeEnhancers =
   typeof window === 'object' &&
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
