@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 
 import axios from 'axios'; 
+import * as transactionActionCreators from '../../store/actions/transactions'; 
 
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
@@ -64,7 +65,8 @@ class Transactions extends Component {
         const postObj = this.convertStateToDbValues(); 
         axios.post(`${this.props.userProfile.sub}/${postObj.date.year}/${postObj.date.month}.json`, postObj)
             .then(response => {
-                console.log(response);
+                // console.log(response);
+                this.getTransactions(this.props.userProfile.sub); 
             }) 
             .catch(err => {
                 console.log(err); 
@@ -132,4 +134,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Transactions); 
+const mapDispatchToProps = dispatch => {
+    return {
+        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions); 
