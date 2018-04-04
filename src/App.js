@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classes from './App.css';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'; 
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
 import Auth from './Auth/Auth'; 
 
 import Container from './hoc/Grid/Container/Container'; 
@@ -29,14 +29,15 @@ class App extends Component {
             <Container>
               <Row alignItems="center">
                   <Column>
+                    <Route path="/callback" render={(props) => {
+                      this.handleAuthentication(props);
+                      return <Callback {...props} /> 
+                    }}/>
                     <Switch>
-                      <Route path="/" exact render={() => <h1>Home Page</h1>} />
-                      <Route path="/callback" render={(props) => {
-                        this.handleAuthentication(props);
-                        return <Callback {...props} /> 
-                      }}/>
                       <Route path="/expenses-income" exact render={() => <h1>Expenses and Income Page</h1>} />
                       <Route path="/finance-trends" exact render={() => <h1>Financial Trends Page</h1>} />
+                      <Route path="/" exact render={() => <h1>Home Page</h1>} />
+                      <Redirect to="/" />
                     </Switch>
                   </Column>
               </Row>

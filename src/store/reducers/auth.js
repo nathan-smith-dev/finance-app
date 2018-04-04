@@ -10,19 +10,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        case actionTypes.GET_PROFILE_START: 
-            console.log('start get profile');         
-            return {
-                ...state
-            }; 
         case actionTypes.GET_PROFILE_SUCCESS: 
-            console.log('success', action.userProfile); 
+            // console.log('success', action.userProfile); 
             return {
                 ...state,
                 userProfile: action.userProfile
             }; 
         case actionTypes.GET_PROFILE_FAILED: 
-            console.log('failed'); 
+            // console.log('failed'); 
             return {
                 ...state
             }; 

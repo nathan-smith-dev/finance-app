@@ -3,12 +3,6 @@ import Auth from '../../Auth/Auth' ;
 
 const auth = new Auth(); 
 
-export const getProfileStart = () => {
-    return {
-        type: actionTypes.GET_PROFILE_START
-    }
-}
-
 export const getProfileSuccess = (profile) => {
     return {
         type: actionTypes.GET_PROFILE_SUCCESS, 
@@ -24,18 +18,17 @@ export const getProfileFailed = () => {
 
 export const getAuthProfile = () => {
     return dispatch => {
-        dispatch(getProfileStart()); 
         const { userProfile, getProfile } = auth;
         let authProfile = null; 
         if (!userProfile) {
             getProfile((err, profile) => {
                 authProfile = profile; 
+                dispatch(getProfileSuccess(authProfile));
             });
         }
         else {
             authProfile = userProfile; 
+            auth.isAuthenticated() ? dispatch(getProfileSuccess(authProfile)) : dispatch(getProfileFailed()); 
         }
-
-        authProfile ? dispatch(getProfileSuccess(authProfile)) : dispatch(getProfileFailed()); 
     }
 }; 

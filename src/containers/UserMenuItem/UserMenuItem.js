@@ -2,22 +2,14 @@ import React, { Component } from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle'; 
 
+import * as authActions from '../../store/actions/auth'; 
+import { connect } from 'react-redux'; 
+
 
 class UserMenuItem extends Component {
-    state = {
-        profile: {}
-    }
 
     componentWillMount() {
-        this.setState({ profile: {} });
-        const { userProfile, getProfile } = this.props.auth;
-        if (!userProfile) {
-          getProfile((err, profile) => {
-            this.setState({ profile });
-          });
-        } else {
-          this.setState({ profile: userProfile });
-        }
+        this.props.getUserProfile(); 
     }
 
     render() {
@@ -25,10 +17,22 @@ class UserMenuItem extends Component {
             <MenuItem 
                 leftIcon={<AccountIcon />}
                 onClick={this.props.logout}
-                >{this.state.profile.name}
+                >{this.props.profile.name}
             </MenuItem>
         ); 
     }
 }
 
-export default UserMenuItem; 
+const mapStateToProps = state => {
+    return {
+        profile: state.userProfile
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getUserProfile: () => dispatch(authActions.getAuthProfile())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserMenuItem); 
