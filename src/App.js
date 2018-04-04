@@ -10,6 +10,7 @@ import Row from './hoc/Grid/Row/Row';
 import Column from './hoc/Grid/Column/Column'; 
 import AppBar from './containers/AppBar/AppBar'; 
 import Callback from './components/Callback/Callback'; 
+import Transactions from './containers/Transactions/Transactions'; 
 
 class App extends Component {
   auth = new Auth();
@@ -34,7 +35,7 @@ class App extends Component {
                       return <Callback {...props} /> 
                     }}/>
                     <Switch>
-                      <Route path="/expenses-income" exact render={() => <h1>Expenses and Income Page</h1>} />
+                      <Route path="/expenses-income" exact component={Transactions} />
                       <Route path="/finance-trends" exact render={() => <h1>Financial Trends Page</h1>} />
                       <Route path="/" exact render={() => <h1>Home Page</h1>} />
                       <Redirect to="/" />
