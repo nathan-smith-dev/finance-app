@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 
 import axios from 'axios'; 
-import * as transactionActionCreators from '../../store/actions/transactions'; 
 
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
@@ -12,6 +11,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import TransactionsTable from '../TransactionsTable/TransactionsTable'; 
 
 const CATEGORIES = [
     'Entertainment', 
@@ -118,6 +118,9 @@ class Transactions extends Component {
                 <FloatingActionButton onClick={() => this.getTransactions(this.props.userProfile.sub)} >
                     <div>Test</div>
                 </FloatingActionButton>
+                <div style={{marginTop: '4rem'}}>
+                    <TransactionsTable />
+                </div>
             </div>
         ); 
     }
@@ -129,10 +132,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Transactions); 
+export default connect(mapStateToProps)(Transactions); 

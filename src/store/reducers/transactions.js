@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_USER_TRANSACTIONS_SUCCESS: 
             return {
                 ...state,
-                userTransactions: action.transactions
+                userTransactions: action.userTransactions
             }; 
         case actionTypes.GET_USER_TRANSACTIONS_FAILED: 
             // console.log('failed'); 

@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import * as transactionActions from './transactions'; 
 import Auth from '../../Auth/Auth' ; 
 
 const auth = new Auth(); 
@@ -24,6 +25,7 @@ export const getAuthProfile = () => {
             getProfile((err, profile) => {
                 authProfile = profile; 
                 dispatch(getProfileSuccess(authProfile));
+                dispatch(transactionActions.getTransactions(authProfile.sub));
             });
         }
         else {

@@ -1,11 +1,11 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios'; 
 
-export const getTransactionsSuccess = (tansactions) => {
-    console.log(tansactions); 
+export const getTransactionsSuccess = (transactions) => {
+    console.log(transactions); 
     return {
         type: actionTypes.GET_USER_TRANSACTIONS_SUCCESS, 
-        userTransactions: tansactions
+        userTransactions: transactions
     }
 }
 
