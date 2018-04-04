@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { createStore, applyMiddleware, compose } from 'redux'; 
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'; 
 import { Provider } from 'react-redux'; 
 import thunk from 'redux-thunk'; 
 import authReducer from './store/reducers/auth'; 
+import transactionsReducer from './store/reducers/transactions'; 
 
 import axios from 'axios'; 
 
@@ -24,7 +25,13 @@ const enhancer = composeEnhancers(
   applyMiddleware(thunk)
   // other store enhancers if any
 );
-const store = createStore(authReducer, enhancer);
+
+const rootReducers = combineReducers({
+  auth: authReducer, 
+  transactions: transactionsReducer
+}); 
+
+const store = createStore(rootReducers, enhancer);
 
 const app = (
     <Provider store={store}>

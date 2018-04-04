@@ -25,7 +25,7 @@ class UserMenuItem extends Component {
 
 const mapStateToProps = state => {
     return {
-        profile: state.userProfile
+        profile: state.auth.userProfile
     }
 }
 

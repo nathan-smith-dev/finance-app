@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 
 import axios from 'axios'; 
+import * as transactionActionCreators from '../../store/actions/transactions'; 
 
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
@@ -70,6 +71,10 @@ class Transactions extends Component {
             })
     }
 
+    getTransactions(id) {
+        this.props.getTransactions(id); 
+    }
+
     render() {
         return (
             <div>
@@ -110,6 +115,9 @@ class Transactions extends Component {
                 <FloatingActionButton onClick={this.sendNewTransaction} >
                     <ContentAdd />
                 </FloatingActionButton>
+                <FloatingActionButton onClick={() => this.getTransactions(this.props.userProfile.sub)} >
+                    <div>Test</div>
+                </FloatingActionButton>
             </div>
         ); 
     }
@@ -117,8 +125,14 @@ class Transactions extends Component {
 
 const mapStateToProps = state => {
     return {
-        userProfile: state.userProfile
+        userProfile: state.auth.userProfile
     }
 }
 
-export default connect(mapStateToProps)(Transactions); 
+const mapDispatchToProps = dispatch => {
+    return {
+        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions); 
