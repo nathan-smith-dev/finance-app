@@ -12,7 +12,7 @@ import transactionsReducer from './store/reducers/transactions';
 
 import axios from 'axios'; 
 
-axios.defaults.baseURL = 'https://react-finance-f20df.firebaseio.com/'; 
+axios.defaults.baseURL = 'https://react-finance-f20df.firebaseio.com/users/'; 
 
 const composeEnhancers =
   typeof window === 'object' &&
@@ -31,7 +31,7 @@ const rootReducers = combineReducers({
   transactions: transactionsReducer
 }); 
 
-const store = createStore(rootReducers, enhancer);
+export const store = createStore(rootReducers, enhancer);
 
 const app = (
     <Provider store={store}>

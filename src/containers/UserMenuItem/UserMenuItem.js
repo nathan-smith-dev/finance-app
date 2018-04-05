@@ -1,24 +1,44 @@
 import React, { Component } from 'react'; 
 import MenuItem from 'material-ui/MenuItem';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle'; 
+import LockIcon from 'material-ui/svg-icons/action/lock'; 
 
-import * as authActions from '../../store/actions/auth'; 
 import { connect } from 'react-redux'; 
+import { auth } from '../../firebase'; 
 
 
 class UserMenuItem extends Component {
-
     componentWillMount() {
-        this.props.getUserProfile(); 
+        auth.authChangeListener(); 
+    }
+
+    login = () => {
+        auth.signInWithRedirect(); 
+        this.props.onToggle();         
+    }
+
+    logout = () => {
+        auth.signOut(); 
+        this.props.onToggle();         
     }
 
     render() {
-        return(
-            <MenuItem 
-                leftIcon={<AccountIcon />}
-                onClick={this.props.logout}
-                >{this.props.profile.name}
-            </MenuItem>
+        return (
+            this.props.profile 
+            ? (
+                <MenuItem 
+                    leftIcon={<AccountIcon />}
+                    onClick={this.logout}
+                    >{this.props.profile.displayName ? this.props.profile.displayName : "Profile"}
+                </MenuItem>
+            )
+            : (
+                <MenuItem 
+                    leftIcon={<LockIcon />}
+                    onClick={this.login}
+                    > Log In
+                </MenuItem>
+            )
         ); 
     }
 }
@@ -29,10 +49,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getUserProfile: () => dispatch(authActions.getAuthProfile())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserMenuItem); 
+export default connect(mapStateToProps)(UserMenuItem); 

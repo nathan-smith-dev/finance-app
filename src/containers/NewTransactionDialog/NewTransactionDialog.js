@@ -61,11 +61,12 @@ class NewTransactionDialog extends Component {
 
     sendNewTransaction = () => {
         const postObj = this.convertStateToDbValues(); 
-        axios.post(`${this.props.userProfile.sub}/${postObj.date.year}/${postObj.date.month}.json`, postObj)
+        axios.post(`${this.props.userProfile.uid}/${postObj.date.year}/${postObj.date.month}.json`, postObj)
             .then(response => {
                 // console.log(response);
-                this.getTransactions(this.props.userProfile.sub); 
+                this.getTransactions(this.props.userProfile.uid); 
                 this.props.toggler(); 
+                this.setState({newExpense: {}})
             }) 
             .catch(err => {
                 console.log(err); 

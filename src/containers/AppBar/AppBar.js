@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'; 
 
 import { withRouter } from 'react-router-dom'; 
-import { connect } from 'react-redux'; 
 
 import AppBar from 'material-ui/AppBar'; 
 import Drawer from 'material-ui/Drawer';
@@ -10,7 +9,6 @@ import Divider from 'material-ui/Divider';
 import CloseIcon from 'material-ui/svg-icons/navigation/close'; 
 import PieIcon from 'material-ui/svg-icons/editor/pie-chart'; 
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
-import LockIcon from 'material-ui/svg-icons/action/lock'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
@@ -26,15 +24,6 @@ class NavBar extends Component {
         }); 
     }
 
-    login = () => {
-        this.props.auth.login(); 
-        this.toggleSideDrawer();
-    }
-
-    logout = () => {
-        this.props.auth.logout(); 
-        this.toggleSideDrawer(); 
-    }
 
     routeTo(route) {
         this.props.history.push(route);
@@ -42,17 +31,6 @@ class NavBar extends Component {
     }
 
     render() {
-        let userMenuItem = (
-            <MenuItem 
-                leftIcon={<LockIcon />}
-                onClick={this.login}>Log In
-            </MenuItem>
-        ); 
-        if(this.props.auth.isAuthenticated()) {
-            userMenuItem = (
-                <UserMenuItem auth={this.props.auth} logout={this.logout} />
-            ); 
-        }
         return(
             <Fragment>
                 <AppBar 
@@ -64,7 +42,7 @@ class NavBar extends Component {
                         rightIcon={<CloseIcon />}
                         onClick={this.toggleSideDrawer}>
                     </MenuItem>
-                    {userMenuItem}
+                    <UserMenuItem onToggle={this.toggleSideDrawer} />
                     <Divider />
                     <MenuItem 
                         leftIcon={<HomeIcon />}
@@ -84,10 +62,5 @@ class NavBar extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth.auth
-    };
-};
 
-export default connect(mapStateToProps)(withRouter(NavBar)); 
+export default withRouter(NavBar); 

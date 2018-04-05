@@ -1,36 +1,18 @@
 import * as actionTypes from './actionTypes';
 import * as transactionActions from './transactions'; 
-import Auth from '../../Auth/Auth' ; 
-
-const auth = new Auth(); 
 
 export const getProfileSuccess = (profile) => {
     return {
         type: actionTypes.GET_PROFILE_SUCCESS, 
         userProfile: profile
-    }
-}
+    }; 
+}; 
 
-export const getProfileFailed = () => {
-    return {
-        type: actionTypes.GET_PROFILE_FAILED
-    }
-}
-
-export const getAuthProfile = () => {
+export const getProfile = (profile) => {
     return dispatch => {
-        const { userProfile, getProfile } = auth;
-        let authProfile = null; 
-        if (!userProfile) {
-            getProfile((err, profile) => {
-                authProfile = profile; 
-                dispatch(getProfileSuccess(authProfile));
-                dispatch(transactionActions.getTransactions(authProfile.sub));
-            });
-        }
-        else {
-            authProfile = userProfile; 
-            auth.isAuthenticated() ? dispatch(getProfileSuccess(authProfile)) : dispatch(getProfileFailed()); 
-        }
+        if(profile)
+            dispatch(transactionActions.getTransactions(profile.uid));     
+
+        dispatch(getProfileSuccess(profile)); 
     }
 }; 

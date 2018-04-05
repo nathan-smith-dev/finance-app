@@ -7,6 +7,7 @@ import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
+
 class Transactions extends Component {
 
     state = {
