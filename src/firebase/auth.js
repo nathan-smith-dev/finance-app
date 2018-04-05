@@ -16,3 +16,12 @@ export const getRedirectResults = () => firebaseAuth.getRedirectResult();
 export const authChangeListener = () => firebaseAuth.onAuthStateChanged(authUser => {
     store.dispatch(authActions.getProfile(authUser)); 
 }); 
+
+export const withAuth = (func) => {
+    firebaseAuth.currentUser.getIdToken(/* forceRefresh */ true)
+        .then(idToken => {
+            func(idToken); 
+        }).catch(error => {
+            console.log(error); 
+        });
+}; 

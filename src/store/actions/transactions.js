@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios'; 
+import { withAuth } from '../../firebase/auth'; 
 
 export const getTransactionsSuccess = (transactions) => {
     // console.log(transactions); 
@@ -18,13 +19,15 @@ export const getTransactionsFailed = () => {
 export const getTransactions = (userId) => {
     return dispatch => {
         const today = new Date(); 
-        const url = `${userId}/${today.getFullYear()}/${today.getMonth()}.json`; 
-        axios.get(url)
-            .then(response => {
-                dispatch(getTransactionsSuccess(response.data))
-            })
-            .catch(err => {
-                dispatch(getTransactionsFailed())
-            }); 
+        withAuth((authToken) => {
+            const url = `${userId}/${today.getFullYear()}/${today.getMonth()}.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    dispatch(getTransactionsSuccess(response.data))
+                })
+                .catch(err => {
+                    dispatch(getTransactionsFailed())
+                }); 
+        }); 
     }
 }; 

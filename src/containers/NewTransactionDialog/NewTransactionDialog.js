@@ -4,6 +4,7 @@ import classes from './NewTransactionDialog.css';
 import axios from 'axios'; 
 import * as transactionActionCreators from '../../store/actions/transactions'; 
 import { connect } from 'react-redux'; 
+import { withAuth } from '../../firebase/auth'; 
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -61,16 +62,18 @@ class NewTransactionDialog extends Component {
 
     sendNewTransaction = () => {
         const postObj = this.convertStateToDbValues(); 
-        axios.post(`${this.props.userProfile.uid}/${postObj.date.year}/${postObj.date.month}.json`, postObj)
-            .then(response => {
-                // console.log(response);
-                this.getTransactions(this.props.userProfile.uid); 
-                this.props.toggler(); 
-                this.setState({newExpense: {}})
-            }) 
-            .catch(err => {
-                console.log(err); 
-            })
+        withAuth((authToken) => {
+            axios.post(`${this.props.userProfile.uid}/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
+                .then(response => {
+                    // console.log(response);
+                    this.getTransactions(this.props.userProfile.uid); 
+                    this.props.toggler(); 
+                    this.setState({newExpense: {}})
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                })
+        })
     }
 
     getTransactions(id) {
