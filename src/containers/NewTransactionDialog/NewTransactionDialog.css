@@ -1,0 +1,12 @@
+.Paper {
+    display: inline-block; 
+    width: auto !important; 
+    margin-left: 0 !important; 
+}
+
+.PaperWrapper {
+    display: flex !important; 
+    width: 0 !important; 
+    padding: 0 !important; 
+    justify-content: center; 
+}
