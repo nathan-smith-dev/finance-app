@@ -1,24 +1,25 @@
 import React, { Component } from 'react'; 
 
+import { connect } from 'react-redux';
+
 import { Pie } from 'react-chartjs-2'; 
 
 class Chart extends Component {
     render() {
+        let labels = []; 
+        let data = []; 
+        if(this.props.transactionDetails.categorizedExpenses) {
+            labels = Object.keys(this.props.transactionDetails.categorizedExpenses); 
+            data = Object.values(this.props.transactionDetails.categorizedExpenses)
+        }
         return (
             <Pie data={{
-                labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
+                labels: labels,
                 datasets:[
                     {
-                        label:'Population',
-                        data:[
-                        617594,
-                        181045,
-                        153060,
-                        106519,
-                        105162,
-                        95072
-                        ],
-                        backgroundColor:[
+                        label: 'Expenses',
+                        data: data,
+                        backgroundColor: [
                         'rgba(255, 99, 132, 0.6)',
                         'rgba(54, 162, 235, 0.6)',
                         'rgba(255, 206, 86, 0.6)',
@@ -34,4 +35,10 @@ class Chart extends Component {
     }
 }
 
-export default Chart;
+const mapStateToProps = state => {
+    return {
+        transactionDetails: state.transactions.transactionDetails
+    }
+}; 
+
+export default connect(mapStateToProps)(Chart);

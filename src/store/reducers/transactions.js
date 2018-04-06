@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 
 const initialState = {
-    userTransactions: {}
+    userTransactions: {}, 
+    transactionDetails: {}
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +22,11 @@ const reducer = (state = initialState, action) => {
             console.log('get transactions');         
             return {
                 ...state
+            }; 
+        case actionTypes.FLATTEN_TRANSACTION_DATA: 
+            return {
+                ...state, 
+                transactionDetails: action.details
             }; 
         default: 
             return {
