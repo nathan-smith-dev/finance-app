@@ -8,6 +8,9 @@ const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.GET_PROFILE_SUCCESS: 
             // console.log('success', action.userProfile); 
+            // if(action.userProfile) {
+            //     return; 
+            // }
             return {
                 ...state,
                 userProfile: action.userProfile

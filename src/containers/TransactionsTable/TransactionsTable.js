@@ -10,12 +10,17 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class TransactionsTable extends Component {
 
     render() {
-        let transactions = null; 
-        if(this.props.transactions) {
+        let transactions = (
+            <TableRow>
+                <TableRowColumn><CircularProgress /></TableRowColumn>
+            </TableRow>
+        ); 
+        if(Object.keys(this.props.transactions).length > 0) {
             transactions = Object.keys(this.props.transactions).map((transKey) => {
                 const trans = this.props.transactions[transKey]; 
                 return (

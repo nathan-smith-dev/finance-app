@@ -4,7 +4,7 @@ import * as authActions from '../store/actions/auth';
 
 
 // SignIn with Google
-export const signInWithRedirect = () => firebaseAuth.signInWithRedirect(provider); 
+export const signInWithRedirect = () => firebaseAuth.signInWithRedirect(provider);
 
 // SignOut
 export const signOut = () => firebaseAuth.signOut(); 

@@ -3,6 +3,7 @@ import classes from './App.css';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
+import { connect } from 'react-redux'; 
 
 import Container from './hoc/Grid/Container/Container'; 
 import Row from './hoc/Grid/Row/Row'; 
@@ -21,8 +22,14 @@ class App extends Component {
               <Row alignItems="center">
                   <Column>
                     <Switch>
-                      <Route path="/expenses-income" exact component={Transactions} />
-                      <Route path="/finance-trends" exact render={() => <h1>Financial Trends Page</h1>} />
+                      {this.props.userProfile
+                        ? <Route path="/expenses-income" exact component={Transactions} />
+                        : <Redirect from="/expenses-income" to="/" />
+                      }
+                      {this.props.userProfile
+                        ? <Route path="/finance-trends" exact render={() => <h1>Financial Trends Page</h1>} />
+                        : <Redirect from="/finance-trends" to="/" />
+                      }
                       <Route path="/" exact render={() => <h1>Home Page</h1>} />
                       <Redirect to="/" />
                     </Switch>
@@ -36,4 +43,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    userProfile: state.auth.userProfile
+  }
+}
+
+export default connect(mapStateToProps)(App);
