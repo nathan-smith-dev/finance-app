@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     userTransactions: {}, 
-    transactionDetails: {}
+    transactionDetails: {}, 
+    transactionCategories: []
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 userTransactions: action.userTransactions
+            }; 
+        case actionTypes.GET_USER_CATEGORIES: 
+            return {
+                ...state,
+                transactionCategories: action.transactionCategories
             }; 
         case actionTypes.GET_USER_TRANSACTIONS_FAILED: 
             // console.log('failed'); 

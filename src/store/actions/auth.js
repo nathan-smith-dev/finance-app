@@ -10,8 +10,10 @@ export const getProfileSuccess = (profile) => {
 
 export const getProfile = (profile) => {
     return dispatch => {
-        if(profile)
+        if(profile) {
             dispatch(transactionActions.getTransactions(profile.uid));     
+            dispatch(transactionActions.getTransactionCategories(profile.uid));     
+        }
 
         dispatch(getProfileSuccess(profile)); 
     }

@@ -10,6 +10,14 @@ export const getTransactionsSuccess = (transactions) => {
     }
 }
 
+export const getTransactionCategoriesSuccess = (categories) => {
+    console.log(categories); 
+    return {
+        type: actionTypes.GET_USER_CATEGORIES, 
+        transactionCategories: categories
+    }
+}
+
 export const getTransactionsFailed = () => {
     return {
         type: actionTypes.GET_USER_TRANSACTIONS_FAILED
@@ -56,6 +64,21 @@ export const getTransactions = (userId) => {
                 })
                 .catch(err => {
                     dispatch(getTransactionsFailed())
+                }); 
+        }); 
+    }
+}; 
+
+export const getTransactionCategories = (userId) => {
+    return dispatch => {
+        withAuth((authToken) => {
+            const url = `${userId}/categories.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    dispatch(getTransactionCategoriesSuccess(Object.values(response.data))); 
+                })
+                .catch(err => {
+                    console.log(err); 
                 }); 
         }); 
     }
