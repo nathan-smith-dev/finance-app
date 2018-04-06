@@ -48,7 +48,7 @@ class UserMenuItem extends Component {
                 <MenuItem 
                     leftIcon={<AccountIcon />}
                     onClick={this.logout}
-                    >{this.props.profile.uid != "temp_user" ? this.props.profile.displayName : <CircularProgress />}
+                    >{this.props.profile.uid !== "temp_user" ? this.props.profile.displayName : <CircularProgress />}
                 </MenuItem>
             )
             : (

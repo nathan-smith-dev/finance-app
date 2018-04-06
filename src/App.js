@@ -10,6 +10,7 @@ import Row from './hoc/Grid/Row/Row';
 import Column from './hoc/Grid/Column/Column'; 
 import AppBar from './containers/AppBar/AppBar'; 
 import Transactions from './containers/Transactions/Transactions'; 
+import Chart from './containers/Chart/Chart'; 
 
 class App extends Component {
   render() {
@@ -27,10 +28,10 @@ class App extends Component {
                         : <Redirect from="/expenses-income" to="/" />
                       }
                       {this.props.userProfile
-                        ? <Route path="/finance-trends" exact render={() => <h1>Financial Trends Page</h1>} />
+                        ? <Route path="/finance-trends" exact component={Chart} />
                         : <Redirect from="/finance-trends" to="/" />
                       }
-                      <Route path="/" exact render={() => <h1>Home Page</h1>} />
+                      <Route path="/" exact component={() => <h1>Home Page</h1>} />
                       <Redirect to="/" />
                     </Switch>
                   </Column>
