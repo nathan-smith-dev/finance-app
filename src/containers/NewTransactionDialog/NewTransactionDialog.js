@@ -15,13 +15,6 @@ import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-const CATEGORIES = [
-    'Entertainment', 
-    'Education', 
-    'Gas', 
-    'Food'
-]; 
-
 const TYPES = [
     'Expense', 
     'Income'
@@ -38,7 +31,6 @@ class NewTransactionDialog extends Component {
         }, 
         showNewCategory: false, 
         newCategory: "", 
-        categories: []
     }
 
     handleChange = (key, value) => {
@@ -59,7 +51,7 @@ class NewTransactionDialog extends Component {
             }, 
             amount: +this.state.newExpense.amount, 
             type: TYPES[this.state.newExpense.type], 
-            category: CATEGORIES[this.state.newExpense.category]
+            category: this.props.transactionCategories[this.state.newExpense.category]
         }
 
         return postObj; 
@@ -81,20 +73,29 @@ class NewTransactionDialog extends Component {
         })
     }
 
-    // getCategories = () => {
-    //     withAuth(authToken => {
-    //         axios.get(`${this.props.userProfile.uid}/categories.json?auth=${authToken}`)
-    //             .then(response => {
-    //                 console.log(response.data); 
-    //                 this.setState({
-    //                     categories: response.data
-    //                 })
-    //             }) 
-    //             .catch(err => {
-    //                 console.log(err); 
-    //             })
-    //     }) 
-    // }
+    sendNewCategory = () => {
+        const category = this.state.newCategory;
+        const postObj = {}; 
+        postObj[category.toLowerCase()] = category; 
+        withAuth((authToken) => {
+            axios.post(`${this.props.userProfile.uid}/categories.json?auth=${authToken}`, postObj)
+                .then(response => {
+                    // console.log(response);
+                    this.props.getCategories(this.props.userProfile.uid); 
+                    this.toggleNewCategory(); 
+                    this.setState({newCategory: ""}); 
+                    this.setState({
+                        newExpense: {
+                            ...this.state.newExpense, 
+                            category: this.props.transactionCategories.length
+                        }
+                    })
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                })
+        })
+    }
 
     getTransactions(id) {
         this.props.getTransactions(id); 
@@ -124,7 +125,7 @@ class NewTransactionDialog extends Component {
                 style={{marginRight: '1rem'}} 
                 label="Submit" 
                 primary={true} 
-                onClick={this.sendNewTransaction} />, 
+                onClick={this.sendNewCategory} />, 
             <RaisedButton 
                 label="Cancel" 
                 onClick={this.toggleNewCategory} />
@@ -164,6 +165,7 @@ class NewTransactionDialog extends Component {
                         </div>
                         <div style={{display: 'flex', alignItems: 'center'}} >
                             <SelectField
+                                disabled={this.state.newExpense.type === 1}
                                 floatingLabelText="Category"
                                 value={this.state.newExpense.category}
                                 onChange={(event, key) => this.handleChange('category', key)} >
@@ -211,7 +213,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id))
+        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id)),
+        getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id))
     }
 }
 

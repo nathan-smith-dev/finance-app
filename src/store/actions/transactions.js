@@ -11,7 +11,7 @@ export const getTransactionsSuccess = (transactions) => {
 }
 
 export const getTransactionCategoriesSuccess = (categories) => {
-    console.log(categories); 
+    // console.log(categories); 
     return {
         type: actionTypes.GET_USER_CATEGORIES, 
         transactionCategories: categories
@@ -75,7 +75,10 @@ export const getTransactionCategories = (userId) => {
             const url = `${userId}/categories.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    dispatch(getTransactionCategoriesSuccess(Object.values(response.data))); 
+                    const test = Object.keys(response.data).map(key => {
+                        return Object.values(response.data[key])[0]; 
+                    }); 
+                    dispatch(getTransactionCategoriesSuccess(test)); 
                 })
                 .catch(err => {
                     console.log(err); 

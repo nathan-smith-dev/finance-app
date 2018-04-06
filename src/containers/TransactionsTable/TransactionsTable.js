@@ -20,7 +20,7 @@ class TransactionsTable extends Component {
                 <TableRowColumn><CircularProgress /></TableRowColumn>
             </TableRow>
         ); 
-        if(Object.keys(this.props.transactions).length > 0) {
+        if(this.props.transactions && Object.keys(this.props.transactions).length > 0) {
             transactions = Object.keys(this.props.transactions).map((transKey) => {
                 const trans = this.props.transactions[transKey]; 
                 return (
