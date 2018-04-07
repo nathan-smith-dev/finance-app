@@ -59,7 +59,10 @@ export const getTransactions = (userId) => {
             const url = `${userId}/${today.getFullYear()}/${today.getMonth()}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    dispatch(getTransactionsSuccess(response.data)); 
+                    const sortedTransactions = Object.keys(response.data).map(transKey => {
+                        return {...response.data[transKey], id: transKey};
+                    }); 
+                    dispatch(getTransactionsSuccess(sortedTransactions)); 
                     dispatch(flattenTransactions(response.data));
                 })
                 .catch(err => {

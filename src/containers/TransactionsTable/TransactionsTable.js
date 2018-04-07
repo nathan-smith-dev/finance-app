@@ -21,10 +21,11 @@ class TransactionsTable extends Component {
             </TableRow>
         ); 
         if(this.props.transactions && Object.keys(this.props.transactions).length > 0) {
-            transactions = Object.keys(this.props.transactions).map((transKey) => {
-                const trans = this.props.transactions[transKey]; 
+           let  transArray = [...this.props.transactions]; 
+            transArray.sort((a, b) => a.date.day - b.date.day); 
+            transactions = transArray.map((trans) => {
                 return (
-                    <TableRow key={transKey}>
+                    <TableRow key={trans.id}>
                         <TableRowColumn>{`${trans.date.month + 1}-${trans.date.day}`}</TableRowColumn>
                         <TableRowColumn>$ <div style={{display: 'inline-block'}}>{parseFloat(trans.amount).toFixed(2)}</div></TableRowColumn>
                         <TableRowColumn>{trans.type}</TableRowColumn>
