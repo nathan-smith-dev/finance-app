@@ -10,6 +10,7 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import PieIcon from 'material-ui/svg-icons/editor/pie-chart'; 
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
+import { pink500 } from 'material-ui/styles/colors'; 
 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
@@ -45,15 +46,18 @@ class NavBar extends Component {
                     <UserMenuItem onToggle={this.toggleSideDrawer} />
                     <Divider />
                     <MenuItem 
-                        leftIcon={<HomeIcon />}
+                        style={this.props.location.pathname === '/' ? {color: pink500} : null}
+                        leftIcon={<HomeIcon color={this.props.location.pathname === '/' ? pink500 : null} />}
                         onClick={() => this.routeTo('/')}>Home
                     </MenuItem>
                     <MenuItem 
-                        leftIcon={<ListIcon />}
+                        style={this.props.location.pathname === '/expenses-income' ? {color: pink500} : null}
+                        leftIcon={<ListIcon color={this.props.location.pathname === '/expenses-income' ? pink500 : null} />}
                         onClick={() => this.routeTo('/expenses-income')}>Expenses / Income
                     </MenuItem>
                     <MenuItem 
-                        leftIcon={<PieIcon />}
+                        style={this.props.location.pathname === '/finance-trends' ? {color: pink500} : null}
+                        leftIcon={<PieIcon color={this.props.location.pathname === '/finance-trends' ? pink500 : null} />}
                         onClick={() => this.routeTo('/finance-trends')}>Trends
                     </MenuItem>
                 </Drawer>
