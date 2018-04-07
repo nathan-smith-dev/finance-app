@@ -24,7 +24,7 @@ class NewTransactionDialog extends Component {
 
     state = {
         newExpense: {
-            date: null, 
+            date: new Date(), 
             amount: "", 
             type: null, 
             category: null
@@ -142,10 +142,10 @@ class NewTransactionDialog extends Component {
                     >
                     <div>
                         <DatePicker 
-                        hintText="Date" 
-                        locale="en-US"
-                        value={this.state.newExpense.date} 
-                        onChange={(event, date) => this.handleChange('date', date)}
+                            hintText="Date" 
+                            locale="en-US"
+                            value={this.state.newExpense.date} 
+                            onChange={(event, date) => this.handleChange('date', date)}
                             
                         />
                         <TextField 
