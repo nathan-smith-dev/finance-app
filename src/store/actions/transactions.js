@@ -52,11 +52,10 @@ export const flattenTransactions = (transactions) => {
     }
 }
 
-export const getTransactions = (userId) => {
+export const getTransactions = (userId, month, year) => {
     return dispatch => {
-        const today = new Date(); 
         withAuth((authToken) => {
-            const url = `${userId}/${today.getFullYear()}/${today.getMonth()}.json?auth=${authToken}`; 
+            const url = `${userId}/${year}/${month}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     const sortedTransactions = Object.keys(response.data).map(transKey => {
@@ -78,10 +77,10 @@ export const getTransactionCategories = (userId) => {
             const url = `${userId}/categories.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    const test = Object.keys(response.data).map(key => {
+                    const categories = Object.keys(response.data).map(key => {
                         return Object.values(response.data[key])[0]; 
                     }); 
-                    dispatch(getTransactionCategoriesSuccess(test)); 
+                    dispatch(getTransactionCategoriesSuccess(categories)); 
                 })
                 .catch(err => {
                     console.log(err); 
@@ -89,3 +88,11 @@ export const getTransactionCategories = (userId) => {
         }); 
     }
 }; 
+
+export const changeTransactionDate = (month, year) => {
+    return {
+        type: actionTypes.CHANGE_TRANSACTION_DATES, 
+        month: month, 
+        year: year
+    }
+}

@@ -9,9 +9,9 @@ export const getProfileSuccess = (profile) => {
 }; 
 
 export const getProfile = (profile) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         if(profile) {
-            dispatch(transactionActions.getTransactions(profile.uid));     
+            dispatch(transactionActions.getTransactions(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getTransactionCategories(profile.uid));     
         }
 

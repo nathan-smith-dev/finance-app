@@ -63,7 +63,7 @@ class NewTransactionDialog extends Component {
             axios.post(`${this.props.userProfile.uid}/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
                 .then(response => {
                     // console.log(response);
-                    this.getTransactions(this.props.userProfile.uid); 
+                    this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
                     this.props.toggler(); 
                     this.setState({newExpense: {}})
                 }) 
@@ -95,10 +95,6 @@ class NewTransactionDialog extends Component {
                     console.log(err); 
                 })
         })
-    }
-
-    getTransactions(id) {
-        this.props.getTransactions(id); 
     }
 
     toggleNewCategory = () => {
@@ -207,13 +203,14 @@ class NewTransactionDialog extends Component {
 const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
-        transactionCategories: state.transactions.transactionCategories
+        transactionCategories: state.transactions.transactionCategories, 
+        trackedDates: state.transactions.trackedDates
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getTransactions: (id) => dispatch(transactionActionCreators.getTransactions(id)),
+        getTransactions: (id, month, year) => dispatch(transactionActionCreators.getTransactions(id, month, year)),
         getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id))
     }
 }
