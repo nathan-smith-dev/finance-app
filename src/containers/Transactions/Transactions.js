@@ -6,6 +6,7 @@ import TransactionsTable from '../TransactionsTable/TransactionsTable';
 import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import MonthYearSelector from '../MonthYearSelector/MonthYearSelector'; 
 
 
 class Transactions extends Component {
@@ -32,6 +33,7 @@ class Transactions extends Component {
                     >
                     <ContentAdd />
                 </FloatingActionButton>
+                <MonthYearSelector />
             </div>
         ); 
     }
