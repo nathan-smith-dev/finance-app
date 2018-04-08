@@ -22,7 +22,7 @@ class TransactionsTable extends Component {
             </TableRow>
         ); 
         if(this.props.transactions && Object.keys(this.props.transactions).length > 0) {
-           let  transArray = [...this.props.transactions]; 
+            let  transArray = [...this.props.transactions]; 
             transArray.sort((a, b) => a.date.day - b.date.day); 
             transactions = transArray.map((trans) => {
                 const color = trans.type === "Income" ? green500 : red500; 
@@ -35,6 +35,13 @@ class TransactionsTable extends Component {
                     </TableRow>
                 ); 
             }); 
+        }
+        else if(this.props.transactions && this.props.transactions === -1) {
+            transactions = (
+                <TableRow>
+                    <TableRowColumn>No Transactions For Selected Time Period</TableRowColumn>
+                </TableRow>
+            ); 
         }
         return (
             <Table>

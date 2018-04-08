@@ -1,5 +1,3 @@
-// TODO: Add authentication check, add table of transactions, link transactions to redux state, style component
-
 import React, { Component } from 'react'; 
 
 import TransactionsTable from '../TransactionsTable/TransactionsTable'; 

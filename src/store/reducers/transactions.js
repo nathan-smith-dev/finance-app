@@ -38,6 +38,7 @@ const reducer = (state = initialState, action) => {
             // console.log('failed'); 
             return {
                 ...state,
+                userTransactions: -1, 
                 trackedDates: {...state.trackedDates},                
             }; 
         case actionTypes.GET_USER_TRANSACTIONS: 

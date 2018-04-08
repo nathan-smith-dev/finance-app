@@ -87,12 +87,10 @@ export const getTransactionCategories = (userId) => {
                 }); 
         }); 
     }
-}; 
+};
 
-export const changeTransactionDate = (month, year) => {
-    return {
-        type: actionTypes.CHANGE_TRANSACTION_DATES, 
-        month: month, 
-        year: year
+export const changeTransactionDate = (uid, month, year) => {
+    return dispatch => {
+        dispatch(getTransactions(uid, month, year)); 
     }
-}
+}; 

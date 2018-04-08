@@ -25,8 +25,9 @@ class MonthYearSelector extends Component {
     mapSelectValsToDb = () => {
         const year = this.state.year === 0 ? today.getFullYear() : today.getFullYear() - 1; 
         const month = this.state.month; 
+        const uid = this.props.user.uid; 
 
-        this.props.changeTransactionDate(month, year); 
+        this.props.changeTransactionDate(uid, month, year); 
     }
 
     render() {
@@ -65,13 +66,14 @@ class MonthYearSelector extends Component {
 
 const mapStateToProps = state => {
     return {
-        trackedDates: state.transactions.trackedDates
+        trackedDates: state.transactions.trackedDates, 
+        user: state.auth.userProfile
     };
 }; 
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeTransactionDate: (month, year) => dispatch(transactionActions.changeTransactionDate(month, year))
+        changeTransactionDate: (uid, month, year) => dispatch(transactionActions.changeTransactionDate(uid, month, year))
     }; 
 }; 
 
