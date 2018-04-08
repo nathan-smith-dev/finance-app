@@ -5,26 +5,36 @@ import * as transactionActions from '../../store/actions/transactions';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+
+const today = new Date(); 
+
 class MonthYearSelector extends Component {
     state = {
         year: 0, 
-        month: 0
+        month: today.getMonth()
     }
 
     handleChange = (value, key) => {
-        console.log(value); 
         this.setState({
             [key]: value
-        });
+        }, 
+        () => this.mapSelectValsToDb()
+        );
+    }
+
+    mapSelectValsToDb = () => {
+        const year = this.state.year === 0 ? today.getFullYear() : today.getFullYear() - 1; 
+        const month = this.state.month; 
+
+        this.props.changeTransactionDate(month, year); 
     }
 
     render() {
-        const today = new Date(); 
         return (
             <div>
                 <SelectField
                     floatingLabelText="Month"
-                    value={today.getMonth()}
+                    value={this.state.month}
                     onChange={(event, key) => this.handleChange(key, 'month')}
                     >
                     <MenuItem value={0} primaryText="January" />
