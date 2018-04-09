@@ -28,8 +28,12 @@ class TransactionsTable extends Component {
                 const color = trans.type === "Income" ? green500 : red500; 
                 return (
                     <TableRow key={trans.id}>
-                        <TableRowColumn>{`${trans.date.month + 1}-${trans.date.day}`}</TableRowColumn>
-                        <TableRowColumn style={{color: color}}>$ <div style={{display: 'inline-block'}}>{parseFloat(trans.amount).toFixed(2)}</div></TableRowColumn>
+                        <TableRowColumn style={{width: '25%'}} >{`${trans.date.month + 1}-${trans.date.day}`}</TableRowColumn>
+                        <TableRowColumn style={{color: color, width: '30%'}}>
+                            <div style={{width: 50, textAlign: 'right'}} >
+                                {parseFloat(trans.amount).toFixed(2)}
+                            </div>
+                        </TableRowColumn>
                         <TableRowColumn>{trans.category}</TableRowColumn>
                     </TableRow>
                 ); 
@@ -46,8 +50,8 @@ class TransactionsTable extends Component {
             <Table>
                 <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                     <TableRow>
-                        <TableHeaderColumn>Date</TableHeaderColumn>
-                        <TableHeaderColumn>Amount</TableHeaderColumn>
+                        <TableHeaderColumn style={{width: '25%'}} >Date</TableHeaderColumn>
+                        <TableHeaderColumn style={{width: '30%'}}>Amount</TableHeaderColumn>
                         <TableHeaderColumn>Category</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>

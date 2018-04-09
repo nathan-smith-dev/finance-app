@@ -11,7 +11,7 @@ const column = (props) => {
     }
 
     return(
-        <div className={classNames.join(' ')}>
+        <div style={{...props.style}} className={classNames.join(' ')}>
             {props.children}
         </div>
     );
