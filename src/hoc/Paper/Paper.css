@@ -1,0 +1,27 @@
+.Paper {
+    padding: 1rem; 
+}
+
+@media (min-width: 576px) { 
+    .Paper {
+        padding: 1rem; 
+    }
+}
+
+@media (min-width: 768px) { 
+    .Paper {
+        padding: 1.25rem; 
+    }
+}
+
+@media (min-width: 992px) { 
+    .Paper {
+        padding: 1.5rem; 
+    }
+}
+
+@media (min-width: 1200px) { 
+    .Paper {
+        padding: 2rem; 
+    }
+}
