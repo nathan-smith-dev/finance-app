@@ -11,6 +11,8 @@ import PieIcon from 'material-ui/svg-icons/editor/pie-chart';
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
 import { pink500 } from 'material-ui/styles/colors'; 
+import bunnyImg from '../../images/Bunny.svg'; 
+import Subheader from 'material-ui/Subheader';
 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
@@ -35,7 +37,11 @@ class NavBar extends Component {
         return(
             <Fragment>
                 <AppBar 
-                    title={this.props.title} 
+                    title={ 
+                        <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
+                            <img src={bunnyImg} alt="Bunny logo" style={{height: '80%', marginRight: '0.25rem'}} />
+                            {this.props.title}
+                        </div>} 
                     onLeftIconButtonClick={this.toggleSideDrawer}
                     onRightIconButtonClick={this.toggleSideDrawer} />
                 <Drawer open={this.state.showSideDrawer}>
@@ -43,8 +49,10 @@ class NavBar extends Component {
                         rightIcon={<CloseIcon />}
                         onClick={this.toggleSideDrawer}>
                     </MenuItem>
+                    <Subheader>User</Subheader>
                     <UserMenuItem onToggle={this.toggleSideDrawer} />
                     <Divider />
+                    <Subheader>Pages</Subheader>                    
                     <MenuItem 
                         style={this.props.location.pathname === '/' ? {color: pink500} : null}
                         leftIcon={<HomeIcon color={this.props.location.pathname === '/' ? pink500 : null} />}

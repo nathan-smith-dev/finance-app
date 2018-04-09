@@ -3,9 +3,17 @@
     transition: margin 0.2s; 
 }
 
+.Paper {
+    padding: 1rem; 
+}
+
 @media (min-width: 576px) { 
     .Container {
         margin: 0 1rem;
+    }
+
+    .Paper {
+        padding: 1rem; 
     }
 }
 
@@ -13,16 +21,28 @@
     .Container {
         margin: 0 3rem; 
     }
+
+    .Paper {
+        padding: 1.25rem; 
+    }
 }
 
 @media (min-width: 992px) { 
     .Container {
         margin: 0 4rem; 
     }
+
+    .Paper {
+        padding: 1.5rem; 
+    }
 }
 
 @media (min-width: 1200px) { 
     .Container {
         margin: 0 6rem; 
+    }
+
+    .Paper {
+        padding: 2rem; 
     }
 }

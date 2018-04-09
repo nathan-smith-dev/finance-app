@@ -11,14 +11,23 @@ import AppBar from './containers/AppBar/AppBar';
 import Transactions from './containers/Transactions/Transactions'; 
 import Chart from './containers/Chart/Chart'; 
 import Home from './components/Home/Home'; 
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { lightGreen300 } from 'material-ui/styles/colors';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: lightGreen300,
+  }
+}); 
+
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <MuiThemeProvider>
+        <MuiThemeProvider muiTheme={muiTheme} >
           <div className={classes.App}>
-            <AppBar title="Finance App" />
+            <AppBar title="Budget Bunny" />
               <Row alignItems="center">
                 <Column>
                   <Switch>

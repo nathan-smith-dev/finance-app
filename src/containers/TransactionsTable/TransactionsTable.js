@@ -30,7 +30,6 @@ class TransactionsTable extends Component {
                     <TableRow key={trans.id}>
                         <TableRowColumn>{`${trans.date.month + 1}-${trans.date.day}`}</TableRowColumn>
                         <TableRowColumn style={{color: color}}>$ <div style={{display: 'inline-block'}}>{parseFloat(trans.amount).toFixed(2)}</div></TableRowColumn>
-                        <TableRowColumn>{trans.type}</TableRowColumn>
                         <TableRowColumn>{trans.category}</TableRowColumn>
                     </TableRow>
                 ); 
@@ -49,7 +48,6 @@ class TransactionsTable extends Component {
                     <TableRow>
                         <TableHeaderColumn>Date</TableHeaderColumn>
                         <TableHeaderColumn>Amount</TableHeaderColumn>
-                        <TableHeaderColumn>Type</TableHeaderColumn>
                         <TableHeaderColumn>Category</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>

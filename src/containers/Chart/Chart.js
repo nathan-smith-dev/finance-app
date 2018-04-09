@@ -45,6 +45,13 @@ class Chart extends Component {
                                     title: {
                                         display: true, 
                                         text: 'Expense Breakdown'
+                                    }, 
+                                    legend: {
+                                        display: true,
+                                        position: 'bottom', 
+                                        labels: {
+                                            boxWidth: 10
+                                        }
                                     }
                                 }}
                             />
