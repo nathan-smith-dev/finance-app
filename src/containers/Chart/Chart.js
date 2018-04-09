@@ -7,6 +7,8 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import MonthYearSelector from '../MonthYearSelector/MonthYearSelector'; 
 import Container from '../../hoc/Grid/Container/Container'; 
 import Paper from '../../hoc/Paper/Paper'; 
+import Row from '../../hoc/Grid/Row/Row';
+import Column from '../../hoc/Grid/Column/Column'; 
 
 class Chart extends Component {
     render() {
@@ -49,9 +51,10 @@ class Chart extends Component {
                 position: 'bottom', 
                 labels: {
                     boxWidth: 10
-                }
+                }, 
+
             }, 
-            // maintainAspectRatio: false
+            maintainAspectRatio: false
         }; 
 
         const barDataProps = {
@@ -84,7 +87,8 @@ class Chart extends Component {
                         return tooltipItem.yLabel;
                 }
                 }
-            }
+            }, 
+            maintainAspectRatio: false
         }; 
 
         return (
@@ -92,18 +96,30 @@ class Chart extends Component {
                 <Tabs>
                     <Tab label="Pie">
                         <Container style={{marginTop: '2rem'}} >
-                            <Paper>
-                                <Pie data={pieDataProps} options={pieOptionsProps} width={100} height={50} />
-                                <MonthYearSelector />
-                            </Paper>
+                            <Row>   
+                                <Column style={{margin: '0 auto'}} width="xl-50 md-75">
+                                    <Paper>
+                                        <div style={{height: 300, width: '100%'}}>                                        
+                                            <Pie data={pieDataProps} options={pieOptionsProps} />
+                                        </div>
+                                        <MonthYearSelector />
+                                    </Paper>
+                                </Column>
+                            </Row>
                         </Container>
                     </Tab>
                     <Tab label="bar">
                         <Container style={{marginTop: '2rem'}} >
-                            <Paper>
-                                <Bar data={barDataProps} options={barOptionProps} />
-                                <MonthYearSelector />
-                            </Paper>
+                            <Row>   
+                                <Column style={{margin: '0 auto'}} width="xl-50 md-75">
+                                    <Paper>
+                                        <div style={{height: 300, width: '100%'}}>
+                                            <Bar data={barDataProps} options={barOptionProps} />
+                                        </div>
+                                        <MonthYearSelector />
+                                    </Paper>
+                                </Column>
+                            </Row>
                         </Container>
                     </Tab>
                 </Tabs>
