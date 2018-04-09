@@ -3,7 +3,7 @@ import classes from './Container.css';
 
 const container = (props) => {
     return (
-        <div className={classes.Container}>
+        <div className={classes.Container} style={{...props.style}} >
             {props.children}
         </div>
     ); 
