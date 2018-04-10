@@ -28,8 +28,6 @@ class App extends Component {
         <MuiThemeProvider muiTheme={muiTheme} >
           <div className={classes.App}>
             <AppBar title="Budget Bunny" />
-              <Row alignItems="center">
-                <Column>
                   <Switch>
                     {this.props.userProfile
                       ? <Route path="/expenses-income" exact component={Transactions} />
@@ -42,8 +40,6 @@ class App extends Component {
                     <Route path="/" exact component={Home} />
                     <Redirect to="/" />
                   </Switch>
-                </Column>
-              </Row>
           </div>
         </MuiThemeProvider>
       </BrowserRouter>

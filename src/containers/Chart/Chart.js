@@ -92,7 +92,7 @@ class Chart extends Component {
         }; 
 
         return (
-            <Fragment>
+            <div >
                 <Tabs>
                     <Tab label="Pie">
                         <Container>
@@ -123,9 +123,7 @@ class Chart extends Component {
                         </Container>
                     </Tab>
                 </Tabs>
-                <Container>
-                </Container>
-            </Fragment>
+            </div>
         ); 
     }
 }
