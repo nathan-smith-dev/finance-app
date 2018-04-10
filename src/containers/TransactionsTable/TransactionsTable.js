@@ -28,7 +28,8 @@ class TransactionsTable extends Component {
                 date: expense.date, 
                 category: expense.category, 
                 id: expense.id, 
-                type: expense.type
+                type: expense.type, 
+                desc: expense.desc
             }, 
             openExpense: !this.state.openExpense
         }); 

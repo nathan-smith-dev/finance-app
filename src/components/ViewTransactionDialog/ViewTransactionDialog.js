@@ -18,6 +18,7 @@ const dialog = (props) => {
 
     let expenseInfo = null; 
     if(props.expense.date) {
+        console.log(props.expense); 
         expenseInfo = (
             <div>
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Date</h2>
@@ -27,7 +28,7 @@ const dialog = (props) => {
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Type</h2>
                 <h3 style={{marginTop: 3}}>{props.expense.type}</h3>
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Description</h2>
-                <h3 style={{marginTop: 3}}>This is where the description will go.</h3>
+                <h3 style={{marginTop: 3}}>{props.expense.desc}</h3>
             </div>
         ); 
         
