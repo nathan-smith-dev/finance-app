@@ -95,7 +95,7 @@ class Chart extends Component {
             <Fragment>
                 <Tabs>
                     <Tab label="Pie">
-                        <Container style={{marginTop: '2rem'}} >
+                        <Container>
                             <Row>   
                                 <Column style={{margin: '0 auto'}} width="xl-50 md-75">
                                     <Paper>
@@ -109,7 +109,7 @@ class Chart extends Component {
                         </Container>
                     </Tab>
                     <Tab label="bar">
-                        <Container style={{marginTop: '2rem'}} >
+                        <Container>
                             <Row>   
                                 <Column style={{margin: '0 auto'}} width="xl-50 md-75">
                                     <Paper>

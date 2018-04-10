@@ -4,23 +4,18 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import Container from '../../hoc/Grid/Container/Container'; 
 import TransactionsTable from '../../containers/TransactionsTable/TransactionsTable'; 
+import Paper from '../../hoc/Paper/Paper'; 
 
 const home = (props) => {
     return (
         <Container>
             <Row>
-                <Column>
-                    <h1>Welcome to the Finance App</h1>
-                    <p>The finance app lets you keep track of your finances. That's pretty neat!</p>
-                </Column>
-            </Row>
-            <hr/>
-            <Row>
-                <Column width="md-50">
-                    <h2>Here are your expenses</h2>
-                </Column>
-                <Column width="md-50">
-                    <TransactionsTable />
+                <Column style={{margin: '0 auto'}} width="xl-50 md-75" >
+                    <Paper>
+                        <h1>Welcome to the alpha testing of the Budget Bunny App. </h1>
+                        <h5>The shitty name was made by Brett Smith&trade;</h5>
+                        <p>While testing write down or text me the issues you come across. Thanks for testing!</p>
+                    </Paper>
                 </Column>
             </Row>
         </Container>

@@ -1,27 +1,32 @@
 .Paper {
+    margin-top: 0.5rem; 
     padding: 1rem; 
 }
 
 @media (min-width: 576px) { 
     .Paper {
+        margin-top: 0.75rem; 
         padding: 1rem; 
     }
 }
 
 @media (min-width: 768px) { 
     .Paper {
+        margin-top: 1rem; 
         padding: 1.25rem; 
     }
 }
 
 @media (min-width: 992px) { 
     .Paper {
+        margin-top: 1.25rem; 
         padding: 1.5rem; 
     }
 }
 
 @media (min-width: 1200px) { 
     .Paper {
+        margin-top: 1.5rem;
         padding: 2rem; 
     }
 }
