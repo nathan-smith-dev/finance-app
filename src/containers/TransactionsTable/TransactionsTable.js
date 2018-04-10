@@ -17,7 +17,8 @@ import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTr
 class TransactionsTable extends Component {
     state = {
         openExpense: false, 
-        selectedExpense: {}
+        selectedExpense: {}, 
+        userUid: null
     }; 
 
     selectExpense = (expense) => {
@@ -31,7 +32,8 @@ class TransactionsTable extends Component {
                 type: expense.type, 
                 desc: expense.desc
             }, 
-            openExpense: !this.state.openExpense
+            openExpense: !this.state.openExpense, 
+            userUid: this.props.userProfile.uid
         }); 
     }
 
@@ -75,7 +77,7 @@ class TransactionsTable extends Component {
         }
         return (
             <Fragment>
-                <Table onCellClick={(rownum) => this.selectExpense(transArray[rownum])}>
+                <Table onCellClick={(rownum) => transArray.length > 0 ? this.selectExpense(transArray[rownum]) : null}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn style={{width: '25%'}} >Date</TableHeaderColumn>
@@ -90,7 +92,8 @@ class TransactionsTable extends Component {
                 <ViewTransactionDialog 
                     show={this.state.openExpense} 
                     expense={this.state.selectedExpense}
-                    close={this.toggleSelectExpense} />
+                    close={this.toggleSelectExpense}
+                    userUid={this.state.userUid} />
             </Fragment>
         ); 
     }
