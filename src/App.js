@@ -5,8 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
 import { connect } from 'react-redux'; 
 
-import Row from './hoc/Grid/Row/Row'; 
-import Column from './hoc/Grid/Column/Column'; 
 import AppBar from './containers/AppBar/AppBar'; 
 import Transactions from './containers/Transactions/Transactions'; 
 import Chart from './containers/Chart/Chart'; 
