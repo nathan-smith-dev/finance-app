@@ -55,7 +55,7 @@ export const flattenTransactions = (transactions) => {
 export const getTransactions = (userId, month, year) => {
     return dispatch => {
         withAuth((authToken) => {
-            const url = `${userId}/${year}/${month}.json?auth=${authToken}`; 
+            const url = `${userId}/transactions/${year}/${month}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     const sortedTransactions = Object.keys(response.data).map(transKey => {
@@ -74,7 +74,7 @@ export const getTransactions = (userId, month, year) => {
 export const getTransactionCategories = (userId) => {
     return dispatch => {
         withAuth((authToken) => {
-            const url = `${userId}/categories.json?auth=${authToken}`; 
+            const url = `${userId}/transactions/categories.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     const categories = Object.keys(response.data).map(key => {

@@ -62,7 +62,7 @@ class NewTransactionDialog extends Component {
     sendNewTransaction = () => {
         const postObj = this.convertStateToDbValues(); 
         withAuth((authToken) => {
-            axios.post(`${this.props.userProfile.uid}/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
+            axios.post(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
                 .then(response => {
                     // console.log(response);
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
@@ -80,7 +80,7 @@ class NewTransactionDialog extends Component {
         const postObj = {}; 
         postObj[category.toLowerCase()] = category; 
         withAuth((authToken) => {
-            axios.post(`${this.props.userProfile.uid}/categories.json?auth=${authToken}`, postObj)
+            axios.post(`${this.props.userProfile.uid}/transactions/categories.json?auth=${authToken}`, postObj)
                 .then(response => {
                     // console.log(response);
                     this.props.getCategories(this.props.userProfile.uid); 
