@@ -130,7 +130,9 @@ class NewTransactionDialog extends Component {
         ]; 
         return (
                 <Dialog
+                    autoScrollBodyContent={true}
                     title="New Income or Expense"
+                    titleClassName={classes.Title}
                     modal={false}
                     open={this.props.show}
                     onRequestClose={this.props.toggler}
@@ -138,7 +140,7 @@ class NewTransactionDialog extends Component {
                     contentClassName={classes.PaperWrapper}
                     paperClassName={classes.Paper}
                     >
-                    <div>
+                    <div style={{margin: '0 auto'}}>
                         <DatePicker 
                             hintText="Date" 
                             locale="en-US"

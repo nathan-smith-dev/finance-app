@@ -28,18 +28,18 @@ class App extends Component {
         <MuiThemeProvider muiTheme={muiTheme} >
           <div className={classes.App}>
             <AppBar title="Budget Bunny" />
-                  <Switch>
-                    {this.props.userProfile
-                      ? <Route path="/expenses-income" exact component={Transactions} />
-                      : <Redirect from="/expenses-income" to="/" />
-                    }
-                    {this.props.userProfile
-                      ? <Route path="/finance-trends" exact component={Chart} />
-                      : <Redirect from="/finance-trends" to="/" />
-                    }
-                    <Route path="/" exact component={Home} />
-                    <Redirect to="/" />
-                  </Switch>
+            <Switch>
+              {this.props.userProfile
+                ? <Route path="/expenses-income" exact component={Transactions} />
+                : <Redirect from="/expenses-income" to="/" />
+              }
+              {this.props.userProfile
+                ? <Route path="/finance-trends" exact component={Chart} />
+                : <Redirect from="/finance-trends" to="/" />
+              }
+              <Route path="/" exact component={Home} />
+              <Redirect to="/" />
+            </Switch>
           </div>
         </MuiThemeProvider>
       </BrowserRouter>
