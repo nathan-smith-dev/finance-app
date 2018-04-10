@@ -151,6 +151,7 @@ class NewTransactionDialog extends Component {
                         />
                         <TextField 
                             style={{maxWidth: '100%'}}
+                            pattern="\d*"
                             type="number" 
                             hintText="Amount"
                             step="0.01"
