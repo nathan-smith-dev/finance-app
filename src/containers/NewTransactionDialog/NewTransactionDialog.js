@@ -142,6 +142,7 @@ class NewTransactionDialog extends Component {
                     >
                     <div style={{margin: '0 auto'}}>
                         <DatePicker 
+                            textFieldStyle={{maxWidth: '100%'}}                            
                             hintText="Date" 
                             locale="en-US"
                             value={this.state.newExpense.date} 
@@ -149,6 +150,7 @@ class NewTransactionDialog extends Component {
                             
                         />
                         <TextField 
+                            style={{maxWidth: '100%'}}
                             type="number" 
                             hintText="Amount"
                             step="0.01"
@@ -156,6 +158,7 @@ class NewTransactionDialog extends Component {
                             onChange={(event) => this.handleChange('amount', event.target.value)} />
                         <div>
                             <SelectField
+                                style={{maxWidth: '100%'}}                            
                                 floatingLabelText="Type"
                                 value={this.state.newExpense.type}
                                 onChange={(event, key) => this.handleChange('type', key)} >
@@ -199,6 +202,7 @@ class NewTransactionDialog extends Component {
                             </div>
                         </div>
                         <TextField 
+                            style={{maxWidth: '100%'}}                        
                             type="text" 
                             hintText="Description"
                             value={this.state.newExpense.desc}
