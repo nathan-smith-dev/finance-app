@@ -3,7 +3,6 @@ import React from 'react';
 import Row from '../../hoc/Grid/Row/Row'; 
 import Column from '../../hoc/Grid/Column/Column'; 
 import Container from '../../hoc/Grid/Container/Container'; 
-import TransactionsTable from '../../containers/TransactionsTable/TransactionsTable'; 
 import Paper from '../../hoc/Paper/Paper'; 
 
 const home = (props) => {

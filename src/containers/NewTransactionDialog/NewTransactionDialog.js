@@ -27,7 +27,8 @@ class NewTransactionDialog extends Component {
             date: new Date(), 
             amount: "", 
             type: null, 
-            category: null
+            category: null, 
+            desc: ""
         }, 
         showNewCategory: false, 
         newCategory: "", 
@@ -51,7 +52,8 @@ class NewTransactionDialog extends Component {
             }, 
             amount: +this.state.newExpense.amount, 
             type: TYPES[this.state.newExpense.type], 
-            category: this.props.transactionCategories[this.state.newExpense.category]
+            category: this.props.transactionCategories[this.state.newExpense.category], 
+            desc: this.state.newExpense.desc
         }
 
         return postObj; 
@@ -194,6 +196,11 @@ class NewTransactionDialog extends Component {
                                 </Dialog>
                             </div>
                         </div>
+                        <TextField 
+                            type="text" 
+                            hintText="Description"
+                            value={this.state.newExpense.desc}
+                            onChange={(event) => this.handleChange('desc', event.target.value)} />
                     </div>
                 </Dialog>
         ); 
