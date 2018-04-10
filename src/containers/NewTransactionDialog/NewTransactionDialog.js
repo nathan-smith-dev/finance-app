@@ -140,7 +140,7 @@ class NewTransactionDialog extends Component {
                     contentClassName={classes.PaperWrapper}
                     paperClassName={classes.Paper}
                     >
-                    <div style={{margin: '0 auto'}}>
+                    <div className={classes.Inputs} style={{margin: '0 auto'}}>
                         <DatePicker 
                             textFieldStyle={{maxWidth: '100%'}}                            
                             hintText="Date" 
