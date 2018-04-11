@@ -10,6 +10,7 @@ const initialState = {
         year: today.getFullYear(), 
         month: today.getMonth()
     }, 
+    loadingTransactions: false
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -45,7 +46,8 @@ const reducer = (state = initialState, action) => {
             console.log('get transactions');         
             return {
                 ...state, 
-                trackedDates: {...state.trackedDates},                
+                trackedDates: {...state.trackedDates},
+                loadingTransactions: action.loading                
             }; 
         case actionTypes.FLATTEN_TRANSACTION_DATA: 
             return {

@@ -24,6 +24,13 @@ export const getTransactionsFailed = () => {
     }
 }
 
+export const getTransactionsLoad = (loading) => {
+    return {
+        type: actionTypes.GET_USER_TRANSACTIONS, 
+        loading: loading
+    }; 
+}; 
+
 export const flattenTransactions = (transactions) => {
     if(!transactions) {
         return {
@@ -60,6 +67,7 @@ export const flattenTransactions = (transactions) => {
 
 export const getTransactions = (userId, month, year) => {
     return dispatch => {
+        dispatch(getTransactionsLoad(true)); 
         withAuth((authToken) => {
             const url = `${userId}/transactions/${year}/${month}.json?auth=${authToken}`; 
             axios.get(url)
@@ -69,10 +77,12 @@ export const getTransactions = (userId, month, year) => {
                     }); 
                     dispatch(getTransactionsSuccess(sortedTransactions)); 
                     dispatch(flattenTransactions(response.data));
+                    dispatch(getTransactionsLoad(false)); 
                 })
                 .catch(err => {
                     dispatch(getTransactionsFailed()); 
-                    dispatch(flattenTransactions());                    
+                    dispatch(flattenTransactions());  
+                    dispatch(getTransactionsLoad(false));                   
                     // console.log(err);
                 }); 
         }); 
