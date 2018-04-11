@@ -104,6 +104,14 @@ class Chart extends Component {
             maintainAspectRatio: false
         }; 
 
+        let totalIncome = null, totalExpenses = null, netTotal = null; 
+
+        if(this.props.transactionDetails) {
+            totalIncome = this.props.transactionDetails.incomes; 
+            totalExpenses = this.props.transactionDetails.expenses; 
+            netTotal = this.props.transactionDetails.incomes - this.props.transactionDetails.expenses; 
+        }
+
         return (
             <div >
                 <Tabs>
@@ -141,9 +149,9 @@ class Chart extends Component {
                                                 </TableHeader>
                                                 <TableBody displayRowCheckbox={false}>
                                                     <TableRow>
-                                                        <TableRowColumn style={{color: green500}}>{this.props.transactionDetails.incomes}</TableRowColumn>
-                                                        <TableRowColumn style={{color: red500}}>{this.props.transactionDetails.expenses}</TableRowColumn>
-                                                        <TableRowColumn style={this.props.transactionDetails.incomes - this.props.transactionDetails.expenses >= 0 ? {color: green500} : {color: red500}}>{this.props.transactionDetails.incomes - this.props.transactionDetails.expenses}</TableRowColumn>
+                                                        <TableRowColumn style={{color: green500}}>{totalIncome}</TableRowColumn>
+                                                        <TableRowColumn style={{color: red500}}>{totalExpenses}</TableRowColumn>
+                                                        <TableRowColumn style={netTotal >= 0 ? {color: green500} : {color: red500}}>{netTotal}</TableRowColumn>
                                                 </TableRow>
                                                 </TableBody>
                                             </Table>
