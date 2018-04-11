@@ -10,7 +10,7 @@ const dialog = (props) => {
     
     const deletePost = () => {
         withAuth((authToken) => {
-            const url = `${props.userUid}/transactions/${props.expense.date.year}/${props.expense.date.month}.json?auth=${authToken}`
+            const url = `${props.userUid}/transactions/${props.expense.date.year}/${props.expense.date.month}/${props.expense.id}.json?auth=${authToken}`
             axios.delete(url)
             .then(response => {
                 store.dispatch(transactionActions.getTransactions(props.userUid, props.expense.date.month, props.expense.date.year)); 
