@@ -15,6 +15,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import MonthYearSelector from '../MonthYearSelector/MonthYearSelector'; 
 import Container from '../../hoc/Grid/Container/Container'; 
 import Paper from '../../hoc/Paper/Paper'; 
+import CircularProgress from 'material-ui/CircularProgress';
 import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import { red300, pink300, 
@@ -124,8 +125,15 @@ class Chart extends Component {
                                             <Pie data={pieDataProps} options={pieOptionsProps} />
                                         </div>
                                         {
-                                            !this.props.transactionDetails.categorizedExpenses && (
-                                                <h3>No transaction data for selected time period. </h3>
+                                            !this.props.transactionDetails.categorizedExpenses && !this.props.loadingTransactions && (
+                                                <h5 style={{color: red300}}>No transaction data for selected time period. </h5>
+                                            )
+                                        }
+                                        {                                
+                                            this.props.loadingTransactions && (
+                                                <div style={{display: 'flex', justifyContent: 'center'}}>
+                                                    <CircularProgress />
+                                                </div>
                                             )
                                         }
                                         <div style={{marginTop: 20}}>
@@ -169,6 +177,18 @@ class Chart extends Component {
                                         <div style={{height: 300, width: '100%'}}>
                                             <Bar data={barDataProps} options={barOptionProps} />
                                         </div>
+                                        {
+                                            !this.props.transactionDetails.categorizedExpenses && !this.props.loadingTransactions && (
+                                                <h5 style={{color: red300}}>No transaction data for selected time period. </h5>
+                                            )
+                                        }
+                                        {                                
+                                            this.props.loadingTransactions && (
+                                                <div style={{display: 'flex', justifyContent: 'center'}}>
+                                                    <CircularProgress />
+                                                </div>
+                                            )
+                                        }
                                         <div style={{marginTop: 20}}>
                                             <h3 style={{marginBottom: 2, marginTop: 20}}>Overview</h3>                                            
                                             <Table>
@@ -202,7 +222,8 @@ class Chart extends Component {
 
 const mapStateToProps = state => {
     return {
-        transactionDetails: state.transactions.transactionDetails
+        transactionDetails: state.transactions.transactionDetails, 
+        loadingTransactions: state.transactions.loadingTransactions
     }
 }; 
 

@@ -10,7 +10,7 @@ const initialState = {
         year: today.getFullYear(), 
         month: today.getMonth()
     }, 
-    loadingTransactions: false
+    loadingTransactions: true
 }; 
 
 const reducer = (state = initialState, action) => {

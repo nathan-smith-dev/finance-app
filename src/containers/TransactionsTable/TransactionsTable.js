@@ -12,7 +12,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import CircularProgress from 'material-ui/CircularProgress';
-import { green500, red500 } from 'material-ui/styles/colors'; 
+import { green500, red500, red300 } from 'material-ui/styles/colors'; 
 import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog'; 
 
 class TransactionsTable extends Component {
@@ -71,7 +71,7 @@ class TransactionsTable extends Component {
         else if(this.props.transactions && this.props.transactions === -1) {
             transactions = (
                 <TableRow>
-                    <TableRowColumn>No Transactions For Selected Time Period</TableRowColumn>
+                    <TableRowColumn style={{color: red300}}>No Transactions For Selected Time Period</TableRowColumn>
                 </TableRow>
             ); 
         }
