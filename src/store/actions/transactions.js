@@ -25,7 +25,13 @@ export const getTransactionsFailed = () => {
 }
 
 export const flattenTransactions = (transactions) => {
-    // console.log(transactions);
+    if(!transactions) {
+        return {
+            type: actionTypes.FLATTEN_TRANSACTION_DATA, 
+            details: {}
+        }; 
+    }
+    console.log(transactions);
     let expenses = 0; 
     let incomes = 0;  
     const categories = {}; 
@@ -65,7 +71,9 @@ export const getTransactions = (userId, month, year) => {
                     dispatch(flattenTransactions(response.data));
                 })
                 .catch(err => {
-                    dispatch(getTransactionsFailed())
+                    dispatch(getTransactionsFailed()); 
+                    dispatch(flattenTransactions());                    
+                    console.log(err);
                 }); 
         }); 
     }

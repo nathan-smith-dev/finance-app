@@ -123,6 +123,11 @@ class Chart extends Component {
                                         <div style={{height: 300, width: '100%'}}>                                        
                                             <Pie data={pieDataProps} options={pieOptionsProps} />
                                         </div>
+                                        {
+                                            !this.props.transactionDetails.categorizedExpenses && (
+                                                <h3>No transaction data for selected time period. </h3>
+                                            )
+                                        }
                                         <div style={{marginTop: 20}}>
                                             <h3 style={{marginBottom: 2, marginTop: 20}}>Overview</h3>                                            
                                             <Table>
