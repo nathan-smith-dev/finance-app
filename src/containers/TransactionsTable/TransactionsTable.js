@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'; 
 
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
+import * as notificationActions from '../../store/actions/notifications';  
 
 import {
   Table,
@@ -90,6 +91,7 @@ class TransactionsTable extends Component {
                 </Table>
                 <ViewTransactionDialog 
                     show={this.state.openExpense} 
+                    notification={(text) => this.props.showNotification(text)}
                     expense={this.state.selectedExpense}
                     close={this.toggleSelectExpense}
                     userUid={this.state.userUid} />
@@ -105,4 +107,10 @@ const mapStateToProps = state => {
     }; 
 }; 
 
-export default connect(mapStateToProps)(TransactionsTable); 
+const mapDispatchToProps = dispatch => {
+    return {
+        showNotification: (text) => dispatch(notificationActions.showNotification(true, text))
+    }; 
+}; 
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsTable); 

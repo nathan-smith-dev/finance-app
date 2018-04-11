@@ -3,6 +3,7 @@ import classes from './NewTransactionDialog.css';
 
 import axios from 'axios'; 
 import * as transactionActionCreators from '../../store/actions/transactions'; 
+import * as notificationActions from '../../store/actions/notifications'; 
 import { connect } from 'react-redux'; 
 import { withAuth } from '../../firebase/auth'; 
 
@@ -100,6 +101,7 @@ class NewTransactionDialog extends Component {
         withAuth((authToken) => {
             axios.post(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
                 .then(response => {
+                    this.props.showNotification("Added transaction");                     
                     // console.log(response);
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
                     this.props.toggler(); 
@@ -113,6 +115,7 @@ class NewTransactionDialog extends Component {
                 }) 
                 .catch(err => {
                     console.log(err); 
+                    this.props.showNotification("Error adding transaction");
                 })
         })
     }
@@ -267,7 +270,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getTransactions: (id, month, year) => dispatch(transactionActionCreators.getTransactions(id, month, year)),
-        getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id))
+        getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id)), 
+        showNotification: (text) => dispatch(notificationActions.showNotification(true, text))
     }
 }
 

@@ -4,6 +4,7 @@ import classes from './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'; 
 import { connect } from 'react-redux'; 
+import * as notificationActions from './store/actions/notifications'; 
 
 import AppBar from './containers/AppBar/AppBar'; 
 import Transactions from './containers/Transactions/Transactions'; 
@@ -11,6 +12,7 @@ import Chart from './containers/Chart/Chart';
 import Home from './components/Home/Home'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { lightGreen300 } from 'material-ui/styles/colors';
+import Snackbar from 'material-ui/Snackbar';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -38,6 +40,16 @@ class App extends Component {
               <Route path="/" exact component={Home} />
               <Redirect to="/" />
             </Switch>
+            {
+              this.props.showNotification && (
+                  <Snackbar
+                    open={this.props.showNotification}
+                    message={this.props.notificationText}
+                    autoHideDuration={3000}
+                    onRequestClose={this.props.closeNotification}
+                  />
+                )  
+            }
           </div>
         </MuiThemeProvider>
       </BrowserRouter>
@@ -53,4 +65,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    closeNotification: () => dispatch(notificationActions.showNotification(false, ""))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

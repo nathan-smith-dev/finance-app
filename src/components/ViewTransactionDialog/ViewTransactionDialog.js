@@ -13,6 +13,7 @@ const dialog = (props) => {
             const url = `${props.userUid}/transactions/${props.expense.date.year}/${props.expense.date.month}/${props.expense.id}.json?auth=${authToken}`
             axios.delete(url)
             .then(response => {
+                props.notification("Deleted transaction"); 
                 store.dispatch(transactionActions.getTransactions(props.userUid, props.expense.date.month, props.expense.date.year)); 
                 props.close(); 
             })
