@@ -47,7 +47,9 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    userProfile: state.auth.userProfile
+    userProfile: state.auth.userProfile, 
+    showNotification: state.notifications.showNotification, 
+    notificationText: state.notifications.notificationText
   }
 }
 

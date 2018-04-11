@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'; 
 import authReducer from './store/reducers/auth'; 
 import transactionsReducer from './store/reducers/transactions'; 
+import notificationsReducer from './store/reducers/notifcations'; 
 
 import axios from 'axios'; 
 
@@ -28,7 +29,8 @@ const enhancer = composeEnhancers(
 
 const rootReducers = combineReducers({
   auth: authReducer, 
-  transactions: transactionsReducer
+  transactions: transactionsReducer, 
+  notifications: notificationsReducer
 }); 
 
 export const store = createStore(rootReducers, enhancer);
