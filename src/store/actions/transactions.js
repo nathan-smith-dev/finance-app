@@ -31,7 +31,7 @@ export const flattenTransactions = (transactions) => {
             details: {}
         }; 
     }
-    console.log(transactions);
+    // console.log(transactions);
     let expenses = 0; 
     let incomes = 0;  
     const categories = {}; 
@@ -73,7 +73,7 @@ export const getTransactions = (userId, month, year) => {
                 .catch(err => {
                     dispatch(getTransactionsFailed()); 
                     dispatch(flattenTransactions());                    
-                    console.log(err);
+                    // console.log(err);
                 }); 
         }); 
     }

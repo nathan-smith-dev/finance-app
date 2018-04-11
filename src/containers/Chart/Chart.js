@@ -146,7 +146,7 @@ class Chart extends Component {
                                                                         <TableRow key={key}>
                                                                             <TableRowColumn style={{color: colors[index], paddingLeft: 0}}>{key}</TableRowColumn>
                                                                             <TableRowColumn style={{paddingLeft: 0}}>{(this.props.transactionDetails.categorizedExpenses[key]).toFixed(2)}</TableRowColumn>
-                                                                            <TableRowColumn style={{paddingLeft: 0}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/netTotal)*100)}%</TableRowColumn>       
+                                                                            <TableRowColumn style={{paddingLeft: 0}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/totalExpenses)*100)}%</TableRowColumn>       
                                                                         </TableRow>
                                                                     ); 
                                                                 })
