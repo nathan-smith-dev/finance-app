@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+  } from 'material-ui/Table';
 import { Pie, Bar } from 'react-chartjs-2'; 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import MonthYearSelector from '../MonthYearSelector/MonthYearSelector'; 
@@ -14,7 +22,8 @@ import { red300, pink300,
     blue300, lightBlue300, cyan300, 
     teal300, green300, lightGreen300, 
     lime300, yellow300,
-    amber300, orange300, deepOrange300 } from 'material-ui/styles/colors'; 
+    amber300, orange300, deepOrange300, 
+    green500, red500 } from 'material-ui/styles/colors'; 
 
 const colors = [
     red300, purple300, blue300, teal300, lime300, amber300, deepOrange300, 
@@ -119,6 +128,25 @@ class Chart extends Component {
                                     <Paper>
                                         <div style={{height: 300, width: '100%'}}>
                                             <Bar data={barDataProps} options={barOptionProps} />
+                                        </div>
+                                        <div style={{marginTop: 20}}>
+                                            <h3 style={{marginBottom: 2, marginTop: 20}}>Overview</h3>                                            
+                                            <Table>
+                                                <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                                                    <TableRow>
+                                                        <TableHeaderColumn>Incomes</TableHeaderColumn>
+                                                        <TableHeaderColumn>Expenses</TableHeaderColumn>
+                                                        <TableHeaderColumn>Net</TableHeaderColumn>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody displayRowCheckbox={false}>
+                                                    <TableRow>
+                                                        <TableRowColumn style={{color: green500}}>{this.props.transactionDetails.incomes}</TableRowColumn>
+                                                        <TableRowColumn style={{color: red500}}>{this.props.transactionDetails.expenses}</TableRowColumn>
+                                                        <TableRowColumn style={this.props.transactionDetails.incomes - this.props.transactionDetails.expenses >= 0 ? {color: green500} : {color: red500}}>{this.props.transactionDetails.incomes - this.props.transactionDetails.expenses}</TableRowColumn>
+                                                </TableRow>
+                                                </TableBody>
+                                            </Table>
                                         </div>
                                         <MonthYearSelector />
                                     </Paper>
