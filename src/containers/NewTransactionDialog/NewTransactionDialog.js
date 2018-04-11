@@ -43,6 +43,42 @@ class NewTransactionDialog extends Component {
         }); 
     }
 
+    handleNumberChange = (event) => {
+        // convert state value to string
+        let newAmount = (this.state.newExpense.amount + "").split("");
+        newAmount.splice(newAmount.indexOf("."), 1); // remove decimal from array 
+
+        if(event.keyCode === 8) { // backspace
+            if(newAmount.length) {
+                newAmount.pop(); 
+            }
+        }
+
+        const number = +event.key; 
+        if(Number.isInteger(number)) {
+            if(!newAmount.length) {
+                newAmount = [0, 0, 0, number]; 
+            }
+            else {
+                newAmount.push(number+""); 
+            }
+        }
+
+        newAmount.splice(-2, 0, "."); 
+        newAmount = +newAmount.join(""); 
+
+        if(Number.isFinite(newAmount)) {
+            this.setState({
+                newExpense: {
+                    ...this.state.newExpense, 
+                    amount: newAmount
+                }
+            }); 
+        }
+
+
+    }
+
     convertStateToDbValues() {
         const postObj = {
             date: {
@@ -151,11 +187,12 @@ class NewTransactionDialog extends Component {
                         />
                         <TextField 
                             style={{maxWidth: '100%'}}
+                            pattern="\d*"
                             type="number" 
                             hintText="Amount"
                             step="0.01"
                             value={this.state.newExpense.amount}
-                            onChange={(event) => this.handleChange('amount', event.target.value)} />
+                            onKeyDown={(event) => this.handleNumberChange(event)} />
                         <div>
                             <SelectField
                                 style={{maxWidth: '100%'}}                            

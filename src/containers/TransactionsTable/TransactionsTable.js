@@ -22,7 +22,6 @@ class TransactionsTable extends Component {
     }; 
 
     selectExpense = (expense) => {
-        console.log("expense selected")
         this.setState({
             selectedExpense: {
                 amount: expense.amount,
