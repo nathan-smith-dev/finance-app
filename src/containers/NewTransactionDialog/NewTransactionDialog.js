@@ -71,7 +71,7 @@ class NewTransactionDialog extends Component {
             this.setState({
                 newExpense: {
                     ...this.state.newExpense, 
-                    amount: newAmount
+                    amount: newAmount.toFixed(2)
                 }
             }); 
         }
@@ -103,7 +103,13 @@ class NewTransactionDialog extends Component {
                     // console.log(response);
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
                     this.props.toggler(); 
-                    this.setState({newExpense: {}})
+                    this.setState({newExpense: {
+                        date: new Date(), 
+                        amount: "", 
+                        type: null, 
+                        category: null, 
+                        desc: ""
+                    }})
                 }) 
                 .catch(err => {
                     console.log(err); 
