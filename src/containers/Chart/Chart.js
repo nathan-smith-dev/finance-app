@@ -9,6 +9,18 @@ import Container from '../../hoc/Grid/Container/Container';
 import Paper from '../../hoc/Paper/Paper'; 
 import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
+import { red300, pink300, 
+    purple300, deepPurple300, indigo300, 
+    blue300, lightBlue300, cyan300, 
+    teal300, green300, lightGreen300, 
+    lime300, yellow300,
+    amber300, orange300, deepOrange300 } from 'material-ui/styles/colors'; 
+
+const colors = [
+    red300, purple300, blue300, teal300, lime300, amber300, deepOrange300, 
+    deepPurple300, lightBlue300, green300, yellow300, orange300, 
+    indigo300, cyan300, lightGreen300, pink300
+]
 
 class Chart extends Component {
     render() {
@@ -28,15 +40,7 @@ class Chart extends Component {
                 {
                     label: 'Expenses',
                     data: pieData,
-                    backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(255, 159, 64, 0.6)',
-                    'rgba(255, 99, 132, 0.6)'
-                    ]
+                    backgroundColor: colors
                 }
             ]
         }; 
