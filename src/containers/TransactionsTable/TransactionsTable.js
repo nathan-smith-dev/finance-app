@@ -57,7 +57,7 @@ class TransactionsTable extends Component {
                 const color = trans.type === "Income" ? green500 : red500; 
                 return (
                     <TableRow key={trans.id}>
-                        <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}-${trans.date.day}`}</TableRowColumn>
+                        <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
                         <TableRowColumn style={{color: color, width: '30%'}}>
                             <div style={{width: 50, textAlign: 'right'}} >
                                 {parseFloat(trans.amount).toFixed(2)}
