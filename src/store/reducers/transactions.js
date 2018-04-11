@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
                 trackedDates: {...state.trackedDates},                
             }; 
         case actionTypes.GET_USER_TRANSACTIONS: 
-            console.log('get transactions');         
+            // console.log('get transactions');         
             return {
                 ...state, 
                 trackedDates: {...state.trackedDates},

@@ -7,35 +7,32 @@ import MenuItem from 'material-ui/MenuItem';
 
 
 const today = new Date(); 
+const YEARS = [
+    today.getFullYear(), 
+    today.getFullYear() - 1
+]; 
 
 class MonthYearSelector extends Component {
-    state = {
-        year: 0, 
-        month: today.getMonth()
-    }
-
     handleChange = (value, key) => {
-        this.setState({
-            [key]: value
-        }, 
-        () => this.mapSelectValsToDb()
-        );
-    }
-
-    mapSelectValsToDb = () => {
-        const year = this.state.year === 0 ? today.getFullYear() : today.getFullYear() - 1; 
-        const month = this.state.month; 
-        const uid = this.props.user.uid; 
-
-        this.props.changeTransactionDate(uid, month, year); 
+        if(key === "year") {
+            console.log("change year")
+            this.props.changeTransactionDate(this.props.user.uid, this.props.trackedDates.month, YEARS[value]); 
+        }
+        
+        if(key === "month") {
+            console.log("change month", value)            
+            this.props.changeTransactionDate(this.props.user.uid, value, this.props.trackedDates.year); 
+        }
     }
 
     render() {
+        const yearVal = this.props.trackedDates ? (today.getFullYear() - this.props.trackedDates.year) : 0; 
+        const monthVal = this.props.trackedDates ? this.props.trackedDates.month : today.getMonth(); 
         return (
             <div>
                 <SelectField
                     floatingLabelText="Month"
-                    value={this.state.month}
+                    value={monthVal}
                     onChange={(event, key) => this.handleChange(key, 'month')}
                     >
                     <MenuItem value={0} primaryText="January" />
@@ -53,7 +50,7 @@ class MonthYearSelector extends Component {
                 </SelectField>
                 <SelectField
                     floatingLabelText="Year"
-                    value={this.state.year}
+                    value={yearVal}
                     onChange={(event, key) => this.handleChange(key, 'year')}
                     >
                     <MenuItem value={0} primaryText={today.getFullYear()} />
