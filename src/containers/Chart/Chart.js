@@ -123,6 +123,33 @@ class Chart extends Component {
                                         <div style={{height: 300, width: '100%'}}>                                        
                                             <Pie data={pieDataProps} options={pieOptionsProps} />
                                         </div>
+                                        <div style={{marginTop: 20}}>
+                                            <h3 style={{marginBottom: 2, marginTop: 20}}>Overview</h3>                                            
+                                            <Table>
+                                                <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                                                    <TableRow>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Category</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Total</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>%</TableHeaderColumn>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody displayRowCheckbox={false}>
+                                                        {
+                                                            this.props.transactionDetails.categorizedExpenses && (
+                                                                Object.keys(this.props.transactionDetails.categorizedExpenses).map((key, index) => {
+                                                                    return (
+                                                                        <TableRow key={key}>
+                                                                            <TableRowColumn style={{color: colors[index], paddingLeft: 0}}>{key}</TableRowColumn>
+                                                                            <TableRowColumn style={{paddingLeft: 0}}>{(this.props.transactionDetails.categorizedExpenses[key]).toFixed(2)}</TableRowColumn>
+                                                                            <TableRowColumn style={{paddingLeft: 0}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/netTotal)*100)}%</TableRowColumn>       
+                                                                        </TableRow>
+                                                                    ); 
+                                                                })
+                                                            )
+                                                        }
+                                                </TableBody>
+                                            </Table>
+                                        </div>
                                         <MonthYearSelector />
                                     </Paper>
                                 </Column>
