@@ -15,12 +15,10 @@ const YEARS = [
 class MonthYearSelector extends Component {
     handleChange = (value, key) => {
         if(key === "year") {
-            console.log("change year")
             this.props.changeTransactionDate(this.props.user.uid, this.props.trackedDates.month, YEARS[value]); 
         }
         
         if(key === "month") {
-            console.log("change month", value)            
             this.props.changeTransactionDate(this.props.user.uid, value, this.props.trackedDates.year); 
         }
     }
