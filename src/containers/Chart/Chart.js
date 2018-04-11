@@ -106,10 +106,10 @@ class Chart extends Component {
 
         let totalIncome = null, totalExpenses = null, netTotal = null; 
 
-        if(this.props.transactionDetails) {
-            totalIncome = this.props.transactionDetails.incomes; 
-            totalExpenses = this.props.transactionDetails.expenses; 
-            netTotal = this.props.transactionDetails.incomes - this.props.transactionDetails.expenses; 
+        if(this.props.transactionDetails.incomes) {
+            totalIncome = (this.props.transactionDetails.incomes).toFixed(2); 
+            totalExpenses = (this.props.transactionDetails.expenses).toFixed(2); 
+            netTotal = (this.props.transactionDetails.incomes - this.props.transactionDetails.expenses).toFixed(2); 
         }
 
         return (
@@ -142,16 +142,16 @@ class Chart extends Component {
                                             <Table>
                                                 <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                                                     <TableRow>
-                                                        <TableHeaderColumn>Incomes</TableHeaderColumn>
-                                                        <TableHeaderColumn>Expenses</TableHeaderColumn>
-                                                        <TableHeaderColumn>Net</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Incomes</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Expenses</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Net</TableHeaderColumn>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody displayRowCheckbox={false}>
                                                     <TableRow>
-                                                        <TableRowColumn style={{color: green500}}>{totalIncome}</TableRowColumn>
-                                                        <TableRowColumn style={{color: red500}}>{totalExpenses}</TableRowColumn>
-                                                        <TableRowColumn style={netTotal >= 0 ? {color: green500} : {color: red500}}>{netTotal}</TableRowColumn>
+                                                        <TableRowColumn style={{color: green500, paddingLeft: 0}}>{totalIncome}</TableRowColumn>
+                                                        <TableRowColumn style={{color: red500, paddingLeft: 0}}>{totalExpenses}</TableRowColumn>
+                                                        <TableRowColumn style={+netTotal >= 0 ? {color: green500, paddingLeft: 0} : {color: red500,paddingLeft: 0}}>{netTotal}</TableRowColumn>
                                                 </TableRow>
                                                 </TableBody>
                                             </Table>
