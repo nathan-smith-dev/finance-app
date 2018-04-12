@@ -31,12 +31,13 @@ class App extends Component {
             <Switch>
               {this.props.userProfile
                 ? <Route path="/expenses-income" exact component={Transactions} />
-                : <Redirect from="/expenses-income" to="/" />
+                : <Redirect from="/expenses-income" to="/must-login" />
               }
               {this.props.userProfile
                 ? <Route path="/finance-trends" exact component={Chart} />
-                : <Redirect from="/finance-trends" to="/" />
+                : <Redirect from="/finance-trends" to="/must-login" />
               }
+              <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />
               <Route path="/" exact component={Home} />
               <Redirect to="/" />
             </Switch>
@@ -67,7 +68,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeNotification: () => dispatch(notificationActions.showNotification(false, ""))
+    closeNotification: () => dispatch(notificationActions.showNotification(false, "")),
+    showNotifcation: (message) => dispatch(notificationActions.showNotification(true, message)),
   }
 }
 
