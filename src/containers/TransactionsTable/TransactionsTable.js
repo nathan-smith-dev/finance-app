@@ -141,7 +141,7 @@ class TransactionsTable extends Component {
                         <SelectField
                             disabled={!this.state.filterBy}
                             style={{width: '100%'}}
-                            floatingLabelText=" "
+                            floatingLabelText="Subfilter"
                             value={this.state.subFilter}
                             onChange={(event, key) => this.handleFilter(key, true)}
                             >
