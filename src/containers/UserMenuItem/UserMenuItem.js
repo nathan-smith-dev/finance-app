@@ -93,7 +93,7 @@ class UserMenuItem extends Component {
                         open={this.state.showWarning}
                         onRequestClose={this.toggleWarning}
                     >
-                    Logout?
+                    <h4>Logout?</h4>
                     </Dialog>
                 </Fragment>
             )

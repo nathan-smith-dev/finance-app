@@ -11,10 +11,17 @@ import Column from '../../hoc/Grid/Column/Column';
 import Container from '../../hoc/Grid/Container/Container'; 
 import Paper from '../../hoc/Paper/Paper'; 
 import {List, ListItem} from 'material-ui/List';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class UserCategories extends Component {
-    deleteCategory = (category) => {
-        const index = this.props.categories.indexOf(category); 
+    state = {
+        showWarning: false, 
+        category: null
+    }
+
+    deleteCategory = () => {
+        const index = this.props.categories.indexOf(this.state.category); 
         withAuth(authToken => {
             const url = `${this.props.userProfile.uid}/transactions/categories/${this.props.catIds[index]}.json?auth=${authToken}`
             axios.delete(url)
@@ -29,7 +36,34 @@ class UserCategories extends Component {
         })
     }
 
+    toggleWarning = (category = null) => {
+        if(category) {
+            this.setState({
+                showWarning: !this.state.showWarning, 
+                category: category
+            }); 
+        }
+        else {
+            this.setState({
+                showWarning: !this.state.showWarning
+            }); 
+        }
+    }
+
     render() {
+        const actions = [
+            <FlatButton
+              label="Cancel"
+              primary={true}
+              onClick={this.toggleWarning}
+            />,
+            <FlatButton
+              label="Delete"
+              primary={true}
+              onClick={this.deleteCategory}
+            />,
+        ];
+
         return (
             <Container>
                 <Row>
@@ -43,11 +77,19 @@ class UserCategories extends Component {
                                             return <ListItem 
                                                 key={index} 
                                                 primaryText={cat} 
-                                                onClick={() => this.deleteCategory(cat)} />
+                                                onClick={() => this.toggleWarning(cat)} />
                                         })
                                         : null
                                 }
                             </List>
+                            <Dialog
+                                actions={actions}
+                                modal={false}
+                                open={this.state.showWarning}
+                                onRequestClose={this.toggleWarning}
+                            >
+                            <h4>Delete {this.state.category ? this.state.category : "category"}?</h4>
+                            </Dialog>
                         </Paper>
                     </Column>
                 </Row>
