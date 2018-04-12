@@ -10,11 +10,12 @@ export const getTransactionsSuccess = (transactions) => {
     }
 }
 
-export const getTransactionCategoriesSuccess = (categories) => {
+export const getTransactionCategoriesSuccess = (categories, catIds) => {
     // console.log(categories); 
     return {
         type: actionTypes.GET_USER_CATEGORIES, 
-        transactionCategories: categories
+        transactionCategories: categories, 
+        transactionIds: catIds
     }
 }
 
@@ -96,10 +97,13 @@ export const getTransactionCategories = (userId) => {
             const url = `${userId}/transactions/categories.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
+                    const catIds = []; 
                     const categories = Object.keys(response.data).map(key => {
+                        catIds.push(key); 
+                        console.log(key); 
                         return Object.values(response.data[key])[0]; 
                     }); 
-                    dispatch(getTransactionCategoriesSuccess(categories)); 
+                    dispatch(getTransactionCategoriesSuccess(categories, catIds)); 
                 })
                 .catch(err => {
                     console.log(err); 

@@ -6,6 +6,7 @@ const initialState = {
     userTransactions: {}, 
     transactionDetails: {}, 
     transactionCategories: [], 
+    transactionIds: [],
     trackedDates: {
         year: today.getFullYear(), 
         month: today.getMonth()
@@ -33,7 +34,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 trackedDates: {...state.trackedDates},                
-                transactionCategories: action.transactionCategories
+                transactionCategories: action.transactionCategories, 
+                transactionIds: action.transactionIds
             }; 
         case actionTypes.GET_USER_TRANSACTIONS_FAILED: 
             // console.log('failed'); 
