@@ -14,12 +14,25 @@ import {
 import CircularProgress from 'material-ui/CircularProgress';
 import { green500, red500, red300 } from 'material-ui/styles/colors'; 
 import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog'; 
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Row from '../../hoc/Grid/Row/Row';
+import Column from '../../hoc/Grid/Column/Column';
+
+
+Array.prototype.unique = function() {
+    return this.filter(function (value, index, self) { 
+      return self.indexOf(value) === index;
+    });
+}
 
 class TransactionsTable extends Component {
     state = {
         openExpense: false, 
         selectedExpense: {}, 
-        userUid: null
+        userUid: null, 
+        filterBy: 0, 
+        subFilter: 0, 
     }; 
 
     selectExpense = (expense) => {
@@ -42,6 +55,17 @@ class TransactionsTable extends Component {
             openExpense: !this.state.openExpense
         }); 
     }; 
+
+    handleFilter = (value, isSub = false) => {
+        !isSub
+            ? this.setState({
+                filterBy: value,
+                subFilter: 0
+            })
+            : this.setState({
+                subFilter: value
+            })
+    }
     
     render() {
         let transactions = (
@@ -52,7 +76,17 @@ class TransactionsTable extends Component {
         let  transArray = []; 
         if(this.props.transactions && Object.keys(this.props.transactions).length > 0) {
             transArray = [...this.props.transactions]; 
+            var subFilters = [
+                [this.props.transactionCategories], 
+                [(transArray.map(trans => trans.date.day).unique())]
+            ]; 
             transArray.sort((a, b) => a.date.day - b.date.day); 
+            if(this.state.filterBy === 1) {
+                transArray = transArray.filter(trans => trans.category === subFilters[this.state.filterBy-1][0][this.state.subFilter])
+            }
+            if(this.state.filterBy === 2) {
+                transArray = transArray.filter(trans => trans.date.day === subFilters[this.state.filterBy-1][0][this.state.subFilter])
+            }
             transactions = transArray.map((trans) => {
                 const color = trans.type === "Income" ? green500 : red500; 
                 return (
@@ -89,6 +123,39 @@ class TransactionsTable extends Component {
                         {transactions}
                     </TableBody>
                 </Table>
+
+                <Row>
+                    <Column width="xs-50">
+                        <SelectField
+                            style={{width: '100%'}}
+                            floatingLabelText="Filter"
+                            value={this.state.filterBy}
+                            onChange={(event, key) => this.handleFilter(key)}
+                            >
+                            <MenuItem value={0} primaryText="None" />
+                            <MenuItem value={1} primaryText="Category" />
+                            <MenuItem value={2} primaryText="Date" />
+                        </SelectField>
+                    </Column>
+                    <Column style={{overflow: 'hidden'}} width="xs-50">
+                        <SelectField
+                            disabled={!this.state.filterBy}
+                            style={{width: '100%'}}
+                            floatingLabelText=" "
+                            value={this.state.subFilter}
+                            onChange={(event, key) => this.handleFilter(key, true)}
+                            >
+                            {
+                                this.state.filterBy > 0
+                                    ? subFilters[this.state.filterBy-1][0].map((filter,index) => {
+                                        return <MenuItem key={index} value={index} primaryText={filter} />
+                                    })
+                                    : null
+                            }
+                        </SelectField>
+                    </Column>
+                </Row>
+
                 <ViewTransactionDialog 
                     show={this.state.openExpense} 
                     notification={(text) => this.props.showNotification(text)}
@@ -103,7 +170,8 @@ class TransactionsTable extends Component {
 const mapStateToProps = state => {
     return {
         transactions: state.transactions.userTransactions, 
-        userProfile: state.auth.userProfile
+        userProfile: state.auth.userProfile,
+        transactionCategories: state.transactions.transactionCategories
     }; 
 }; 
 

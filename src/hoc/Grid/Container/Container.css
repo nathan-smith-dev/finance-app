@@ -1,10 +1,12 @@
 .Container {
     margin: 0 .5rem; 
     transition: margin 0.2s; 
+    box-sizing: border-box; 
 }
 
 .Paper {
     padding: 1rem; 
+    box-sizing: border-box; 
 }
 
 @media (min-width: 576px) { 
