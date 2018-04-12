@@ -29,6 +29,7 @@ class UserCategories extends Component {
                 .then(response => {
                     // console.log(response); 
                     this.props.getTransactionCategories(this.props.userProfile.uid); 
+                    this.toggleWarning(); 
                 })
                 .catch(error => {
                     console.log(error); 
