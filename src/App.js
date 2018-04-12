@@ -36,6 +36,10 @@ class App extends Component {
                 ? <Route path="/finance-trends" exact component={Chart} />
                 : <Redirect from="/finance-trends" to="/must-login" />
               }
+              {this.props.userProfile
+                ? <Route path="/categories" exact component={Chart} />
+                : <Redirect from="/categories" to="/must-login" />
+              }
               <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />
               <Route path="/" exact component={Home} />
               <Redirect to="/" />

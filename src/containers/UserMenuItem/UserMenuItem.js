@@ -1,13 +1,15 @@
-import React, { Component } from 'react'; 
+import React, { Component, Fragment } from 'react'; 
 import MenuItem from 'material-ui/MenuItem';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle'; 
 import LockIcon from 'material-ui/svg-icons/action/lock'; 
+import WrenchIcon from 'material-ui/svg-icons/action/build'; 
 import CircularProgress from 'material-ui/CircularProgress';
 
 
 import { connect } from 'react-redux'; 
 import { auth } from '../../firebase'; 
 import * as authActions from '../../store/actions/auth'; 
+import { withRouter } from 'react-router-dom';
 
 
 class UserMenuItem extends Component {
@@ -45,11 +47,18 @@ class UserMenuItem extends Component {
         return (
             this.props.profile 
             ? (
-                <MenuItem 
-                    leftIcon={<AccountIcon />}
-                    onClick={this.logout}
-                    >{this.props.profile.uid !== "temp_user" ? this.props.profile.displayName : <CircularProgress />}
-                </MenuItem>
+                <Fragment>
+                    <MenuItem 
+                        leftIcon={<AccountIcon />}
+                        onClick={this.logout}
+                        >{this.props.profile.uid !== "temp_user" ? this.props.profile.displayName : <CircularProgress />}
+                    </MenuItem>
+                    <MenuItem 
+                        leftIcon={<WrenchIcon />}
+                        onClick={() => this.props.history.push('/categories')}
+                        >User Categories
+                    </MenuItem>
+                </Fragment>
             )
             : (
                 <MenuItem 
@@ -74,4 +83,4 @@ const mapDispatchToPRops = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToPRops)(UserMenuItem); 
+export default connect(mapStateToProps, mapDispatchToPRops)(withRouter(UserMenuItem)); 

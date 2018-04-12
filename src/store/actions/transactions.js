@@ -100,7 +100,6 @@ export const getTransactionCategories = (userId) => {
                     const catIds = []; 
                     const categories = Object.keys(response.data).map(key => {
                         catIds.push(key); 
-                        console.log(key); 
                         return Object.values(response.data[key])[0]; 
                     }); 
                     dispatch(getTransactionCategoriesSuccess(categories, catIds)); 
