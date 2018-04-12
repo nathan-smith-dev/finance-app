@@ -4,7 +4,8 @@ import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 import LockIcon from 'material-ui/svg-icons/action/lock'; 
 import WrenchIcon from 'material-ui/svg-icons/action/build'; 
 import CircularProgress from 'material-ui/CircularProgress';
-
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 import { connect } from 'react-redux'; 
 import { auth } from '../../firebase'; 
@@ -28,6 +29,16 @@ class UserMenuItem extends Component {
         }
     }
 
+    state = {
+        showWarning: false
+    }; 
+
+    toggleWarning = () => {
+        this.setState({
+            showWarning: !this.state.showWarning
+        }); 
+    }
+
     login = () => {
         this.temporaryUser(); 
         auth.signInWithRedirect(); 
@@ -49,13 +60,26 @@ class UserMenuItem extends Component {
     }
 
     render() {
+        const actions = [
+            <FlatButton
+              label="Cancel"
+              primary={true}
+              onClick={this.toggleWarning}
+            />,
+            <FlatButton
+              label="Logout"
+              primary={true}
+              onClick={this.logout}
+            />,
+        ];
+
         return (
             this.props.profile 
             ? (
                 <Fragment>
                     <MenuItem 
                         leftIcon={<AccountIcon />}
-                        onClick={this.logout}
+                        onClick={this.toggleWarning}
                         >{this.props.profile.uid !== "temp_user" ? this.props.profile.displayName : <CircularProgress />}
                     </MenuItem>
                     <MenuItem 
@@ -63,6 +87,14 @@ class UserMenuItem extends Component {
                         onClick={this.openCategoriesTab}
                         >User Categories
                     </MenuItem>
+                    <Dialog
+                        actions={actions}
+                        modal={false}
+                        open={this.state.showWarning}
+                        onRequestClose={this.toggleWarning}
+                    >
+                    Logout?
+                    </Dialog>
                 </Fragment>
             )
             : (
