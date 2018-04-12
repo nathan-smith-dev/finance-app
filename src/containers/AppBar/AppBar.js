@@ -39,7 +39,7 @@ class NavBar extends Component {
                 <AppBar 
                     title={ 
                         <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
-                            <img src={bunnyImg} alt="Bunny logo" style={{height: '80%', marginRight: '0.25rem'}} />
+                            {/* <img src={bunnyImg} alt="Bunny logo" style={{height: '80%', marginRight: '0.25rem'}} /> */}
                             {this.props.title}
                         </div>} 
                     onLeftIconButtonClick={this.toggleSideDrawer}

@@ -11,12 +11,11 @@ import Transactions from './containers/Transactions/Transactions';
 import Chart from './containers/Chart/Chart'; 
 import Home from './components/Home/Home'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { lightGreen300 } from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: lightGreen300,
+    primary1Color: "#254e7b",
   }
 }); 
 
@@ -27,7 +26,7 @@ class App extends Component {
       <BrowserRouter>
         <MuiThemeProvider muiTheme={muiTheme} >
           <div className={classes.App}>
-            <AppBar title="Budget Bunny" />
+            <AppBar title="Budget Space" />
             <Switch>
               {this.props.userProfile
                 ? <Route path="/expenses-income" exact component={Transactions} />
