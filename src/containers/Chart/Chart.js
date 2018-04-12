@@ -142,8 +142,8 @@ class Chart extends Component {
                                                 <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                                                     <TableRow>
                                                         <TableHeaderColumn style={{paddingLeft: 0}}>Category</TableHeaderColumn>
-                                                        <TableHeaderColumn style={{paddingLeft: 0}}>Total</TableHeaderColumn>
-                                                        <TableHeaderColumn style={{paddingLeft: 0}}>%</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 0, width: '30%', textAlign: 'right'}}>Total</TableHeaderColumn>
+                                                        <TableHeaderColumn style={{paddingLeft: 24, paddingRight: 0, width: '20%'}}>%</TableHeaderColumn>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody displayRowCheckbox={false}>
@@ -153,8 +153,8 @@ class Chart extends Component {
                                                                     return (
                                                                         <TableRow key={key}>
                                                                             <TableRowColumn style={{color: colors[index], paddingLeft: 0}}>{key}</TableRowColumn>
-                                                                            <TableRowColumn style={{paddingLeft: 0}}>{(this.props.transactionDetails.categorizedExpenses[key]).toFixed(2)}</TableRowColumn>
-                                                                            <TableRowColumn style={{paddingLeft: 0}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/totalExpenses)*100)}%</TableRowColumn>       
+                                                                            <TableRowColumn style={{paddingLeft: 0, width: '30%', textAlign: 'right'}}>{(this.props.transactionDetails.categorizedExpenses[key]).toFixed(2)}</TableRowColumn>
+                                                                            <TableRowColumn style={{paddingLeft: 24, paddingRight: 0, width: '21%', textAlign: 'right'}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/totalExpenses)*100)}%</TableRowColumn>       
                                                                         </TableRow>
                                                                     ); 
                                                                 })
