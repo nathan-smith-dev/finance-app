@@ -138,9 +138,9 @@ class NewTransactionDialog extends Component {
     updateTransaction = () => {
         const postObj = this.convertStateToDbValues(); 
         withAuth((authToken) => {
+            this.props.showNotification("Updated transaction");                     
             axios.patch(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.props.transId}.json?auth=${authToken}`, postObj)
                 .then(response => {
-                    this.props.showNotification("Updated transaction");                     
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
                     this.props.toggler(); 
                     this.props.toggleView(); 
@@ -156,6 +156,7 @@ class NewTransactionDialog extends Component {
         const category = this.state.newCategory;
         const postObj = {}; 
         postObj[category.toLowerCase()] = category; 
+        this.props.showNotification("Added category."); 
         withAuth((authToken) => {
             axios.post(`${this.props.userProfile.uid}/transactions/categories.json?auth=${authToken}`, postObj)
                 .then(response => {
@@ -172,6 +173,7 @@ class NewTransactionDialog extends Component {
                 }) 
                 .catch(err => {
                     console.log(err); 
+                    this.props.showNotification("Failed to add category."); 
                 })
         })
     }

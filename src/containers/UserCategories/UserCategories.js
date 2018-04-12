@@ -23,15 +23,16 @@ class UserCategories extends Component {
     deleteCategory = () => {
         const index = this.props.categories.indexOf(this.state.category); 
         withAuth(authToken => {
+            this.props.notify("Category deleted."); 
             const url = `${this.props.userProfile.uid}/transactions/categories/${this.props.catIds[index]}.json?auth=${authToken}`
             axios.delete(url)
                 .then(response => {
                     // console.log(response); 
                     this.props.getTransactionCategories(this.props.userProfile.uid); 
-                    this.props.notify("Category deleted."); 
                 })
                 .catch(error => {
                     console.log(error); 
+                    this.props.notify("Failed to delete category. "); 
                 }); 
         })
     }
