@@ -103,7 +103,7 @@ class Chart extends Component {
 
         let totalIncome = null, totalExpenses = null, netTotal = null; 
 
-        if(this.props.transactionDetails.incomes) {
+        if(this.props.transactionDetails.incomes || this.props.transactionDetails.expenses) {
             totalIncome = (this.props.transactionDetails.incomes).toFixed(2); 
             totalExpenses = (this.props.transactionDetails.expenses).toFixed(2); 
             netTotal = (this.props.transactionDetails.incomes - this.props.transactionDetails.expenses).toFixed(2); 
