@@ -30,6 +30,11 @@ const dialog = (props) => {
             onClick={deletePost}
         />, 
         <FlatButton
+            label="Edit"
+            primary={false}
+            onClick={props.editToggle}
+        />, 
+        <FlatButton
             label="Cancel"
             primary={true}
             onClick={props.close}

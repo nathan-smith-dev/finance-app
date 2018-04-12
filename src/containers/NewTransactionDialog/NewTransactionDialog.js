@@ -25,14 +25,29 @@ class NewTransactionDialog extends Component {
 
     state = {
         newExpense: {
-            date: new Date(), 
-            amount: "", 
-            type: null, 
-            category: null, 
-            desc: ""
+            date: this.props.date ? this.props.date : new Date(), 
+            amount: this.props.amount ? this.props.amount : "", 
+            type: this.props.type ? this.props.type : null, 
+            category: this.props.category ? this.props.category : null, 
+            desc: this.props.desc ? this.props.desc : "", 
+            transId: this.props.transId ? this.props.transId : null
         }, 
         showNewCategory: false, 
         newCategory: "", 
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            ...prevState, 
+            newExpense: {
+                date: nextProps.date ? new Date(nextProps.date.year, nextProps.date.month, nextProps.date.day) : new Date(), 
+                amount: nextProps.amount ? nextProps.amount : "", 
+                type: nextProps.type ? TYPES.indexOf(nextProps.type) : null, 
+                category: nextProps.category ? nextProps.transactionCategories.indexOf(nextProps.category) : null, 
+                desc: nextProps.desc ? nextProps.desc : "", 
+                transId: nextProps.transId ? nextProps.transId : null
+            }
+        }
     }
 
     handleChange = (key, value) => {
@@ -119,6 +134,23 @@ class NewTransactionDialog extends Component {
                 })
         })
     }
+    
+    updateTransaction = () => {
+        const postObj = this.convertStateToDbValues(); 
+        withAuth((authToken) => {
+            axios.patch(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.props.transId}.json?auth=${authToken}`, postObj)
+                .then(response => {
+                    this.props.showNotification("Updated transaction");                     
+                    this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+                    this.props.toggler(); 
+                    this.props.toggleView(); 
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                    this.props.showNotification("Error adding transaction");
+                })
+        })
+    }
 
     sendNewCategory = () => {
         const category = this.state.newCategory;
@@ -157,7 +189,7 @@ class NewTransactionDialog extends Component {
                 style={{marginRight: '1rem'}} 
                 label="Submit" 
                 primary={true} 
-                onClick={this.sendNewTransaction} />, 
+                onClick={this.props.date ? this.updateTransaction : this.sendNewTransaction} />, 
             <RaisedButton 
                 label="Cancel" 
                 onClick={this.props.toggler} />
@@ -176,7 +208,7 @@ class NewTransactionDialog extends Component {
         return (
                 <Dialog
                     autoScrollBodyContent={true}
-                    title="New Income or Expense"
+                    title={this.props.date ? "Edit Income or Expense" : "New Income or Expense"}
                     titleClassName={classes.Title}
                     modal={false}
                     open={this.props.show}

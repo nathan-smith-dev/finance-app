@@ -18,6 +18,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column';
+import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
 
 
 Array.prototype.unique = function() {
@@ -33,6 +34,7 @@ class TransactionsTable extends Component {
         userUid: null, 
         filterBy: 0, 
         subFilter: 0, 
+        openEdit: false
     }; 
 
     selectExpense = (expense) => {
@@ -53,6 +55,12 @@ class TransactionsTable extends Component {
     toggleSelectExpense = () => {
         this.setState({
             openExpense: !this.state.openExpense
+        }); 
+    }; 
+
+    toggleEdit = () => {
+        this.setState({
+            openEdit: !this.state.openEdit
         }); 
     }; 
 
@@ -161,7 +169,18 @@ class TransactionsTable extends Component {
                     notification={(text) => this.props.showNotification(text)}
                     expense={this.state.selectedExpense}
                     close={this.toggleSelectExpense}
-                    userUid={this.state.userUid} />
+                    userUid={this.state.userUid} 
+                    editToggle={this.toggleEdit} />
+                <NewTransactionDialog 
+                    toggler={this.toggleEdit}
+                    toggleView={this.toggleSelectExpense}
+                    show={this.state.openEdit}
+                    date={this.state.selectedExpense.date}
+                    amount={this.state.selectedExpense.amount}
+                    type={this.state.selectedExpense.type}
+                    category={this.state.selectedExpense.category}
+                    desc={this.state.selectedExpense.desc}
+                    transId={this.state.selectedExpense.id} />
             </Fragment>
         ); 
     }
