@@ -76,12 +76,8 @@ class Chart extends Component {
             datasets: [{
                 data: [...barData, 0], // needs an added 0 because of chartjs bug
                 backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255,99,132,1)',
+                    green300,
+                    red300,
                 ],
                 borderWidth: 1
             }], 
