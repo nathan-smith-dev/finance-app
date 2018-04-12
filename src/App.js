@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as notificationActions from './store/actions/notifications'; 
 
 import AppBar from './containers/AppBar/AppBar'; 
+import UserCategories from './containers/UserCategories/UserCategories'; 
 import Transactions from './containers/Transactions/Transactions'; 
 import Chart from './containers/Chart/Chart'; 
 import Home from './components/Home/Home'; 
@@ -37,7 +38,7 @@ class App extends Component {
                 : <Redirect from="/finance-trends" to="/must-login" />
               }
               {this.props.userProfile
-                ? <Route path="/categories" exact component={Chart} />
+                ? <Route path="/categories" exact component={UserCategories} />
                 : <Redirect from="/categories" to="/must-login" />
               }
               <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />

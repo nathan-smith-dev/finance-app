@@ -43,6 +43,11 @@ class UserMenuItem extends Component {
         localStorage.setItem('temp_user', "Testing"); 
     }
 
+    openCategoriesTab = () => {
+        this.props.history.push('/categories'); 
+        this.props.onToggle(); 
+    }
+
     render() {
         return (
             this.props.profile 
@@ -55,7 +60,7 @@ class UserMenuItem extends Component {
                     </MenuItem>
                     <MenuItem 
                         leftIcon={<WrenchIcon />}
-                        onClick={() => this.props.history.push('/categories')}
+                        onClick={this.openCategoriesTab}
                         >User Categories
                     </MenuItem>
                 </Fragment>
