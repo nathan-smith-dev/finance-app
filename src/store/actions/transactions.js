@@ -76,7 +76,6 @@ export const getTransactions = (userId, month, year) => {
                     const sortedTransactions = Object.keys(response.data).map(transKey => {
                         return {...response.data[transKey], id: transKey};
                     }); 
-                    sortedTransactions.sort((a, b) => b.amount - a.amount); 
                     dispatch(getTransactionsSuccess(sortedTransactions)); 
                     dispatch(flattenTransactions(sortedTransactions));
                     dispatch(getTransactionsLoad(false)); 

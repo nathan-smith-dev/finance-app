@@ -33,6 +33,32 @@ const colors = [
 ]
 
 class Chart extends Component {
+    addAndFilterTableRows = (totalExpenses) => {
+        if(this.props.transactionDetails.categorizedExpenses) {
+            const categories = Object.keys(this.props.transactionDetails.categorizedExpenses).map((key, index) => {
+                return {
+                    category: key, 
+                    colorIndex: index, 
+                    total: (this.props.transactionDetails.categorizedExpenses[key]).toFixed(2), 
+                    percentage: Math.floor((this.props.transactionDetails.categorizedExpenses[key]/totalExpenses)*100)
+                }
+            })
+            categories.sort((a, b) => b.percentage - a.percentage); 
+            console.log(categories); 
+            const jsx = categories.map(cat => {
+                return (
+                    <TableRow key={cat.category}>
+                        <TableRowColumn style={{color: colors[cat.colorIndex], paddingLeft: 0}}>{cat.category}</TableRowColumn>
+                        <TableRowColumn style={{paddingLeft: 0, width: '30%', textAlign: 'right'}}>{cat.total}</TableRowColumn>
+                        <TableRowColumn style={{paddingLeft: 24, paddingRight: 0, width: '21%', textAlign: 'right'}}>{cat.percentage}%</TableRowColumn>       
+                    </TableRow>
+                ); 
+            })
+            return jsx; 
+        }
+        return null; 
+    }
+
     render() {
         let pieLabels = []; 
         let pieData = []; 
@@ -143,19 +169,7 @@ class Chart extends Component {
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody displayRowCheckbox={false}>
-                                                        {
-                                                            this.props.transactionDetails.categorizedExpenses && (
-                                                                Object.keys(this.props.transactionDetails.categorizedExpenses).map((key, index) => {
-                                                                    return (
-                                                                        <TableRow key={key}>
-                                                                            <TableRowColumn style={{color: colors[index], paddingLeft: 0}}>{key}</TableRowColumn>
-                                                                            <TableRowColumn style={{paddingLeft: 0, width: '30%', textAlign: 'right'}}>{(this.props.transactionDetails.categorizedExpenses[key]).toFixed(2)}</TableRowColumn>
-                                                                            <TableRowColumn style={{paddingLeft: 24, paddingRight: 0, width: '21%', textAlign: 'right'}}>{Math.floor((this.props.transactionDetails.categorizedExpenses[key]/totalExpenses)*100)}%</TableRowColumn>       
-                                                                        </TableRow>
-                                                                    ); 
-                                                                })
-                                                            )
-                                                        }
+                                                    {this.addAndFilterTableRows(totalExpenses)}
                                                 </TableBody>
                                             </Table>
                                         </div>
