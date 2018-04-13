@@ -17,9 +17,12 @@ class Home extends Component {
                 <Row>
                     <Column style={{margin: '0 auto'}} width="xl-50 md-75" >
                         <Paper>
-                            <h3>Welcome to the alpha testing of the Budget <span style={{textDecoration: 'line-through'}}>Bunny</span> Space App. </h3>
-                            <h5>The <span style={{textDecoration: 'line-through'}}>shitty</span> name was made by <span style={{textDecoration: 'line-through'}}>Brett Smith</span> guy next to me at work&trade;</h5>
-                            <p>While testing write down or text me the issues you come across. Thanks for testing!</p>
+                            <h3 style={{marginBottom: 0}}>Welcome to Budget Space! </h3>
+                            <p style={{fontSize: 14, marginTop: 8}}>Budget Space is a simple web application meant to make tracking your expenses easy and fun. </p>
+                            <h4 style={{marginBottom: 0}}>Tracking Your Spending Easily</h4>
+                            <p style={{fontSize: 14, marginTop: 8}}>Simply sign in with your Google account and enter your expenses and incomes for the selected month and year.</p>
+                            <h4 style={{marginBottom: 0}}>Analyze Your Spending</h4>
+                            <p style={{fontSize: 14, marginTop: 8}}>After entering transactions, take a look at the <em>Expenses / Income</em> or <em>Trends</em> page and see where your money has gone. </p>
                         </Paper>
                     </Column>
                 </Row>
