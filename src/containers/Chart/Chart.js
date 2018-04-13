@@ -44,7 +44,6 @@ class Chart extends Component {
                 }
             })
             categories.sort((a, b) => b.percentage - a.percentage); 
-            console.log(categories); 
             const jsx = categories.map(cat => {
                 return (
                     <TableRow key={cat.category}>
