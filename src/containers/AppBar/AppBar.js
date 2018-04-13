@@ -11,8 +11,8 @@ import PieIcon from 'material-ui/svg-icons/editor/pie-chart';
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
 import { pink500 } from 'material-ui/styles/colors'; 
-import bunnyImg from '../../images/Bunny.svg'; 
-import Subheader from 'material-ui/Subheader';
+import budgetSpaceLogo from '../../images/BudgetSpaceLogo.svg'; 
+import Subheader from 'material-ui/Subheader'; 
 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
@@ -39,7 +39,7 @@ class NavBar extends Component {
                 <AppBar 
                     title={ 
                         <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
-                            {/* <img src={bunnyImg} alt="Bunny logo" style={{height: '80%', marginRight: '0.25rem'}} /> */}
+                            <img src={budgetSpaceLogo} alt="Budget Space logo" style={{height: 36, marginRight: '0.25rem'}} />
                             {this.props.title}
                         </div>} 
                     onLeftIconButtonClick={this.toggleSideDrawer}
