@@ -3,7 +3,6 @@ import React from 'react';
 import { Pie, Bar } from 'react-chartjs-2'; 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Container from '../../hoc/Grid/Container/Container'; 
-import Paper from '../../hoc/Paper/Paper'; 
 import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import { red300, pink300, 
@@ -91,11 +90,9 @@ export const exampleCharts = (props) => {
                     <Container>
                         <Row>   
                             <Column style={{margin: '0 auto'}} width="xs-50">
-                                <Paper>
-                                    <div style={{height: 300, width: '100%'}}>                                        
-                                        <Pie data={pieDataProps} options={pieOptionsProps} />
-                                    </div>
-                                </Paper>
+                                <div style={{height: 300, width: '100%'}}>                                        
+                                    <Pie data={pieDataProps} options={pieOptionsProps} />
+                                </div>
                             </Column>
                         </Row>
                     </Container>
@@ -104,11 +101,9 @@ export const exampleCharts = (props) => {
                     <Container>
                         <Row>   
                             <Column style={{margin: '0 auto'}} width="xs-50">
-                                <Paper>
-                                    <div style={{height: 300, width: '100%'}}>
-                                        <Bar data={barDataProps} options={barOptionProps} />
-                                    </div>
-                                </Paper>
+                                <div style={{height: 300, width: '100%'}}>
+                                    <Bar data={barDataProps} options={barOptionProps} />
+                                </div>
                             </Column>
                         </Row>
                     </Container>
