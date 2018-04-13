@@ -27,9 +27,9 @@ import { red300, pink300,
     green500, red500 } from 'material-ui/styles/colors'; 
 
 const colors = [
-    red300, purple300, blue300, teal300, lime300, amber300, deepOrange300, 
-    deepPurple300, lightBlue300, green300, yellow300, orange300, 
-    indigo300, cyan300, lightGreen300, pink300
+    red300, purple300, yellow300, teal300, lime300, orange300, pink300, 
+    indigo300, cyan300, blue300, lightGreen300, deepOrange300, 
+    deepPurple300, lightBlue300, green300, amber300
 ]
 
 class Chart extends Component {
