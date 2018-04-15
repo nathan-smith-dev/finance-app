@@ -89,6 +89,7 @@ class TransactionsTable extends Component {
                 [(transArray.map(trans => trans.date.day).unique())]
             ]; 
             transArray.sort((a, b) => a.date.day - b.date.day); 
+            transArray.reverse(); 
             if(this.state.filterBy === 1) {
                 transArray = transArray.filter(trans => trans.category === subFilters[this.state.filterBy-1][0][this.state.subFilter])
             }
