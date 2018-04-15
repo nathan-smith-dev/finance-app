@@ -66,7 +66,7 @@ class Chart extends Component {
         if(this.props.transactionDetails.categorizedExpenses) {
             pieLabels = Object.keys(this.props.transactionDetails.categorizedExpenses); 
             pieData = Object.values(this.props.transactionDetails.categorizedExpenses).map(val => Math.round(val * 100)/100); 
-            barData = [this.props.transactionDetails.incomes, this.props.transactionDetails.expenses]; 
+            barData = [Math.round(this.props.transactionDetails.incomes*100)/100, Math.round(this.props.transactionDetails.expenses*100)/100]; 
         }
 
         const pieDataProps = {
