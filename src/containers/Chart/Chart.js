@@ -47,7 +47,7 @@ class Chart extends Component {
             const jsx = categories.map(cat => {
                 return (
                     <TableRow key={cat.category}>
-                        <TableRowColumn style={{color: colors[cat.colorIndex], paddingLeft: 0}}>{cat.category}</TableRowColumn>
+                        <TableRowColumn style={{borderLeft: '3px solid', borderColor: colors[cat.colorIndex], paddingLeft: 2}}>{cat.category}</TableRowColumn>
                         <TableRowColumn style={{paddingLeft: 0, width: '30%', textAlign: 'right'}}>{cat.total}</TableRowColumn>
                         <TableRowColumn style={{paddingLeft: 24, paddingRight: 0, width: '21%', textAlign: 'right'}}>{cat.percentage}%</TableRowColumn>       
                     </TableRow>
