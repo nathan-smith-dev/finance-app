@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_ROOMATE_REQUESTS: 
             return {
                 ...state,
-                roommateRequests: action.roommateRequests,
+                requests: action.roommateRequests,
             }; 
         default: 
             return {

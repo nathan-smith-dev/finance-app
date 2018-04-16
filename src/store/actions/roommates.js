@@ -5,12 +5,12 @@ import { withAuth } from '../../firebase/auth';
 export const getRoommateRequests = (uid) => {
     return dispatch => {
         withAuth(authToken => {
-            const url = `${uid}/roommmates/requests.json?auth=${authToken}`; 
+            const url = `${uid}/roommates/requests.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    console.log(response.data); 
+                    console.log(Object.values(response.data)); 
                     if(response.data) {
-                        dispatch(setRoomateRequests(response.data)); 
+                        dispatch(setRoomateRequests(Object.values(response.data))); 
                     }
                 })
                 .catch(error => console.log(error)); 
@@ -28,7 +28,7 @@ export const setRoomateRequests = (requests) => {
 export const getRoommates = (uid) => {
     return dispatch => {
         withAuth(authToken => {
-            const url = `${uid}/roommmates/mates.json?auth=${authToken}`; 
+            const url = `${uid}/roommates/mates.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     console.log(response.data); 
