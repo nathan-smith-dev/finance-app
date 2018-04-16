@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import * as transactionActions from './transactions'; 
+import * as roommateActions from './roommates'; 
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
 
@@ -17,6 +18,8 @@ export const getProfile = (profile) => {
             dispatch(transactionActions.getTransactionCategories(profile.uid));     
             dispatch(addProfileToDb(profile)); 
             dispatch(getAllUsers()); 
+            dispatch(roommateActions.getRoommateRequests(profile.uid)); 
+            dispatch(roommateActions.getRoommates(profile.uid)); 
         }
         
         dispatch(getProfileSuccess(profile)); 

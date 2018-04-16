@@ -10,6 +10,7 @@ import thunk from 'redux-thunk';
 import authReducer from './store/reducers/auth'; 
 import transactionsReducer from './store/reducers/transactions'; 
 import notificationsReducer from './store/reducers/notifcations'; 
+import roomatesReducer from './store/reducers/roommates'; 
 
 import axios from 'axios'; 
 
@@ -30,7 +31,8 @@ const enhancer = composeEnhancers(
 const rootReducers = combineReducers({
   auth: authReducer, 
   transactions: transactionsReducer, 
-  notifications: notificationsReducer
+  notifications: notificationsReducer,
+  roommates: roomatesReducer,
 }); 
 
 export const store = createStore(rootReducers, enhancer);
