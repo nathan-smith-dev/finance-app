@@ -1,7 +1,8 @@
 import * as actionTypes from '../actions/actionTypes'; 
 
 const initialState = {
-    userProfile: {}
+    userProfile: {}, 
+    allUsers: {}
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +15,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 userProfile: action.userProfile
+            }; 
+        case actionTypes.GET_ALL_USERS: 
+            return {
+                ...state, 
+                allUsers: action.allUsers
             }; 
         default: 
             return {

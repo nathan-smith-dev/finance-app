@@ -16,6 +16,7 @@ export const getProfile = (profile) => {
             dispatch(transactionActions.getTransactions(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getTransactionCategories(profile.uid));     
             dispatch(addProfileToDb(profile)); 
+            dispatch(getAllUsers()); 
         }
         
         dispatch(getProfileSuccess(profile)); 
@@ -41,5 +42,28 @@ export const addProfileToDb = (profile) => {
             })
         }); 
         return; 
+    }; 
+};
+
+export const setAllUsers = (users) => {
+    return {
+        type: actionTypes.GET_ALL_USERS, 
+        allUsers: users
+    }
+}; 
+
+export const getAllUsers = () => {
+    return dispatch => {
+        withAuth(authToken => {
+            const url = `profiles/.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    // console.log(response.data); 
+                    dispatch(setAllUsers(response.data)); 
+                })
+                .catch(error => {
+                    console.log(error); 
+                })
+        })
     }
 }
