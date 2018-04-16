@@ -8,6 +8,7 @@ import * as notificationActions from './store/actions/notifications';
 
 import AppBar from './containers/AppBar/AppBar'; 
 import UserCategories from './containers/UserCategories/UserCategories'; 
+import Roommates from './containers/Roommates/Roommates'; 
 import Transactions from './containers/Transactions/Transactions'; 
 import Chart from './containers/Chart/Chart'; 
 import Home from './components/Home/Home'; 
@@ -40,6 +41,10 @@ class App extends Component {
               {this.props.userProfile
                 ? <Route path="/categories" exact component={UserCategories} />
                 : <Redirect from="/categories" to="/must-login" />
+              }
+              {this.props.userProfile
+                ? <Route path="/roommates" exact component={Roommates} />
+                : <Redirect from="/roommates" to="/must-login" />
               }
               <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />
               <Route path="/" exact component={Home} />

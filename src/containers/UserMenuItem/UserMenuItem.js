@@ -3,6 +3,7 @@ import MenuItem from 'material-ui/MenuItem';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle'; 
 import LockIcon from 'material-ui/svg-icons/action/lock'; 
 import WrenchIcon from 'material-ui/svg-icons/action/build'; 
+import UsersIcon from 'material-ui/svg-icons/action/supervisor-account'; 
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -54,8 +55,8 @@ class UserMenuItem extends Component {
         localStorage.setItem('temp_user', "Testing"); 
     }
 
-    openCategoriesTab = () => {
-        this.props.history.push('/categories'); 
+    openTab = (url) => {
+        this.props.history.push(url); 
         this.props.onToggle(); 
     }
 
@@ -84,8 +85,13 @@ class UserMenuItem extends Component {
                     </MenuItem>
                     <MenuItem 
                         leftIcon={<WrenchIcon />}
-                        onClick={this.openCategoriesTab}
+                        onClick={() => this.openTab('/categories')}
                         >User Categories
+                    </MenuItem>
+                    <MenuItem 
+                        leftIcon={<UsersIcon />}
+                        onClick={() => this.openTab('/roommates')}
+                        >Roommates
                     </MenuItem>
                     <Dialog
                         actions={actions}
