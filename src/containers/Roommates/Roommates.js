@@ -16,12 +16,14 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider'; 
 import NewRoomate from '../../components/NewRoommate/NewRoommate'; 
 import Badge from 'material-ui/Badge';
+import ViewRoommateRequest from '../../components/ViewRoommateRequest/ViewRoommateRequest'; 
 
 
 class Roommates extends Component {
     state = {
         newRoommate: null, 
-        showNewRoomate: false
+        showNewRoomate: false, 
+        showRoommateRequest: false, 
     }; 
 
     handleRoommateChange = (roommate) => {
@@ -33,6 +35,12 @@ class Roommates extends Component {
     toggleNewRoomate = () => { 
         this.setState({
             showNewRoomate: !this.state.showNewRoomate
+        }); 
+    }
+
+    toggleRoommateRequest = () => {
+        this.setState({
+            showRoommateRequest: !this.state.showRoommateRequest
         }); 
     }
 
@@ -76,6 +84,7 @@ class Roommates extends Component {
                                 {this.props.roommateRequests && (
                                     <MenuItem 
                                         primaryText="Roommate Requests" 
+                                        onClick={this.toggleRoommateRequest}
                                         leftIcon={<MessageIcon />} 
                                         rightIcon={<Badge badgeContent={this.props.roommateRequests.length} primary={true}></Badge>} />
                                 )}
@@ -101,6 +110,10 @@ class Roommates extends Component {
                                 filteredUsers={filteredUsers}
                                 onNewRequest={this.handleRoommateChange} 
                                 onAddRoommate={this.sendRoommateRequest} />
+                            <ViewRoommateRequest 
+                                show={this.state.showRoommateRequest} 
+                                close={this.toggleRoommateRequest}
+                                requests={this.props.roommateRequests} />
                         </Paper>
                     </Column>
                 </Row>
