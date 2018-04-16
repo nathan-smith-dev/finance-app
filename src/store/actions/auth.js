@@ -31,6 +31,7 @@ export const addProfileToDb = (profile) => {
             .then(response => {
                 if(!response.data) {
                     const profileObj = {
+                        uid: profile.uid,
                         email: profile.email, 
                         name: profile.displayName
                     }; 
@@ -58,8 +59,9 @@ export const getAllUsers = () => {
             const url = `profiles/.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    // console.log(response.data); 
-                    dispatch(setAllUsers(response.data)); 
+                    const users = Object.values(response.data); 
+                    // console.log(users); 
+                    dispatch(setAllUsers(users)); 
                 })
                 .catch(error => {
                     console.log(error); 
