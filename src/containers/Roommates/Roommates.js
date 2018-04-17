@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
 import * as roommateActions from '../../store/actions/roommates'; 
+import { withRouter } from 'react-router-dom'; 
 
 import Paper from '../../hoc/Paper/Paper'; 
 import Row from  '../../hoc/Grid/Row/Row';
@@ -141,6 +142,10 @@ class Roommates extends Component {
                 })
         })
     }
+
+    redirectToRoommate = (uid) => {
+        this.props.history.push('/roommates/'+uid); 
+    }
     
     render() {
         const users = Object.keys(this.props.allUsers).length > 0 ? this.props.allUsers : null;
@@ -149,7 +154,7 @@ class Roommates extends Component {
         let filteredUsers = []; 
         if(users && currentUser) {
             filteredUsers = users.filter(user => {
-                if(user.uid !== currentUser.uid) {
+                if(user.uid !== currentUser.uid && currentUserMates.length) {
                     for(let mate of currentUserMates) {
                         if(mate.uid === user.uid) {
                             return false; 
@@ -186,7 +191,8 @@ class Roommates extends Component {
                                         ? this.props.mates.map((user) => {
                                             return <MenuItem 
                                                 key={user.uid} 
-                                                primaryText={user.name} />
+                                                primaryText={user.name} 
+                                                onClick={() => this.redirectToRoommate(user.uid)} />
                                         })
                                         : <MenuItem primaryText="No current roommates" />
                                 }                             
@@ -249,4 +255,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Roommates); 
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Roommates)); 

@@ -14,6 +14,7 @@ import Chart from './containers/Chart/Chart';
 import Home from './components/Home/Home'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Snackbar from 'material-ui/Snackbar';
+import ViewRoommate from './containers/ViewRoommate/ViewRoommate';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -45,6 +46,10 @@ class App extends Component {
               {this.props.userProfile
                 ? <Route path="/roommates" exact component={Roommates} />
                 : <Redirect from="/roommates" to="/must-login" />
+              }
+              {this.props.userProfile
+                ? <Route path="/roommates/:id" exact component={ViewRoommate} />
+                : <Redirect from="/roommates/:id" to="/must-login" />
               }
               <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />
               <Route path="/" exact component={Home} />
