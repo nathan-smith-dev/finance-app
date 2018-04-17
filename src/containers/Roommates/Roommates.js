@@ -145,9 +145,20 @@ class Roommates extends Component {
     render() {
         const users = Object.keys(this.props.allUsers).length > 0 ? this.props.allUsers : null;
         const currentUser = this.props.userProfile ? this.props.userProfile : {}; 
+        const currentUserMates = this.props.mates ? this.props.mates : {}; 
         let filteredUsers = []; 
         if(users && currentUser) {
-            filteredUsers = users.filter(user => user.uid !== currentUser.uid); 
+            filteredUsers = users.filter(user => {
+                if(user.uid !== currentUser.uid) {
+                    for(let mate of currentUserMates) {
+                        if(mate.uid === user.uid) {
+                            return false; 
+                        }
+                    }
+                    return true; 
+                }
+                return false; 
+            }); 
         }
         return (
             <Container>
@@ -171,8 +182,8 @@ class Roommates extends Component {
                                 <Divider />
                                 <Subheader>Current Roommates</Subheader>   
                                 {
-                                    users 
-                                        ? users.map((user) => {
+                                    this.props.mates 
+                                        ? this.props.mates.map((user) => {
                                             return <MenuItem 
                                                 key={user.uid} 
                                                 primaryText={user.name} />
@@ -227,7 +238,8 @@ const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
         allUsers: state.auth.allUsers, 
-        roommateRequests: state.roommates.requests 
+        roommateRequests: state.roommates.requests, 
+        mates: state.roommates.mates
     }; 
 }; 
 

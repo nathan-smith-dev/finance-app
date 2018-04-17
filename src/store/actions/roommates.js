@@ -34,9 +34,9 @@ export const getRoommates = (uid) => {
             const url = `${uid}/roommates/mates.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    console.log(response.data); 
+                    // console.log(Object.values(response.data)); 
                     if(response.data) {
-                        dispatch(setRoommates(response.data)); 
+                        dispatch(setRoommates(Object.values(response.data))); 
                     }
                 })
                 .catch(error => console.log(error)); 

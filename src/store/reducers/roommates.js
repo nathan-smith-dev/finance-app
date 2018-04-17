@@ -12,6 +12,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 requests: action.roommateRequests,
             }; 
+        case actionTypes.GET_ROOMATES: 
+            return {
+                ...state,
+                mates: action.mates,
+            }; 
         default: 
             return {
                 ...state
