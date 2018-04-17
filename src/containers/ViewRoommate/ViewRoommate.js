@@ -8,6 +8,7 @@ import Paper from '../../hoc/Paper/Paper';
 import Row from  '../../hoc/Grid/Row/Row';
 import Column from  '../../hoc/Grid/Column/Column';
 import Container from  '../../hoc/Grid/Container/Container';
+import RoommateTransactionTable from '../RoommateTransactionTable/RoommateTransactionTable'; 
 
 class ViewRoommate extends Component {
     render() {
@@ -21,7 +22,8 @@ class ViewRoommate extends Component {
                 <Row>
                     <Column style={{margin: '0 auto'}} width="xl-50 md-75" >
                         <Paper>
-                            <h1>{this.props.focusedRoommate ? this.props.focusedRoommate.name : null}</h1>
+                            <h2>{this.props.focusedRoommate ? this.props.focusedRoommate.name : null}</h2>
+                            <RoommateTransactionTable />
                         </Paper>
                     </Column>
                 </Row>
