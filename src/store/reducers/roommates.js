@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     requests: null, 
-    mates: null
+    mates: null, 
+    focusedRoommate: null
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 mates: action.mates,
+            }; 
+        case actionTypes.SET_FOCUSED_ROOMMATE: 
+            return {
+                ...state,
+                focusedRoommate: action.roommate,
             }; 
         default: 
             return {

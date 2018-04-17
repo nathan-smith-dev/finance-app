@@ -50,3 +50,24 @@ export const setRoommates = (roommates) => {
         mates: roommates 
     }; 
 }; 
+
+export const setFocusedRoomateSuccess = (roommate) => {
+    return {
+        type: actionTypes.SET_FOCUSED_ROOMMATE, 
+        roommate: roommate
+    }; 
+}; 
+
+export const setFocusedRoomate = (roommateUid) => {
+    return dispatch => {
+        withAuth(authToken => {
+            const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    dispatch(setFocusedRoomateSuccess(response.data)); 
+                })
+                .catch(error => console.log(error))
+        }); 
+    }; 
+}
+

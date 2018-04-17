@@ -1,51 +1,46 @@
 import React, { Component } from 'react'; 
 
 import { withRouter } from 'react-router-dom';
-import { withAuth } from '../../firebase/auth'; 
 import { connect } from 'react-redux'; 
-import axios from 'axios'; 
+import * as roommateActions from '../../store/actions/roommates'; 
+
+import Paper from '../../hoc/Paper/Paper'; 
+import Row from  '../../hoc/Grid/Row/Row';
+import Column from  '../../hoc/Grid/Column/Column';
+import Container from  '../../hoc/Grid/Container/Container';
 
 class ViewRoommate extends Component {
-    state = {
-        roommate: null
-    }; 
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.roommate && nextState.roommate.uid === this.state.roommate.uid ? false : true; 
-    }
-
-    componentDidUpdate() {
-        if(this.props.userProfile) {
+    render() {
+        if(Object.keys(this.props.userProfile).length > 0) {
             const urlPaths = this.props.location.pathname.split('/'); 
             const id = urlPaths[urlPaths.length - 1]; 
-            console.log(id)
-            withAuth(authToken => {
-                const url = `profiles/${id}.json?auth=${authToken}`; 
-                axios.get(url)
-                    .then(response => {
-                        this.setState({
-                            roommate: response.data
-                        })
-                    })
-                    .catch(error => console.log(error))
-            })
-        }
-    }
-
-    render() {
-        if(this.state.roommate) {
-            console.log(this.state.roommate)
+            this.props.setFocusedRoommate(id); 
         }
         return (
-            <h4>View Roommate {this.state.roommate ? this.state.roommate.name : null}</h4>
+            <Container>
+                <Row>
+                    <Column style={{margin: '0 auto'}} width="xl-50 md-75" >
+                        <Paper>
+                            <h1>{this.props.focusedRoommate ? this.props.focusedRoommate.name : null}</h1>
+                        </Paper>
+                    </Column>
+                </Row>
+            </Container>
         ); 
     }
 }
 
 const mapStateToProps = state => {
     return {
-        userProfile: state.auth.userProfile
-    }
+        userProfile: state.auth.userProfile, 
+        focusedRoommate: state.roommates.focusedRoommate
+    }; 
+}; 
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setFocusedRoommate: (rUid) => dispatch(roommateActions.setFocusedRoomate(rUid))
+    }; 
 }
 
-export default connect(mapStateToProps)(withRouter(ViewRoommate)); 
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ViewRoommate)); 

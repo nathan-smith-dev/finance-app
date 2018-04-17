@@ -144,6 +144,7 @@ class Roommates extends Component {
     }
 
     redirectToRoommate = (uid) => {
+        this.props.setFocusedRoomate(uid); 
         this.props.history.push('/roommates/'+uid); 
     }
     
@@ -251,7 +252,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRoommateRequests: (uid) => dispatch(roommateActions.getRoommateRequests(uid))
+        getRoommateRequests: (uid) => dispatch(roommateActions.getRoommateRequests(uid)), 
+        setFocusedRoomate: (roommate) => dispatch(roommateActions.setFocusedRoomate(roommate))
     }
 }
 
