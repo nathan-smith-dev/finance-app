@@ -23,6 +23,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 focusedRoommate: action.roommate,
             }; 
+        case actionTypes.GET_ROOMATE_TRANS_FROM: 
+            return {
+                ...state,
+                focusedRoommate: {
+                    ...state.focusedRoommate, 
+                    transactionsFrom: action.transactions
+                },
+            }; 
         default: 
             return {
                 ...state

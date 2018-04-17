@@ -113,7 +113,8 @@ class NewTransactionDialog extends Component {
     sendNewTransaction = () => {
         const postObj = this.convertStateToDbValues(); 
         withAuth((authToken) => {
-            axios.post(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`, postObj)
+            const url = this.props.endPoint ? this.props.endPoint+`.json?auth=${authToken}` : `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`; 
+            axios.post(url, postObj)
                 .then(response => {
                     this.props.showNotification("Added transaction");   
                     // console.log(response);
@@ -212,7 +213,7 @@ class NewTransactionDialog extends Component {
         return (
                 <Dialog
                     autoScrollBodyContent={true}
-                    title={this.props.date ? "Edit Income or Expense" : "New Income or Expense"}
+                    title={this.props.title ? this.props.title : "New Income or Expense"}
                     titleClassName={classes.Title}
                     modal={false}
                     open={this.props.show}
@@ -243,6 +244,7 @@ class NewTransactionDialog extends Component {
                                 style={{maxWidth: '100%'}}                            
                                 floatingLabelText="Type"
                                 value={this.state.newExpense.type}
+                                disabled={this.props.forceExpense}
                                 onChange={(event, key) => this.handleChange('type', key)} >
                                 <MenuItem value={0} primaryText="Expense" />
                                 <MenuItem value={1} primaryText="Income" />

@@ -59,15 +59,42 @@ export const setFocusedRoomateSuccess = (roommate) => {
 }; 
 
 export const setFocusedRoomate = (roommateUid) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         withAuth(authToken => {
             const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     dispatch(setFocusedRoomateSuccess(response.data)); 
+                    dispatch(getRoommateTransactionsFrom(roommateUid, getState().auth.userProfile.uid)); 
                 })
                 .catch(error => console.log(error))
         }); 
     }; 
-}
+}; 
+
+export const getRoommateTransactionsFrom = (fromUid, toUid) => {
+    return dispatch => {
+        withAuth(authToken => {
+            const url = `${toUid}/roommates/mates/${fromUid}/transactions.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    if(response.data) {
+                        console.log(Object.values(response.data)); 
+                        dispatch(setRoomateTransactionsFrom(Object.values(response.data))); 
+                    }
+                    else if(!response.data) {
+                        dispatch(setRoomateTransactionsFrom(null)); 
+                    }
+                })
+                .catch(error => console.log(error)); 
+        }); 
+    }; 
+}; 
+
+export const setRoomateTransactionsFrom = (transactions) => {
+    return {
+        type: actionTypes.GET_ROOMATE_TRANS_FROM, 
+        transactions: transactions
+    }; 
+}; 
 

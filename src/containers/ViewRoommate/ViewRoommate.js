@@ -12,7 +12,7 @@ import RoommateTransactionTable from '../RoommateTransactionTable/RoommateTransa
 
 class ViewRoommate extends Component {
     render() {
-        if(Object.keys(this.props.userProfile).length > 0) {
+        if(Object.keys(this.props.userProfile).length > 0 && !this.props.focusedRoommate) {
             const urlPaths = this.props.location.pathname.split('/'); 
             const id = urlPaths[urlPaths.length - 1]; 
             this.props.setFocusedRoommate(id); 

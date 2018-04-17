@@ -177,6 +177,7 @@ class TransactionsTable extends Component {
                     toggleView={this.toggleSelectExpense}
                     show={this.state.openEdit}
                     date={this.state.selectedExpense.date}
+                    title="Edit Income or Expense"
                     amount={this.state.selectedExpense.amount}
                     type={this.state.selectedExpense.type}
                     category={this.state.selectedExpense.category}
