@@ -60,12 +60,14 @@ export const setFocusedRoomateSuccess = (roommate) => {
 
 export const setFocusedRoomate = (roommateUid) => {
     return (dispatch, getState) => {
+        const currentUserUid = getState().auth.userProfile.uid; 
         withAuth(authToken => {
             const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
                     dispatch(setFocusedRoomateSuccess(response.data)); 
-                    dispatch(getRoommateTransactionsFrom(roommateUid, getState().auth.userProfile.uid)); 
+                    dispatch(getRoommateTransactionsFrom(roommateUid, currentUserUid)); 
+                    dispatch(getRoommateTransactionsTo(currentUserUid, roommateUid)); 
                 })
                 .catch(error => console.log(error))
         }); 
@@ -79,8 +81,10 @@ export const getRoommateTransactionsFrom = (fromUid, toUid) => {
             axios.get(url)
                 .then(response => {
                     if(response.data) {
-                        console.log(Object.values(response.data)); 
-                        dispatch(setRoomateTransactionsFrom(Object.values(response.data))); 
+                        const withKeyIds = Object.keys(response.data).map(key => {
+                            return {...response.data[key], id: key, type: 'from'}
+                        })
+                        dispatch(setRoomateTransactionsFrom(withKeyIds)); 
                     }
                     else if(!response.data) {
                         dispatch(setRoomateTransactionsFrom(null)); 
@@ -94,6 +98,34 @@ export const getRoommateTransactionsFrom = (fromUid, toUid) => {
 export const setRoomateTransactionsFrom = (transactions) => {
     return {
         type: actionTypes.GET_ROOMATE_TRANS_FROM, 
+        transactions: transactions
+    }; 
+}; 
+
+export const getRoommateTransactionsTo = (fromUid, toUid) => {
+    return dispatch => {
+        withAuth(authToken => {
+            const url = `${toUid}/roommates/mates/${fromUid}/transactions.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    if(response.data) {
+                        const withKeyIds = Object.keys(response.data).map(key => {
+                            return {...response.data[key], id: key, type: 'to'}
+                        })
+                        dispatch(setRoomateTransactionsTo(withKeyIds)); 
+                    }
+                    else if(!response.data) {
+                        dispatch(setRoomateTransactionsTo(null)); 
+                    }
+                })
+                .catch(error => console.log(error)); 
+        }); 
+    }; 
+}; 
+
+export const setRoomateTransactionsTo = (transactions) => {
+    return {
+        type: actionTypes.GET_ROOMATE_TRANS_TO, 
         transactions: transactions
     }; 
 }; 

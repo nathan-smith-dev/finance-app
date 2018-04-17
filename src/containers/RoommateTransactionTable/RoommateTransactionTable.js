@@ -27,7 +27,29 @@ class RoommateTransactionTable extends Component {
     }
 
     render() {
-        const transArray = []; 
+        const transArray = this.props.focusedRoommate && this.props.focusedRoommate.transactionsFrom
+            ? this.props.focusedRoommate.transactionsFrom 
+            : []; 
+        if(this.props.focusedRoommate && this.props.focusedRoommate.transactionsTo)
+            transArray.push(...this.props.focusedRoommate.transactionsTo)
+            
+        transArray.sort((a, b) => b.date.day - a.date.day)
+
+        const transactions = transArray.map((trans, index) => {
+            const color = trans.type === "to" ? 'green' : 'red'; 
+            return (
+                <TableRow key={index}>
+                    <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
+                    <TableRowColumn style={{color: color, width: '30%'}}>
+                        <div style={{width: 50, textAlign: 'right'}} >
+                            {parseFloat(trans.amount).toFixed(2)}
+                        </div>
+                    </TableRowColumn>
+                    <TableRowColumn>{trans.category}</TableRowColumn>
+                </TableRow>
+            ); 
+        }); 
+
         const url = this.props.userProfile && this.props.focusedRoommate
             ? `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions`
             : null; 
@@ -42,7 +64,7 @@ class RoommateTransactionTable extends Component {
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                        {null}
+                        {transactions}
                     </TableBody>
                 </Table>
                 <div>
@@ -69,7 +91,7 @@ class RoommateTransactionTable extends Component {
 const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
-        focusedRoommate: state.roommates.focusedRoommate
+        focusedRoommate: state.roommates.focusedRoommate, 
     }; 
 }; 
 
