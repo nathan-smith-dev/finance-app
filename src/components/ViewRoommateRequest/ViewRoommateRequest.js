@@ -11,6 +11,11 @@ const viewRoommateRequest = (props) => {
             onClick={props.close}
         />, 
         <FlatButton
+            label="Delete"
+            primary={true}
+            onClick={props.delete}
+        />, 
+        <FlatButton
             label="Accept Roomate"
             primary={true}
             onClick={props.onAcceptRoommate}
@@ -19,22 +24,19 @@ const viewRoommateRequest = (props) => {
 
     return(
         <Dialog 
+            style={{zIndex: 10000}}
             open={props.show} 
             actions={actions} 
             onRequestClose={props.close}
         >
-            {props.requests ? props.requests.map(request => {
-                return (
-                    <div key={request.uid}>
-                        <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>User</h2>
-                        <h3 style={{marginTop: 3, fontSize: 14}}>{request.name}</h3>
-                        <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Email</h2>
-                        <h3 style={{marginTop: 3, fontSize: 14}}>{request.email}</h3>
-                        <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Date</h2>
-                        <h3 style={{marginTop: 3, fontSize: 14}}>{new Date(request.date).toLocaleDateString("en-US")}</h3>
-                    </div>
-                ); 
-            }) : null}
+            {props.request && (<div>
+                <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>User</h2>
+                <h3 style={{marginTop: 3, fontSize: 14}}>{props.request.name}</h3>
+                <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Email</h2>
+                <h3 style={{marginTop: 3, fontSize: 14}}>{props.request.email}</h3>
+                <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Date</h2>
+                <h3 style={{marginTop: 3, fontSize: 14}}>{new Date(props.request.date).toLocaleDateString('en-US')}</h3>
+            </div>)}
         </Dialog>
     ); 
 }; 

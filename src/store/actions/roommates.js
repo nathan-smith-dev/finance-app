@@ -8,9 +8,12 @@ export const getRoommateRequests = (uid) => {
             const url = `${uid}/roommates/requests.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    console.log(Object.values(response.data)); 
                     if(response.data) {
+                        console.log(Object.values(response.data)); 
                         dispatch(setRoomateRequests(Object.values(response.data))); 
+                    }
+                    else if(!response.data) {
+                        dispatch(setRoomateRequests(null)); 
                     }
                 })
                 .catch(error => console.log(error)); 

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
+import * as roommateActions from '../../store/actions/roommates'; 
 
 import Paper from '../../hoc/Paper/Paper'; 
 import Row from  '../../hoc/Grid/Row/Row';
@@ -17,6 +18,7 @@ import Divider from 'material-ui/Divider';
 import NewRoomate from '../../components/NewRoommate/NewRoommate'; 
 import Badge from 'material-ui/Badge';
 import ViewRoommateRequest from '../../components/ViewRoommateRequest/ViewRoommateRequest'; 
+import Popover from 'material-ui/Popover';
 
 
 class Roommates extends Component {
@@ -24,6 +26,9 @@ class Roommates extends Component {
         newRoommate: null, 
         showNewRoomate: false, 
         showRoommateRequest: false, 
+        showPopover: false, 
+        anchorEl: null, 
+        currentRoommateRequest: null
     }; 
 
     handleRoommateChange = (roommate) => {
@@ -32,16 +37,87 @@ class Roommates extends Component {
         }); 
     }; 
 
+    handleDeleteRoommateRequest = () => {
+        withAuth(authToken => {
+            const roommate = this.state.currentRoommateRequest;  
+            const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
+            axios.delete(url)
+                .then(response => {
+                    this.toggleRoommateRequest(); 
+                    this.props.getRoommateRequests(this.props.userProfile.uid); 
+                })
+                .catch(error => {
+                    console.log(error); 
+                }); 
+        }); 
+    }
+
+    handleAcceptRoommate = () => {
+        withAuth(authToken => {
+            const roommate = this.state.currentRoommateRequest;  
+            const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
+            axios.delete(url)
+                .then(response => {
+                    this.toggleRoommateRequest(); 
+                    this.props.getRoommateRequests(this.props.userProfile.uid); 
+                })
+                .catch(error => {
+                    console.log(error); 
+                }); 
+            const putURL = `${this.props.userProfile.uid}/roommates/mates/${roommate.uid}.json?auth=${authToken}`; 
+            axios.put(putURL, roommate)
+                .then(response => {
+                    // console.log(response);
+                })
+                .catch(error => {
+                    console.log(error); 
+                }); 
+            const oppositePutUrl = `${roommate.uid}/roommates/mates/${this.props.userProfile.uid}.json?auth=${authToken}`;
+            const currentUser = {
+                date: new Date(), 
+                name: this.props.userProfile.displayName, 
+                email: this.props.userProfile.email, 
+                uid: this.props.userProfile.uid
+            }; 
+            axios.put(oppositePutUrl, currentUser)
+                .then(response => {
+                    // console.log(response);
+                })
+                .catch(error => {
+                    console.log(error); 
+                }); 
+        }) 
+    }
+
     toggleNewRoomate = () => { 
         this.setState({
             showNewRoomate: !this.state.showNewRoomate
         }); 
     }
 
-    toggleRoommateRequest = () => {
+    toggleRoommateRequest = (id) => {
         this.setState({
+            currentRoommateRequest: this.props.roommateRequests.find(req => req.uid === id), 
             showRoommateRequest: !this.state.showRoommateRequest
         }); 
+    }
+
+    togglePopover = (event) => {
+        if(event) {
+            this.setState({
+                anchorEl: event.currentTarget // Make sure we have a target before toggling 
+            }, () => {
+                this.setState({
+                    showPopover: !this.state.showPopover
+                })
+            }
+            ); 
+        }
+        else {
+            this.setState({
+                showPopover: !this.state.showPopover
+            })
+        }
     }
 
     sendRoommateRequest = () => {
@@ -84,7 +160,7 @@ class Roommates extends Component {
                                 {this.props.roommateRequests && (
                                     <MenuItem 
                                         primaryText="Roommate Requests" 
-                                        onClick={this.toggleRoommateRequest}
+                                        onClick={this.togglePopover}
                                         leftIcon={<MessageIcon />} 
                                         rightIcon={<Badge badgeContent={this.props.roommateRequests.length} primary={true}></Badge>} />
                                 )}
@@ -111,9 +187,34 @@ class Roommates extends Component {
                                 onNewRequest={this.handleRoommateChange} 
                                 onAddRoommate={this.sendRoommateRequest} />
                             <ViewRoommateRequest 
+                                delete={this.handleDeleteRoommateRequest}
                                 show={this.state.showRoommateRequest} 
                                 close={this.toggleRoommateRequest}
-                                requests={this.props.roommateRequests} />
+                                onAcceptRoommate={this.handleAcceptRoommate}
+                                request={this.state.currentRoommateRequest} />
+                                <Popover
+                                    open={this.state.showPopover}
+                                    anchorEl={this.state.anchorEl}
+                                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                    onRequestClose={this.togglePopover}
+                                    >
+                                    <Menu>
+                                        {
+                                            this.props.roommateRequests 
+                                            ? this.props.roommateRequests.map(request => {
+                                                    return <MenuItem 
+                                                                key={request.uid} 
+                                                                primaryText={request.name} 
+                                                                onClick={(uid) => {
+                                                                    this.toggleRoommateRequest(request.uid); 
+                                                                    this.togglePopover(); 
+                                                                }} />
+                                                })
+                                            : null 
+                                        }
+                                    </Menu>
+                                </Popover>
                         </Paper>
                     </Column>
                 </Row>
@@ -130,4 +231,10 @@ const mapStateToProps = state => {
     }; 
 }; 
 
-export default connect(mapStateToProps)(Roommates); 
+const mapDispatchToProps = dispatch => {
+    return {
+        getRoommateRequests: (uid) => dispatch(roommateActions.getRoommateRequests(uid))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Roommates); 
