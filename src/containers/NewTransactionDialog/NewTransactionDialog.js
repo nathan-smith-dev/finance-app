@@ -4,6 +4,7 @@ import classes from './NewTransactionDialog.css';
 import axios from 'axios'; 
 import * as transactionActionCreators from '../../store/actions/transactions'; 
 import * as notificationActions from '../../store/actions/notifications'; 
+import * as roommateActions from '../../store/actions/roommates'; 
 import { connect } from 'react-redux'; 
 import { withAuth } from '../../firebase/auth'; 
 
@@ -119,6 +120,9 @@ class NewTransactionDialog extends Component {
                     this.props.showNotification("Added transaction");   
                     // console.log(response);
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+                    if(this.props.title === "Expense Roommate") {
+                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                    }
                     this.props.toggler(); 
                     this.setState({newExpense: {
                         date: new Date(), 
@@ -305,6 +309,7 @@ class NewTransactionDialog extends Component {
 const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
+        focusedRoommate: state.roommates.focusedRoommate, 
         transactionCategories: state.transactions.transactionCategories, 
         trackedDates: state.transactions.trackedDates
     }
@@ -314,7 +319,8 @@ const mapDispatchToProps = dispatch => {
     return {
         getTransactions: (id, month, year) => dispatch(transactionActionCreators.getTransactions(id, month, year)),
         getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id)), 
-        showNotification: (text) => dispatch(notificationActions.showNotification(true, text))
+        showNotification: (text) => dispatch(notificationActions.showNotification(true, text)),
+        getRoommateTransactions: (rUid, cUid) => dispatch(roommateActions.getRoommateTransactionsToAndFrom(rUid, cUid)),
     }
 }
 
