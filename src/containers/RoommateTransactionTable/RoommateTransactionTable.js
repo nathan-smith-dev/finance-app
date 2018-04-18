@@ -19,6 +19,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
 import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog'; 
+import { green500, red500  } from 'material-ui/styles/colors'; 
 
 class RoommateTransactionTable extends Component {
     state = {
@@ -116,6 +117,10 @@ class RoommateTransactionTable extends Component {
             ); 
         }); 
 
+        const totalTo = transArray.filter(trans => trans.direction === 'to').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
+        const totalFrom = transArray.filter(trans => trans.direction === 'from').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
+        const netTotal = totalTo - totalFrom; 
+
         const url = this.props.userProfile && this.props.focusedRoommate
             ? `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions`
             : null; 
@@ -142,6 +147,26 @@ class RoommateTransactionTable extends Component {
                         <ContentAdd />
                     </FloatingActionButton>
                 </div>
+                <div style={{marginTop: 20}}>
+                    <h3 style={{marginBottom: 2, marginTop: 20}}>Overview</h3>                                            
+                    <Table>
+                        <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                            <TableRow>
+                                <TableHeaderColumn style={{paddingLeft: 0}}>Owed From</TableHeaderColumn>
+                                <TableHeaderColumn style={{paddingLeft: 0}}>Owe To</TableHeaderColumn>
+                                <TableHeaderColumn style={{paddingLeft: 0}}>Total</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody displayRowCheckbox={false}>
+                            <TableRow>
+                                <TableRowColumn style={{color: green500, paddingLeft: 0}}>{(Math.round(totalTo*100)/100).toFixed(2)}</TableRowColumn>
+                                <TableRowColumn style={{color: red500, paddingLeft: 0}}>{(Math.round(totalFrom*100)/100).toFixed(2)}</TableRowColumn>
+                                <TableRowColumn style={netTotal >= 0 ? {color: green500, paddingLeft: 0} : {color: red500,paddingLeft: 0}}>{(Math.round(netTotal*100)/100).toFixed(2)}</TableRowColumn>
+                        </TableRow>
+                        </TableBody>
+                    </Table>
+                </div>
+
                 <ViewTransactionDialog 
                     deleteRequest={this.deleteRoommateExpense}
                     show={this.state.openExpense} 
