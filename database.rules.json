@@ -1,11 +1,17 @@
 {
   "rules": {
     "users": {
+      "profiles": {
+        ".read": "auth != null", 
+        ".write": "auth != null"
+      }, 
+      
       "$uid": {
         "transactions": {
           ".read": "$uid === auth.uid",
           ".write": "$uid === auth.uid"
         }, 
+
         "roommates": {
           ".read": "auth != null", 
           ".write": "auth != null"
