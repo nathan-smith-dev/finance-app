@@ -59,11 +59,9 @@ class RoommateTransactionTable extends Component {
     }
 
     toggleSelectExpense = () => {
-        if(this.canToggleExpense()) {
-            this.setState({
-                openExpense: !this.state.openExpense
-            }); 
-        }
+        this.setState({
+            openExpense: !this.state.openExpense
+        }); 
     }; 
 
     canToggleExpense = () => {
@@ -168,6 +166,7 @@ class RoommateTransactionTable extends Component {
                 </div>
 
                 <ViewTransactionDialog 
+                    canEdit={this.canToggleExpense()}
                     deleteRequest={this.deleteRoommateExpense}
                     show={this.state.openExpense} 
                     notification={(text) => this.props.showNotification(text)}

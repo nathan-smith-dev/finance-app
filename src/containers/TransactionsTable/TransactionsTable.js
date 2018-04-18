@@ -184,6 +184,7 @@ class TransactionsTable extends Component {
                 </Row>
 
                 <ViewTransactionDialog 
+                    canEdit={true}
                     deleteRequest={this.deletePost}
                     show={this.state.openExpense} 
                     notification={(text) => this.props.showNotification(text)}

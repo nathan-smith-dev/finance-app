@@ -4,7 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 const dialog = (props) => {
     
-    const actions = [
+    const actions = props.canEdit 
+    ? [
         <FlatButton
             label="Delete"
             primary={false}
@@ -20,7 +21,14 @@ const dialog = (props) => {
             primary={true}
             onClick={props.close}
         />
-    ]; 
+    ] 
+    : [
+        <FlatButton
+            label="Cancel"
+            primary={true}
+            onClick={props.close}
+        />
+    ]
 
     let expenseInfo = null; 
     if(props.expense.date) {
