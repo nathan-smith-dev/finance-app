@@ -143,9 +143,14 @@ class NewTransactionDialog extends Component {
         const postObj = this.convertStateToDbValues(); 
         withAuth((authToken) => {
             this.props.showNotification("Updated transaction");      
-            axios.patch(`${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.props.transId}.json?auth=${authToken}`, postObj)
+            console.log(this.props.transId)
+            const url = this.props.updateUrl ? this.props.updateUrl+`.json?auth=${authToken}` : `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.props.transId}.json?auth=${authToken}`; 
+            axios.patch(url, postObj)
                 .then(response => {
                     this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+                    if(this.props.focusedRoommate) {
+                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                    }
                     this.props.toggler(); 
                     this.props.toggleView(); 
                 }) 

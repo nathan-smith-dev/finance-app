@@ -2,6 +2,9 @@ import React, { Component, Fragment } from 'react';
 
 import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
+import { withAuth } from '../../firebase/auth'; 
+import axios from 'axios'; 
+import * as transactionActions from '../../store/actions/transactions'; 
 
 import {
   Table,
@@ -35,6 +38,21 @@ class TransactionsTable extends Component {
         filterBy: 0, 
         subFilter: 0, 
         openEdit: false
+    }; 
+
+    deletePost = () => {
+        withAuth((authToken) => {
+            const url = `${this.state.userUid}/transactions/${this.state.selectedExpense.date.year}/${this.state.selectedExpense.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`
+            axios.delete(url)
+            .then(response => {
+                this.props.showNotification("Deleted transaction"); 
+                this.props.getTransactions(this.state.userUid, this.state.selectedExpense.date.month, this.state.selectedExpense.date.year); 
+                this.toggleSelectExpense(); 
+            })
+            .catch(err => {
+                console.log(err); 
+            })
+        });
     }; 
 
     selectExpense = (expense) => {
@@ -166,6 +184,7 @@ class TransactionsTable extends Component {
                 </Row>
 
                 <ViewTransactionDialog 
+                    deleteRequest={this.deletePost}
                     show={this.state.openExpense} 
                     notification={(text) => this.props.showNotification(text)}
                     expense={this.state.selectedExpense}
@@ -198,7 +217,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showNotification: (text) => dispatch(notificationActions.showNotification(true, text))
+        showNotification: (text) => dispatch(notificationActions.showNotification(true, text)), 
+        getTransactions: (cUid, month, year) => dispatch(transactionActions.getTransactions(cUid, month, year))
     }; 
 }; 
 

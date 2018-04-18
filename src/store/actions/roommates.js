@@ -83,7 +83,7 @@ export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {
                 axios.get(urlTo).catch(error => console.log(error))
             ])
             .then(axios.spread((resFrom, resTo) => {
-                const data = addKeyIdsAndType(resFrom.data, 'from').concat(addKeyIdsAndType(resTo.data, 'to')); 
+                const data = addKeyIdsAndDirection(resFrom.data, 'from').concat(addKeyIdsAndDirection(resTo.data, 'to')); 
                 data.sort((a,b) => b.date.day - a.date.day); 
                 dispatch(setRoomateTransactionsToAndFrom(data)); 
             }))
@@ -91,9 +91,9 @@ export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {
     }; 
 }; 
 
-const addKeyIdsAndType = (obj, type) => {
+const addKeyIdsAndDirection = (obj, dir) => {
     return Object.keys(obj).map(key => {
-        return {...obj[key], id: key, type: type}
+        return {...obj[key], id: key, direction: dir}
     })
 }; 
 
