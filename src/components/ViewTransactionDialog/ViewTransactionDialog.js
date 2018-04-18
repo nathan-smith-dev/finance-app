@@ -53,6 +53,7 @@ const dialog = (props) => {
             open={props.show} 
             actions={actions} 
             onRequestClose={props.close}
+            autoScrollBodyContent={true}            
             >
             {expenseInfo}
         </Dialog>
