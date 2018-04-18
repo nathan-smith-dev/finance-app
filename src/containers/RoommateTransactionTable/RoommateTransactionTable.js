@@ -31,6 +31,15 @@ class RoommateTransactionTable extends Component {
         openEdit: false
     }; 
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.focusedRoommate 
+            && this.props.transactionsToAndFrom
+            && this.props.focusedRoommate.transactionsToAndFrom.length === nextProps.focusedRoommate.transactionsToAndFrom.length)
+            return false; 
+        
+        return true; 
+    }
+
     selectExpense = (expense) => {
         this.setState({
             selectedExpense: {
