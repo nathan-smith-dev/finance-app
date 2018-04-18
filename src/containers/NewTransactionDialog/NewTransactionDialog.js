@@ -261,7 +261,6 @@ class NewTransactionDialog extends Component {
                         </div>
                         <div style={{display: 'flex', alignItems: 'center'}} >
                             <SelectField
-                                disabled={this.state.newExpense.type === 1}
                                 floatingLabelText="Category"
                                 value={this.state.newExpense.category}
                                 onChange={(event, key) => this.handleChange('category', key)} >
