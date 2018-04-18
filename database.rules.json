@@ -2,8 +2,14 @@
   "rules": {
     "users": {
       "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+        "transactions": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }, 
+        "roommates": {
+          ".read": "auth != null", 
+          ".write": "auth != null"
+        }
       }
     }
   }

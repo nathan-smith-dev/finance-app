@@ -144,7 +144,7 @@ class Roommates extends Component {
     }
 
     redirectToRoommate = (uid) => {
-        if(this.props.focusedRoommate && this.props.focusedRoommate.uid !== uid)
+        if((this.props.focusedRoommate && this.props.focusedRoommate.uid !== uid))
             this.props.setFocusedRoomate(uid); 
         this.props.history.push('/roommates/'+uid); 
     }
