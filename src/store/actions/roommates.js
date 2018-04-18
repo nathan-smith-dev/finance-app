@@ -91,9 +91,12 @@ export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {
 }; 
 
 const addKeyIdsAndDirection = (obj, dir) => {
-    return Object.keys(obj).map(key => {
-        return {...obj[key], id: key, direction: dir}
-    })
+    if(obj && Object.keys(obj).length > 0) {
+        return Object.keys(obj).map(key => {
+            return {...obj[key], id: key, direction: dir}
+        })
+    }
+    return []; 
 }; 
 
 export const setRoomateTransactionsToAndFrom = (transactions) => {
