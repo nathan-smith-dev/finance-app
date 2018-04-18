@@ -27,14 +27,10 @@ class RoommateTransactionTable extends Component {
     }
 
     render() {
-        const transArray = this.props.focusedRoommate && this.props.focusedRoommate.transactionsFrom
-            ? this.props.focusedRoommate.transactionsFrom 
+        const transArray = this.props.focusedRoommate && this.props.focusedRoommate.transactionsToAndFrom
+            ? this.props.focusedRoommate.transactionsToAndFrom 
             : []; 
-        if(this.props.focusedRoommate && this.props.focusedRoommate.transactionsTo)
-            transArray.push(...this.props.focusedRoommate.transactionsTo)
             
-        transArray.sort((a, b) => b.date.day - a.date.day)
-
         const transactions = transArray.map((trans, index) => {
             const color = trans.type === "to" ? 'green' : 'red'; 
             return (
