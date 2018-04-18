@@ -135,7 +135,7 @@ class Roommates extends Component {
             const url = `${newRoomate.uid}/roommates/requests/${thisUser.uid}.json?auth=${authToken}`; 
             axios.put(url, thisUser)
                 .then(response => {
-                    console.log(response); 
+                    // console.log(response); 
                 })
                 .catch(error => {
                     console.log(error); 

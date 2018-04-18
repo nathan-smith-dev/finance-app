@@ -143,7 +143,6 @@ class NewTransactionDialog extends Component {
         const postObj = this.convertStateToDbValues(); 
         withAuth((authToken) => {
             this.props.showNotification("Updated transaction");      
-            console.log(this.props.transId)
             const url = this.props.updateUrl ? this.props.updateUrl+`.json?auth=${authToken}` : `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.props.transId}.json?auth=${authToken}`; 
             axios.patch(url, postObj)
                 .then(response => {

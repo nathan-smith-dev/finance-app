@@ -9,7 +9,6 @@ export const getRoommateRequests = (uid) => {
             axios.get(url)
                 .then(response => {
                     if(response.data) {
-                        console.log(Object.values(response.data)); 
                         dispatch(setRoomateRequests(Object.values(response.data))); 
                     }
                     else if(!response.data) {
