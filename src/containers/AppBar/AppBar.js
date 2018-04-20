@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'; 
+import PropTypes from 'prop-types'; 
 
 import { withRouter } from 'react-router-dom'; 
 
@@ -13,59 +14,62 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 import { pink500 } from 'material-ui/styles/colors'; 
 import budgetSpaceLogo from '../../images/BudgetSpaceLogo.svg'; 
 import Subheader from 'material-ui/Subheader'; 
-
+import Media from '../../components/Media/Media'; 
 import UserMenuItem from '../UserMenuItem/UserMenuItem'; 
 
+
 class NavBar extends Component {
-    state = {
-        showSideDrawer: false
-    }; 
+    state = { showSideDrawer: false }
+
+    static propTypes = { title: PropTypes.string }
 
     toggleSideDrawer = () => {
-        this.setState({
-            showSideDrawer: !this.state.showSideDrawer, 
-        }); 
+        this.setState(prevState => ( {showSideDrawer: !prevState.showSideDrawer} )); 
     }
-
 
     routeTo(route) {
         this.props.history.push(route);
         this.toggleSideDrawer(); 
     }
 
+    isPageActive = (pathName) => {
+        return this.props.location.pathname === pathName ? pink500 : null
+    }
+
     render() {
+        const { title } = this.props; 
+
         return(
             <Fragment>
                 <AppBar 
-                    title={ 
-                        <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
-                            <img src={budgetSpaceLogo} alt="Budget Space logo" style={{height: 36, marginRight: '0.25rem'}} />
-                            {this.props.title}
-                        </div>} 
+                    title={<Media image={budgetSpaceLogo} text={title} altText="Budget Space logo" />}
                     onLeftIconButtonClick={this.toggleSideDrawer}
                     onRightIconButtonClick={this.toggleSideDrawer} />
+
                 <Drawer open={this.state.showSideDrawer}>
                     <MenuItem 
                         rightIcon={<CloseIcon />}
                         onClick={this.toggleSideDrawer}>
                     </MenuItem>
+
                     <Subheader>User</Subheader>
                     <UserMenuItem onToggle={this.toggleSideDrawer} />
                     <Divider />
-                    <Subheader>Pages</Subheader>                    
+
+                    <Subheader>Pages</Subheader>                 
                     <MenuItem 
-                        style={this.props.location.pathname === '/' ? {color: pink500} : null}
-                        leftIcon={<HomeIcon color={this.props.location.pathname === '/' ? pink500 : null} />}
+                        style={{color: this.isPageActive('/')}}
+                        leftIcon={<HomeIcon color={this.isPageActive('/')} />}
                         onClick={() => this.routeTo('/')}>Home
                     </MenuItem>
                     <MenuItem 
-                        style={this.props.location.pathname === '/expenses-income' ? {color: pink500} : null}
-                        leftIcon={<ListIcon color={this.props.location.pathname === '/expenses-income' ? pink500 : null} />}
+                        style={{color: this.isPageActive('/expenses-income')}}
+                        leftIcon={<ListIcon color={this.isPageActive('/expenses-income')} />}
                         onClick={() => this.routeTo('/expenses-income')}>Expenses / Income
                     </MenuItem>
                     <MenuItem 
-                        style={this.props.location.pathname === '/finance-trends' ? {color: pink500} : null}
-                        leftIcon={<PieIcon color={this.props.location.pathname === '/finance-trends' ? pink500 : null} />}
+                        style={{color: this.isPageActive('/finance-trends')}}
+                        leftIcon={<PieIcon color={this.isPageActive('/finance-trends')} />}
                         onClick={() => this.routeTo('/finance-trends')}>Trends
                     </MenuItem>
                 </Drawer>
@@ -73,6 +77,5 @@ class NavBar extends Component {
         ); 
     }
 }
-
 
 export default withRouter(NavBar); 

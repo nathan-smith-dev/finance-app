@@ -1,0 +1,10 @@
+.Media {
+    height: 100%;
+    display: flex;
+    align-items: center; 
+}
+
+.Image {
+    height: 36px;
+    margin-right: '0.25rem'; 
+}
