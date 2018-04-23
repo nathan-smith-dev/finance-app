@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import PropTypes from 'prop-types'; 
 
 import { connect } from 'react-redux'; 
 import * as transactionActions from '../../store/actions/transactions'; 
@@ -8,35 +9,32 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column';
 
 
-const today = new Date(); 
-const YEARS = [
-    today.getFullYear(), 
-    today.getFullYear() - 1
-]; 
-
 class MonthYearSelector extends Component {
-    handleChange = (value, key) => {
-        if(key === "year") {
-            this.props.changeTransactionDate(this.props.user.uid, this.props.trackedDates.month, YEARS[value]); 
-        }
-        
-        if(key === "month") {
-            this.props.changeTransactionDate(this.props.user.uid, value, this.props.trackedDates.year); 
-        }
+    static propTypes = {
+        trackedDates: PropTypes.object.isRequired, 
+        user: PropTypes.object.isRequired
+    }
+
+    changeMonth = (event, index, value) => {
+        this.props.changeTransactionDate(this.props.user.uid, value, this.props.trackedDates.year); 
+    }
+   
+    changeYear = (event, index, value) => {
+        this.props.changeTransactionDate(this.props.user.uid, this.props.trackedDates.month, value); 
     }
 
     render() {
-        const yearVal = this.props.trackedDates ? (today.getFullYear() - this.props.trackedDates.year) : 0; 
-        const monthVal = this.props.trackedDates ? this.props.trackedDates.month : today.getMonth(); 
+        const { trackedDates } = this.props; 
+        const today = new Date(); 
+
         return (
             <Row>
                 <Column width="xs-50">
                     <SelectField
                         style={{width: '100%'}}
                         floatingLabelText="Month"
-                        value={monthVal}
-                        onChange={(event, key) => this.handleChange(key, 'month')}
-                        >
+                        value={trackedDates.month}
+                        onChange={this.changeMonth}>
                         <MenuItem value={0} primaryText="January" />
                         <MenuItem value={1} primaryText="February" />
                         <MenuItem value={2} primaryText="March" />
@@ -55,11 +53,11 @@ class MonthYearSelector extends Component {
                     <SelectField
                         style={{width: '100%'}}
                         floatingLabelText="Year"
-                        value={yearVal}
-                        onChange={(event, key) => this.handleChange(key, 'year')}
+                        value={trackedDates.year}
+                        onChange={this.changeYear}
                         >
-                        <MenuItem value={0} primaryText={today.getFullYear()} />
-                        <MenuItem value={1} primaryText={today.getFullYear() - 1} />
+                        <MenuItem value={today.getFullYear()} primaryText={today.getFullYear()} />
+                        <MenuItem value={today.getFullYear() - 1} primaryText={today.getFullYear() - 1} />
                     </SelectField>
                 </Column>
             </Row>
