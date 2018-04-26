@@ -5,6 +5,7 @@ import * as notificationActions from '../../store/actions/notifications';
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
 import * as transactionActions from '../../store/actions/transactions'; 
+import { convertTransactionToDbValues } from '../../utlities/utilities'; 
 
 import {
   Table,
@@ -33,7 +34,9 @@ Array.prototype.unique = function() {
 class TransactionsTable extends Component {
     state = {
         openExpense: false, 
-        selectedExpense: {}, 
+        selectedExpense: {
+            date: new Date()
+        }, 
         userUid: null, 
         filterBy: 0, 
         subFilter: 0, 
@@ -54,6 +57,27 @@ class TransactionsTable extends Component {
             })
         });
     }; 
+
+    updateTransaction = (obj) => {
+        const postObj = convertTransactionToDbValues(obj); 
+        withAuth((authToken) => {
+            this.props.showNotification("Updated transaction");      
+            const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
+            axios.patch(url, postObj)
+                .then(response => {
+                    this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+                    if(this.props.focusedRoommate) {
+                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                    }
+                    this.toggleEdit(); 
+                    this.toggleSelectExpense(); 
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                    this.props.showNotification("Error updating transaction");
+                })
+        })
+    }
 
     selectExpense = (expense) => {
         this.setState({
@@ -193,12 +217,13 @@ class TransactionsTable extends Component {
                     userUid={this.state.userUid} 
                     editToggle={this.toggleEdit} />
                 <NewTransactionDialog 
+                    onSubmit={this.updateTransaction}
                     toggler={this.toggleEdit}
                     toggleView={this.toggleSelectExpense}
                     show={this.state.openEdit}
                     date={this.state.selectedExpense.date}
                     title="Edit Income or Expense"
-                    amount={this.state.selectedExpense.amount}
+                    amount={this.state.selectedExpense.amount + ""}
                     type={this.state.selectedExpense.type}
                     category={this.state.selectedExpense.category}
                     desc={this.state.selectedExpense.desc}
@@ -211,6 +236,7 @@ class TransactionsTable extends Component {
 const mapStateToProps = state => {
     return {
         transactions: state.transactions.userTransactions, 
+        trackedDates: state.transactions.trackedDates,
         userProfile: state.auth.userProfile,
         transactionCategories: state.transactions.transactionCategories
     }; 

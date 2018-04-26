@@ -6,6 +6,7 @@ import * as notificationActions from '../../store/actions/notifications';
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
 import * as roommateActions from '../../store/actions/roommates'; 
+import { convertTransactionToDbValues } from '../../utlities/utilities'; 
 
 import {
     Table,
@@ -24,8 +25,12 @@ import { green500, red500  } from 'material-ui/styles/colors';
 class RoommateTransactionTable extends Component {
     state = {
         showNewTransaction: false, 
+        showEditTransaction: false, 
         openExpense: false, 
-        selectedExpense: {}, 
+        selectedExpense: {
+            date: new Date(), 
+            amount: "0.00"
+        }, 
         userUid: null, 
         filterBy: 0, 
         subFilter: 0, 
@@ -44,7 +49,7 @@ class RoommateTransactionTable extends Component {
     selectExpense = (expense) => {
         this.setState({
             selectedExpense: {
-                amount: expense.amount,
+                amount: expense.amount + "",
                 date: expense.date, 
                 category: expense.category, 
                 id: expense.id, 
@@ -79,6 +84,12 @@ class RoommateTransactionTable extends Component {
             showNewTransaction: !this.state.showNewTransaction
         }); 
     }
+    
+    toggleShowEditTransaction = () => {
+        this.setState({
+            showEditTransaction: !this.state.showEditTransaction
+        }); 
+    }
 
     deleteRoommateExpense = () => {
         withAuth((authToken) => {
@@ -94,6 +105,46 @@ class RoommateTransactionTable extends Component {
             })
         });
     }; 
+
+    sendTransaction = (obj) => {
+        const postObj = convertTransactionToDbValues(obj); 
+        withAuth((authToken) => {
+            const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions.json?auth=${authToken}`; 
+            this.props.showNotification("Sent transaction");      
+            axios.post(url, postObj)
+                .then(response => {
+                    if(this.props.focusedRoommate) {
+                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                    }
+                    this.toggleShowNewTransaction(); 
+                    this.toggleEdit(); 
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                    this.props.showNotification("Error updating transaction");
+                })
+        })
+    }
+    
+    updateTransaction = (obj) => {
+        const postObj = convertTransactionToDbValues(obj); 
+        withAuth((authToken) => {
+            const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
+            this.props.showNotification("Updated transaction");      
+            axios.patch(url, postObj)
+                .then(response => {
+                    if(this.props.focusedRoommate) {
+                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                    }
+                    this.toggleSelectExpense(); 
+                    this.toggleShowEditTransaction(); 
+                }) 
+                .catch(err => {
+                    console.log(err); 
+                    this.props.showNotification("Error updating transaction");
+                })
+        })
+    }
 
     render() {
         const transArray = this.props.focusedRoommate && this.props.focusedRoommate.transactionsToAndFrom
@@ -119,12 +170,10 @@ class RoommateTransactionTable extends Component {
         const totalFrom = transArray.filter(trans => trans.direction === 'from').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
         const netTotal = totalTo - totalFrom; 
 
-        const url = this.props.userProfile && this.props.focusedRoommate
-            ? `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions`
-            : null; 
         return(
             <div>
-                <Table onCellClick={(rownum) => transArray.length > this.selectExpense(transArray[rownum]) ? null : null}>
+                <Table 
+                    onCellClick={(rownum) => transArray.length > this.selectExpense(transArray[rownum]) ? null : null}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn style={{width: '25%'}} >Date</TableHeaderColumn>
@@ -173,21 +222,25 @@ class RoommateTransactionTable extends Component {
                     expense={this.state.selectedExpense}
                     close={this.toggleSelectExpense}
                     userUid={this.state.userUid} 
-                    editToggle={this.toggleShowNewTransaction} />
+                    editToggle={this.toggleShowEditTransaction} />
                 <NewTransactionDialog 
-                    show={this.state.showNewTransaction} 
-                    updateUrl={url+'/'+this.state.selectedExpense.id}
-                    toggleView={this.toggleSelectExpense}
-                    toggler={this.toggleShowNewTransaction} 
+                    onSubmit={this.updateTransaction}
+                    show={this.state.showEditTransaction} 
+                    toggler={this.toggleShowEditTransaction} 
                     forceExpense={true} 
-                    endPoint={url}
-                    title="Expense Roommate"
+                    title="Edit Roommate Expense"
                     type="Expense"
                     date={this.state.selectedExpense.date}                    
                     amount={this.state.selectedExpense.amount}
                     category={this.state.selectedExpense.category}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />
+                <NewTransactionDialog 
+                    onSubmit={this.sendTransaction}
+                    show={this.state.showNewTransaction} 
+                    toggler={this.toggleShowNewTransaction} 
+                    forceExpense={true} 
+                    title="Expense Roommate" />
             </div>
         );
     }

@@ -96,12 +96,17 @@ export const getTransactionCategories = (userId) => {
             const url = `${userId}/transactions/categories.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    const catIds = []; 
-                    const categories = Object.keys(response.data).map(key => {
-                        catIds.push(key); 
-                        return Object.values(response.data[key])[0]; 
-                    }); 
-                    dispatch(getTransactionCategoriesSuccess(categories, catIds)); 
+                    if(response.data) {
+                        const catIds = []; 
+                        const categories = Object.keys(response.data).map(key => {
+                            catIds.push(key); 
+                            return Object.values(response.data[key])[0]; 
+                        }); 
+                        dispatch(getTransactionCategoriesSuccess(categories, catIds)); 
+                    }
+                    else {
+                        dispatch(getTransactionCategoriesSuccess([], []));                         
+                    }
                 })
                 .catch(err => {
                     console.log(err); 
