@@ -22,7 +22,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column';
-import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
+import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
 
 
 Array.prototype.unique = function() {
@@ -216,7 +216,7 @@ class TransactionsTable extends Component {
                     close={this.toggleSelectExpense}
                     userUid={this.state.userUid} 
                     editToggle={this.toggleEdit} />
-                <NewTransactionDialog 
+                <TransactionDialog 
                     onSubmit={this.updateTransaction}
                     toggler={this.toggleEdit}
                     toggleView={this.toggleSelectExpense}

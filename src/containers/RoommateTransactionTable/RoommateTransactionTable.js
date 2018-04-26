@@ -18,7 +18,7 @@ import {
   } from 'material-ui/Table';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
+import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
 import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog'; 
 import { green500, red500  } from 'material-ui/styles/colors'; 
 
@@ -223,7 +223,7 @@ class RoommateTransactionTable extends Component {
                     close={this.toggleSelectExpense}
                     userUid={this.state.userUid} 
                     editToggle={this.toggleShowEditTransaction} />
-                <NewTransactionDialog 
+                <TransactionDialog 
                     onSubmit={this.updateTransaction}
                     show={this.state.showEditTransaction} 
                     toggler={this.toggleShowEditTransaction} 
@@ -235,7 +235,7 @@ class RoommateTransactionTable extends Component {
                     category={this.state.selectedExpense.category}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />
-                <NewTransactionDialog 
+                <TransactionDialog 
                     onSubmit={this.sendTransaction}
                     show={this.state.showNewTransaction} 
                     toggler={this.toggleShowNewTransaction} 

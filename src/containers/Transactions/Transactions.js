@@ -9,7 +9,7 @@ import * as notificationsActions from '../../store/actions/notifications';
 import { convertTransactionToDbValues } from '../../utlities/utilities'; 
 
 import TransactionsTable from '../TransactionsTable/TransactionsTable'; 
-import NewTransactionDialog from '../NewTransactionDialog/NewTransactionDialog'; 
+import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import MonthYearSelector from '../MonthYearSelector/MonthYearSelector'; 
@@ -56,7 +56,7 @@ class Transactions extends Component {
                                 <h1>Expenses and Income</h1>
                                 <div>
                                     <TransactionsTable />
-                                    <NewTransactionDialog 
+                                    <TransactionDialog 
                                         onSubmit={this.sendNewTransaction}
                                         title="New Income or Expense"
                                         date={new Date()}

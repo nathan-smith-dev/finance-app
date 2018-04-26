@@ -1,6 +1,6 @@
 import React, { Component } from 'react'; 
 import PropTypes from 'prop-types'; 
-import classes from './NewTransactionDialog.css'; 
+import classes from './TransactionDialog.css'; 
 
 import * as transactionActionCreators from '../../store/actions/transactions'; 
 import * as notificationActions from '../../store/actions/notifications'; 
