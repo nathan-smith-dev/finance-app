@@ -1,4 +1,5 @@
 import React, { Component } from 'react'; 
+import PropTypes from 'prop-types'; 
 import classes from './Transactions.css'; 
 
 import axios from 'axios'; 
@@ -20,6 +21,12 @@ import Column from '../../hoc/Grid/Column/Column';
 
 
 class Transactions extends Component {
+    static propTypes = {
+        userProfile: PropTypes.object, 
+        trackedDates: PropTypes.object, 
+        showNotification: PropTypes.func, 
+        getTransactions: PropTypes.func
+    }
 
     state = {
         showDialog: false
