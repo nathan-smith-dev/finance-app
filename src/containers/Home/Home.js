@@ -4,7 +4,7 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import Container from '../../hoc/Grid/Container/Container'; 
 import Paper from '../../hoc/Paper/Paper'; 
-import ExampleCharts from '../ExampleCharts/ExampleCharts'; 
+import ExampleCharts from '../../components/ExampleCharts/ExampleCharts'; 
 
 class Home extends Component {
     componentWillMount() {

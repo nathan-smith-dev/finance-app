@@ -11,7 +11,7 @@ import UserCategories from './containers/UserCategories/UserCategories';
 import Roommates from './containers/Roommates/Roommates'; 
 import Transactions from './containers/Transactions/Transactions'; 
 import Chart from './containers/Chart/Chart'; 
-import Home from './components/Home/Home'; 
+import Home from './containers/Home/Home'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Snackbar from 'material-ui/Snackbar';
 import ViewRoommate from './containers/ViewRoommate/ViewRoommate';

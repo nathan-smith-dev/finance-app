@@ -18,3 +18,7 @@ export const convertTransactionToDbValues = (obj) => {
 
     return postObj; 
 }
+
+export const filterUniqueArray = (array) => {
+    return array.filter((value, index, self) => self.indexOf(value) === index)
+}

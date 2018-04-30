@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'; 
 
+import * as utilities from '../../utlities/utilities'; 
 import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
 import { withAuth } from '../../firebase/auth'; 
@@ -24,12 +25,6 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column';
 import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
 
-
-Array.prototype.unique = function() {
-    return this.filter(function (value, index, self) { 
-      return self.indexOf(value) === index;
-    });
-}
 
 class TransactionsTable extends Component {
     state = {
@@ -128,7 +123,7 @@ class TransactionsTable extends Component {
             transArray = [...this.props.transactions]; 
             var subFilters = [
                 [this.props.transactionCategories], 
-                [(transArray.map(trans => trans.date.day).unique())]
+                [utilities.filterUniqueArray(transArray.map(trans => trans.date.day))]
             ]; 
             transArray.sort((a, b) => a.date.day - b.date.day); 
             transArray.reverse(); 
