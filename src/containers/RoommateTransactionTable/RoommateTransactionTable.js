@@ -177,7 +177,7 @@ class RoommateTransactionTable extends Component {
             
         const transactions = transArray.map((trans, index) => {
             const color = trans.direction === "to" ? 'green' : 'red'; 
-            const newStyle = trans.new ? {backgroundColor: '#C0D1E5'} : null;
+            const newStyle = trans.new && trans.direction !== 'to' ? {backgroundColor: '#C0D1E5'} : null;
             return (
                 <TableRow style={newStyle} key={index}>
                     <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
