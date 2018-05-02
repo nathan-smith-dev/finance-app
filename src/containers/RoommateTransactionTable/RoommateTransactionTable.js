@@ -67,6 +67,29 @@ class RoommateTransactionTable extends Component {
         this.setState({
             openExpense: !this.state.openExpense
         }); 
+        withAuth((authToken) => {
+            const url = `${this.props.userProfile.uid}/roommates/mates/${this.props.focusedRoommate.uid}/transactions/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    if(response.data.new) {
+                        axios.patch(url, {new: false})
+                            .then(response => {
+                                if(this.props.focusedRoommate) {
+                                    const notifications = {
+                                        ...this.props.roommateNotifications, 
+                                        [this.props.focusedRoommate.uid]: this.props.roommateNotifications[this.props.focusedRoommate.uid]-1
+                                    }; 
+                                    this.props.updateRoommateNotifications(notifications); 
+                                    this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+                                }
+                            }) 
+                            .catch(err => {
+                                console.log(err); 
+                            })
+                    }
+                })
+                .catch(error => console.log(error)); 
+        })
     }; 
 
     canToggleExpense = () => {
@@ -108,6 +131,7 @@ class RoommateTransactionTable extends Component {
 
     sendTransaction = (obj) => {
         const postObj = convertTransactionToDbValues(obj); 
+        postObj.new = true; 
         withAuth((authToken) => {
             const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions.json?auth=${authToken}`; 
             this.props.showNotification("Sent transaction");      
@@ -153,8 +177,9 @@ class RoommateTransactionTable extends Component {
             
         const transactions = transArray.map((trans, index) => {
             const color = trans.direction === "to" ? 'green' : 'red'; 
+            const newStyle = trans.new ? {backgroundColor: '#C0D1E5'} : null;
             return (
-                <TableRow key={index}>
+                <TableRow style={newStyle} key={index}>
                     <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
                     <TableRowColumn style={{color: color, width: '30%'}}>
                         <div style={{width: 50, textAlign: 'right'}} >
@@ -250,6 +275,7 @@ const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
         focusedRoommate: state.roommates.focusedRoommate, 
+        roommateNotifications: state.roommates.notifications,         
     }; 
 }; 
 
@@ -257,6 +283,7 @@ const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)), 
         getRoommateTransactions: (rUid, cUid) => dispatch(roommateActions.getRoommateTransactionsToAndFrom(rUid, cUid)),
+        updateRoommateNotifications: (notifications) => dispatch(roommateActions.updateRoommateNotifications(notifications))        
     }; 
 }; 
 

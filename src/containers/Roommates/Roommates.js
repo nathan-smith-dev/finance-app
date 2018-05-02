@@ -192,6 +192,7 @@ class Roommates extends Component {
                                     this.props.mates 
                                         ? this.props.mates.map((user) => {
                                             return <MenuItem 
+                                                rightIcon={this.props.roommateNotifications[user.uid] ? <Badge badgeContent={this.props.roommateNotifications[user.uid]} primary={true} /> : null}
                                                 key={user.uid} 
                                                 primaryText={user.name} 
                                                 onClick={() => this.redirectToRoommate(user.uid)} />
@@ -247,6 +248,7 @@ const mapStateToProps = state => {
         userProfile: state.auth.userProfile, 
         allUsers: state.auth.allUsers, 
         roommateRequests: state.roommates.requests, 
+        roommateNotifications: state.roommates.notifications, 
         mates: state.roommates.mates,
         focusedRoommate: state.roommates.focusedRoommate,
     }; 
@@ -255,7 +257,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getRoommateRequests: (uid) => dispatch(roommateActions.getRoommateRequests(uid)), 
-        setFocusedRoomate: (roommate) => dispatch(roommateActions.setFocusedRoomate(roommate))
+        setFocusedRoomate: (roommate) => dispatch(roommateActions.setFocusedRoomate(roommate)), 
     }
 }
 

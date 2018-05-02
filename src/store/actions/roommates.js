@@ -34,8 +34,10 @@ export const getRoommates = (uid) => {
             axios.get(url)
                 .then(response => {
                     // console.log(Object.values(response.data)); 
-                    if(response.data) {
-                        dispatch(setRoommates(Object.values(response.data))); 
+                    const data = response.data; 
+                    if(data) {
+                        dispatch(setRoommates(Object.values(data))); 
+                        dispatch(setRoommateNotifications(Object.values(data))); 
                     }
                 })
                 .catch(error => console.log(error)); 
@@ -49,6 +51,29 @@ export const setRoommates = (roommates) => {
         mates: roommates 
     }; 
 }; 
+
+export const setRoommateNotifications = (roommates) => {
+    let notifications = {}; 
+    if(roommates && roommates.length > 0) {
+        for(let mate of roommates) {
+            if(mate.transactions) {
+                for(let trans of Object.values(mate.transactions)) {
+                    if(trans.new) {
+                        notifications[mate.uid] = notifications[mate.uid] ? notifications[mate.uid]+1 : 1; 
+                    }
+                }
+            }
+        }
+    }
+    return updateRoommateNotifications(notifications); 
+}
+
+export const updateRoommateNotifications = (notifications) => {
+    return {
+        type: actionTypes.SET_ROOMMATE_NOTIFICATIONS, 
+        notifications: notifications
+    }; 
+}
 
 export const setFocusedRoomateSuccess = (roommate) => {
     return {

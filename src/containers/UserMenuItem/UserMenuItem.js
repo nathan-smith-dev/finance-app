@@ -7,6 +7,7 @@ import UsersIcon from 'material-ui/svg-icons/action/supervisor-account';
 import CircularProgress from 'material-ui/CircularProgress';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Badge from 'material-ui/Badge'; 
 
 import { connect } from 'react-redux'; 
 import { auth } from '../../firebase'; 
@@ -60,6 +61,16 @@ class UserMenuItem extends Component {
         this.props.onToggle(); 
     }
 
+    getRoommateNotifications = () => {
+        let notifications = 0; 
+        if(this.props.roommateNotifications && Object.values(this.props.roommateNotifications).length > 0) {
+            for(let notificationAmount of Object.values(this.props.roommateNotifications)) {
+                notifications += notificationAmount; 
+            }
+        }
+        return notifications; 
+    }
+
     render() {
         const actions = [
             <FlatButton
@@ -73,6 +84,14 @@ class UserMenuItem extends Component {
               onClick={this.logout}
             />,
         ];
+
+        let icon  = null; 
+        const notifications = this.getRoommateNotifications(); 
+        if(notifications > 0) {
+            icon = (
+                <Badge badgeContent={notifications} primary={true} />
+            ); 
+        }
 
         return (
             this.props.profile 
@@ -89,6 +108,7 @@ class UserMenuItem extends Component {
                         >User Categories
                     </MenuItem>
                     <MenuItem 
+                        rightIcon={icon}
                         leftIcon={<UsersIcon />}
                         onClick={() => this.openTab('/roommates')}
                         >Roommates
@@ -116,7 +136,9 @@ class UserMenuItem extends Component {
 
 const mapStateToProps = state => {
     return {
-        profile: state.auth.userProfile
+        profile: state.auth.userProfile, 
+        roommates: state.roommates.mates, 
+        roommateNotifications: state.roommates.notifications
     }
 }
 

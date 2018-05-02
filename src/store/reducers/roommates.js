@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     requests: null, 
     mates: null, 
-    focusedRoommate: null,    
+    focusedRoommate: null,
+    notifications: {}, 
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +23,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedRoommate: action.roommate,
+            }; 
+        case actionTypes.SET_ROOMMATE_NOTIFICATIONS: 
+            return {
+                ...state,
+                notifications: action.notifications,
             }; 
         case actionTypes.GET_ROOMATE_TRANS_TO_AND_FROM: 
             return {
