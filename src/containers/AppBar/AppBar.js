@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import CloseIcon from 'material-ui/svg-icons/navigation/close'; 
 import PieIcon from 'material-ui/svg-icons/editor/pie-chart'; 
+import DateIcon from 'material-ui/svg-icons/action/date-range'; 
 import ListIcon from 'material-ui/svg-icons/action/view-list'; 
 import HomeIcon from 'material-ui/svg-icons/action/home'; 
 import { pink500 } from 'material-ui/styles/colors'; 
@@ -71,6 +72,11 @@ class NavBar extends Component {
                         style={{color: this.isPageActive('/finance-trends')}}
                         leftIcon={<PieIcon color={this.isPageActive('/finance-trends')} />}
                         onClick={() => this.routeTo('/finance-trends')}>Trends
+                    </MenuItem>
+                    <MenuItem 
+                        style={{color: this.isPageActive('/annual-overview')}}
+                        leftIcon={<DateIcon color={this.isPageActive('/annual-overview')} />}
+                        onClick={() => this.routeTo('/annual-overview')}>Annual Overview
                     </MenuItem>
                 </Drawer>
             </Fragment>

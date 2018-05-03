@@ -15,6 +15,8 @@ import Home from './containers/Home/Home';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Snackbar from 'material-ui/Snackbar';
 import ViewRoommate from './containers/ViewRoommate/ViewRoommate';
+import AnnualOverview from './containers/AnnualOverview/AnnualOverview'; 
+import MonthlyOverview from './containers/MonthlyOverview/MonthlyOverview'; 
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -36,7 +38,7 @@ class App extends Component {
                 : <Redirect from="/expenses-income" to="/must-login" />
               }
               {this.props.userProfile
-                ? <Route path="/finance-trends" exact component={Chart} />
+                ? <Route path="/finance-trends" exact component={MonthlyOverview} />
                 : <Redirect from="/finance-trends" to="/must-login" />
               }
               {this.props.userProfile
@@ -50,6 +52,10 @@ class App extends Component {
               {this.props.userProfile
                 ? <Route path="/roommates/:id" exact component={ViewRoommate} />
                 : <Redirect from="/roommates/:id" to="/must-login" />
+              }
+              {this.props.userProfile
+                ? <Route path="/annual-overview" exact component={AnnualOverview} />
+                : <Redirect from="/annual-overview" to="/must-login" />
               }
               <Route path="/must-login" exact render={() => <Home showNotifcation={() => this.props.showNotifcation("Login to view page.")} />} />
               <Route path="/" exact component={Home} />
