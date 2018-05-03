@@ -40,6 +40,15 @@ export const flattenTransactions = (transactions) => {
         }; 
     }
     // console.log(transactions);
+    const data = transactionsToIncomeExpenseAndCategory(transactions); 
+
+    return {
+        type: actionTypes.FLATTEN_TRANSACTION_DATA, 
+        details: data
+    }
+}
+
+const transactionsToIncomeExpenseAndCategory = (transactions) => {
     let expenses = 0; 
     let incomes = 0;  
     const categories = {}; 
@@ -54,16 +63,11 @@ export const flattenTransactions = (transactions) => {
         else if(trans.type === "Income") 
             incomes += trans.amount; 
     }
-    const data = {
+    return {
         incomes: incomes, 
         expenses: expenses, 
         categorizedExpenses: categories
     }; 
-
-    return {
-        type: actionTypes.FLATTEN_TRANSACTION_DATA, 
-        details: data
-    }
 }
 
 export const getTransactions = (userId, month, year) => {
@@ -89,6 +93,38 @@ export const getTransactions = (userId, month, year) => {
         }); 
     }
 }; 
+
+export const getAnnualTransactions = (userId, year) => {
+    return dispatch => {
+        withAuth((authToken) => {
+            const url = `${userId}/transactions/${year}.json?auth=${authToken}`; 
+            axios.get(url)
+                .then(response => {
+                    const totalTransactions = response.data.map(month => {
+                        if(month) {
+                            const transactions = Object.values(month); 
+                            return transactions; 
+                        }
+                        return []; 
+                    }); 
+                    const transactions = [].concat.apply([], totalTransactions); 
+                    dispatch(getAnnualDetails(transactionsToIncomeExpenseAndCategory(transactions))); 
+                    dispatch(getTransactionsLoad(false)); 
+                })
+                .catch(err => {
+                    dispatch(getTransactionsFailed()); 
+                    dispatch(getTransactionsLoad(false));                   
+                }); 
+        }); 
+    }
+}
+
+export const getAnnualDetails = (details) => {
+    return {
+        type: actionTypes.GET_ANNUAL_USER_TRANSACTIONS, 
+        details: details
+    }
+}
 
 export const getTransactionCategories = (userId) => {
     return dispatch => {

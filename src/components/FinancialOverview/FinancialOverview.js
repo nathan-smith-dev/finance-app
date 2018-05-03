@@ -14,7 +14,8 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import { red300 } from 'material-ui/styles/colors'; 
 
-const financialOverview = ({ loading = true, income, expense, transactionDetails, 
+const financialOverview = ({ loading = true, income, expense, transactionDetails = {incomes: null, expenses: null},
+    selector = true, title,  
     pieData, pieLabels, barData, barLabels }) => {
 
     let noTransactions = null; 
@@ -39,7 +40,7 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                             <Column style={{margin: '0 auto'}} width="xl-50 md-75">
                                 <Paper>
                                     <div style={{height: 300, width: '100%'}}>                                        
-                                        <PieChart data={pieData} labels={pieLabels} title="Expense Breakdown" />
+                                        <PieChart data={pieData} labels={pieLabels} title={title + " Expense Breakdown"} />
                                     </div>
                                     {noTransactions}
                                     <div style={{marginTop: 20}}>
@@ -48,7 +49,7 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                                             expenses={transactionDetails.expenses} 
                                             transactionDetails={transactionDetails} />
                                     </div>
-                                    <MonthYearSelector />
+                                    {selector && (<MonthYearSelector />)}
                                 </Paper>
                             </Column>
                         </Row>
@@ -60,7 +61,7 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                             <Column style={{margin: '0 auto'}} width="xl-50 md-75">
                                 <Paper>
                                     <div style={{height: 300, width: '100%'}}>
-                                        <BarChart data={barData} title="Income VS Spending" labels={barLabels} />
+                                        <BarChart data={barData} title={title + " Income VS Spending"} labels={barLabels} />
                                     </div>
                                     {noTransactions}
                                     <div style={{marginTop: 20}}>
@@ -70,7 +71,7 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                                             incomes={transactionDetails.incomes} 
                                             expenses={transactionDetails.expenses} />
                                     </div>
-                                    <MonthYearSelector />
+                                    {selector && (<MonthYearSelector />)}
                                 </Paper>
                             </Column>
                         </Row>

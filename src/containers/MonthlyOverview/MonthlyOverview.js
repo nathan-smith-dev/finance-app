@@ -32,6 +32,7 @@ class Chart extends Component {
     
         return(
             <FinancialOverview 
+                title={"Monthly"}
                 loading={loading}
                 transactionDetails={transactionDetails}
                 pieData={pieData}

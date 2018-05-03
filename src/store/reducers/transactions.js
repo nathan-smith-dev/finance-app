@@ -57,6 +57,11 @@ const reducer = (state = initialState, action) => {
                 trackedDates: {...state.trackedDates},                
                 transactionDetails: action.details
             }; 
+        case actionTypes.GET_ANNUAL_USER_TRANSACTIONS: 
+            return {
+                ...state, 
+                annualDetails: action.details
+            }; 
         default: 
             return {
                 ...state, 

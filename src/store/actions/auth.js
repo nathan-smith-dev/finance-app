@@ -15,6 +15,7 @@ export const getProfile = (profile) => {
     return (dispatch, getState) => {
         if(profile) {
             dispatch(transactionActions.getTransactions(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
+            dispatch(transactionActions.getAnnualTransactions(profile.uid, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getTransactionCategories(profile.uid));     
             dispatch(addProfileToDb(profile)); 
             dispatch(getAllUsers()); 

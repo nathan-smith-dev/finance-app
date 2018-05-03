@@ -69,9 +69,9 @@ class NavBar extends Component {
                         onClick={() => this.routeTo('/expenses-income')}>Expenses / Income
                     </MenuItem>
                     <MenuItem 
-                        style={{color: this.isPageActive('/finance-trends')}}
-                        leftIcon={<PieIcon color={this.isPageActive('/finance-trends')} />}
-                        onClick={() => this.routeTo('/finance-trends')}>Trends
+                        style={{color: this.isPageActive('/monthly-overview')}}
+                        leftIcon={<PieIcon color={this.isPageActive('/monthly-overview')} />}
+                        onClick={() => this.routeTo('/monthly-overview')}>Monthly Overview
                     </MenuItem>
                     <MenuItem 
                         style={{color: this.isPageActive('/annual-overview')}}

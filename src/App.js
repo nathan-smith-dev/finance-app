@@ -10,7 +10,6 @@ import AppBar from './containers/AppBar/AppBar';
 import UserCategories from './containers/UserCategories/UserCategories'; 
 import Roommates from './containers/Roommates/Roommates'; 
 import Transactions from './containers/Transactions/Transactions'; 
-import Chart from './containers/Chart/Chart'; 
 import Home from './containers/Home/Home'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Snackbar from 'material-ui/Snackbar';
@@ -38,8 +37,8 @@ class App extends Component {
                 : <Redirect from="/expenses-income" to="/must-login" />
               }
               {this.props.userProfile
-                ? <Route path="/finance-trends" exact component={MonthlyOverview} />
-                : <Redirect from="/finance-trends" to="/must-login" />
+                ? <Route path="/monthly-overview" exact component={MonthlyOverview} />
+                : <Redirect from="/monthly-overview" to="/must-login" />
               }
               {this.props.userProfile
                 ? <Route path="/categories" exact component={UserCategories} />
