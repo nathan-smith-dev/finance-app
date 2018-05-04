@@ -100,7 +100,7 @@ export const getAnnualTransactions = (userId, year) => {
             const url = `${userId}/transactions/${year}.json?auth=${authToken}`; 
             axios.get(url)
                 .then(response => {
-                    const totalTransactions = response.data.map(month => {
+                    const totalTransactions = Object.values(response.data).map(month => {
                         if(month) {
                             const transactions = Object.values(month); 
                             return transactions; 
@@ -112,6 +112,7 @@ export const getAnnualTransactions = (userId, year) => {
                     dispatch(getTransactionsLoad(false)); 
                 })
                 .catch(err => {
+                    console.log(err)
                     dispatch(getTransactionsFailed()); 
                     dispatch(getTransactionsLoad(false));                   
                 }); 

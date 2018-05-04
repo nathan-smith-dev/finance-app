@@ -14,13 +14,18 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import { red300 } from 'material-ui/styles/colors'; 
 
-const financialOverview = ({ loading = true, income, expense, transactionDetails = {incomes: null, expenses: null},
-    selector = true, title,  
+const financialOverview = ({ loading = true, transactionDetails, selector = true, title,  
     pieData, pieLabels, barData, barLabels }) => {
 
-    let noTransactions = null; 
+    let income = 0, expense = 0; 
+    if(transactionDetails && transactionDetails.expenses) {
+        income = transactionDetails.incomes; 
+        expense = transactionDetails.expenses; 
+    }
 
-    if(!loading && (!transactionDetails.categorizedExpenses || transactionDetails.categorizedExpenses.length > 0)) {
+    let noTransactions = null;
+
+    if(!loading && ( transactionDetails && (!transactionDetails.categorizedExpenses || transactionDetails.categorizedExpenses.length > 0))) {
         noTransactions = <h5 style={{color: red300}}>No transaction data for selected time period. </h5>; 
     }
     else if(!(transactionDetails && transactionDetails.categorizedExpenses)) {
@@ -45,8 +50,8 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                                     {noTransactions}
                                     <div style={{marginTop: 20}}>
                                         <CategoryTable 
-                                            incomes={transactionDetails.incomes} 
-                                            expenses={transactionDetails.expenses} 
+                                            incomes={income} 
+                                            expenses={expense} 
                                             transactionDetails={transactionDetails} />
                                     </div>
                                     {selector && (<MonthYearSelector />)}
@@ -68,8 +73,8 @@ const financialOverview = ({ loading = true, income, expense, transactionDetails
                                         <IncomeExpenseTable 
                                             incomeTitle="Income"
                                             expenseTitle="Expense"
-                                            incomes={transactionDetails.incomes} 
-                                            expenses={transactionDetails.expenses} />
+                                            incomes={income} 
+                                            expenses={expense} />
                                     </div>
                                     {selector && (<MonthYearSelector />)}
                                 </Paper>
