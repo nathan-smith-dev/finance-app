@@ -16,6 +16,10 @@ export const colors = [
     deepPurple300, lightBlue300, green300, amber300
 ]; 
 
+for(let i = 0; i < 20; i++) {
+    colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16)); // add 20 random colors just to be sure nothing is uncolored in annual expense
+}
+
 const pieChart = ({ data, title, labels }) => {
     const pieDataProps = {
         labels: labels,
