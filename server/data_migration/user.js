@@ -124,7 +124,7 @@ async function getRoomateExpenses(url, fromUid, toUid) {
     if(data) {
         const transactions = Object.values(data); 
         for(let trans of transactions) {
-            query += `EXEC CreateRoomateExpense @expenseTo = '${toUid}', @expenseFrom = ${fromUid}, @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category)}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month}-${trans.date.day}'\n`;         
+            query += `EXEC CreateRoomateExpense @expenseTo = '${toUid}', @expenseFrom = ${fromUid}, @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category)}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month+1}-${trans.date.day}'\n`;         
         }
     }
     return query;          

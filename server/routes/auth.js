@@ -18,12 +18,12 @@ admin.initializeApp({
     databaseURL: 'https://react-finance-f20df.firebaseio.com'
 });
 
-const verifyToken = (token, callback) => {
+const verifyToken = (token, callback, err) => {
     admin.auth().verifyIdToken(token)
         .then(function(decodedToken) {
             callback(decodedToken); 
         }).catch(function(error) {
-            console.log(error); 
+            err(error); 
         });
 }; 
 

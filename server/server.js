@@ -1,6 +1,6 @@
 const express = require('express'); 
 const helmet = require('helmet'); 
-const verifyToken = require('./routes/auth'); 
+const verifyToken = require('./routes/auth');
 
 const expenses = require('./routes/expenses'); 
 
