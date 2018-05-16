@@ -90,10 +90,10 @@ async function getTransactions(url, uid) {
     let query = ''; 
     for(let trans of transactions) {
         if(trans.type === 'Expense') {
-            query += `EXEC CreateExpense @userId = '${uid}', @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category)}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month}-${trans.date.day}'\n`; 
+            query += `EXEC CreateExpense @userId = '${uid}', @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category)}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month+1}-${trans.date.day}'\n`; 
         }
         if(trans.type === 'Income') {
-            query += `EXEC CreateIncome @userId = '${uid}', @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category) || 'Paycheck'}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month}-${trans.date.day}'\n`; 
+            query += `EXEC CreateIncome @userId = '${uid}', @amount = ${trans.amount}, @catName = '${sqlEscapeSingleQuote(trans.category) || 'Paycheck'}', @desc = '${sqlEscapeSingleQuote(trans.desc)}', @date = '${trans.date.year}-${trans.date.month+1}-${trans.date.day}'\n`; 
         }
     }
     return query; 
