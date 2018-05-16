@@ -37,7 +37,7 @@ router.get('/expenses', (req, res) => {
         const result = queryDataBase(query); 
         result.then(record => {
             res.body = record.recordset; 
-            res.send(toCamel(record.recordset)); 
+            res.send(record.recordset); 
         })
         .catch(err => {
             console.log(err.message)
