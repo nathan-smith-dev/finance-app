@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router(); 
 const queryDataBase = require('../db/sqlserver.js'); 
 const verifyToken = require('./auth'); 
-const toCamel = require('../middleware/toCamel'); 
 
 router.get('/', (req, res) => {
     const idToken = req.header('x-auth-token'); 
@@ -14,7 +13,7 @@ router.get('/', (req, res) => {
         const result = queryDataBase(query); 
         result.then(record => {
             res.body = record.recordset; 
-            res.send(toCamel(record.recordset)); 
+            res.send(record.recordset); 
         })
         .catch(err => {
             console.log(err.message)
