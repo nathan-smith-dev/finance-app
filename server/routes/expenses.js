@@ -11,7 +11,9 @@ router.get('/', (req, res) => {
     verifyToken(idToken, decodedToken => {
         let query = `EXEC GetUserExpenses @userId = ${decodedToken.uid}`; 
         if(req.query.year && req.query.month)
-            query = `EXEC GetUserExpensesAfterDate @userId = ${decodedToken.uid}, @date = '${+req.query.year}-${+req.query.month}-01'`
+            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`
+        if(req.query.category)
+            query += `, @categoryName = ${req.query.category}`
 
         const result = queryDataBase(query); 
         result.then(record => {
