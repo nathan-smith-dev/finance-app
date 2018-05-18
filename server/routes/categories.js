@@ -31,7 +31,7 @@ router.get('/totals', (req, res) => {
     verifyToken(idToken, decodedToken => {
         let query = `EXEC GetUserCategoryTotals @userId = ${decodedToken.uid}`; 
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`
+            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
 
         const result = queryDataBase(query); 
         result.then(record => {
@@ -39,7 +39,7 @@ router.get('/totals', (req, res) => {
             res.send(record.recordset); 
         })
         .catch(err => {
-            console.log(err.message)
+            console.log(err.message);
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {

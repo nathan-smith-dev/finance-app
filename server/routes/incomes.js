@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
     verifyToken(idToken, decodedToken => {
         let query = `EXEC GetUserIncomes @userId = ${decodedToken.uid}`; 
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`
+            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`; 
         if(req.query.category)
-            query += `, @categoryName = ${req.query.category}`
+            query += `, @categoryName = ${req.query.category}`; 
 
         const result = queryDataBase(query); 
         result.then(record => {
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
             res.send(record.recordset); 
         })
         .catch(err => {
-            console.log(err.message)
+            console.log(err.message); 
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {
@@ -35,7 +35,7 @@ router.get('/totals', (req, res) => {
     verifyToken(idToken, decodedToken => {
         let query = `EXEC GetTotalIncomesAndExpenses @userId = ${decodedToken.uid}`; 
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`
+            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`; 
 
         const result = queryDataBase(query); 
         result.then(record => {
@@ -43,7 +43,7 @@ router.get('/totals', (req, res) => {
             res.send(record.recordset); 
         })
         .catch(err => {
-            console.log(err.message)
+            console.log(err.message); 
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {
@@ -56,7 +56,7 @@ router.get('/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.params.id)
+        console.log(req.params.id); 
         let query = `EXEC GetUserIncome @incomeId = '${req.params.id}'`; 
 
         const result = queryDataBase(query); 

@@ -29,10 +29,10 @@ router.get('/expenses', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.header('expenseFrom'))
+        console.log(req.header('expenseFrom'));
         let query = `EXEC GetRoommateExpenses @expenseTo = ${decodedToken.uid}, @expenseFrom = ${req.header('expenseFrom')}`; 
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`
+            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
             
         const result = queryDataBase(query); 
         result.then(record => {
@@ -40,7 +40,7 @@ router.get('/expenses', (req, res) => {
             res.send(record.recordset); 
         })
         .catch(err => {
-            console.log(err.message)
+            console.log(err.message);
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {
