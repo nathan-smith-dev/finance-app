@@ -5,6 +5,7 @@ const verifyToken = require('./routes/auth');
 
 const expenses = require('./routes/expenses'); 
 const incomes = require('./routes/incomes'); 
+const transactions = require('./routes/transactions'); 
 const roommates = require('./routes/roommates'); 
 const categories = require('./routes/categories'); 
 
@@ -17,6 +18,7 @@ app.use(cors({ origin: true, allowedHeaders: 'x-auth-token' }));
 
 app.use('/api/expenses', expenses); 
 app.use('/api/incomes', incomes); 
+app.use('/api/transactions', transactions); 
 app.use('/api/roommates', roommates); 
 app.use('/api/categories', categories); 
 
