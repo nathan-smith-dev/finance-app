@@ -13,6 +13,7 @@ const config = {
 
 async function queryDataBase(query) {
     try {
+        sql.close(); 
         const pool = await sql.connect(config); 
         const result = await pool.request()
             .query(query); 
