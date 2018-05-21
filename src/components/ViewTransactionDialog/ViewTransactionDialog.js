@@ -35,7 +35,7 @@ const dialog = (props) => {
         expenseInfo = (
             <div>
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Date</h2>
-                <h3 style={{marginTop: 3}}>{props.expense.date.month + 1}/{props.expense.date.day}/{props.expense.date.year}</h3>
+                <h3 style={{marginTop: 3}}>{props.expense.date.getMonth() + 1}/{props.expense.date.getDate()}/{props.expense.date.getFullYear()}</h3>
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Amount</h2>
                 <h3 style={{marginTop: 3}}>${props.expense.amount}</h3>
                 <h2 style={{margin: 0, fontWeight: 300, color: '#BDBDBD', fontSize: 10, textTransform: 'uppercase'}}>Category</h2>
