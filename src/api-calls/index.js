@@ -90,3 +90,17 @@ export const getCountOfIncomeAndExpenseCategories = (month, year, callback) => {
             }); 
     }); 
 }
+
+export const getNetIncomeAndExpense = (month, year, callback) => {
+    withAuth(authToken => {
+        instance.get(`/expenses/totals?month=${month}&year=${year}`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getNetIncomeAndExpense(month, year, callback), 125); 
+            }); 
+    }); 
+}

@@ -18,23 +18,24 @@ class Chart extends Component {
 
     render() {
         const { 
-            transactionDetails, 
+            categorizedExpenses, 
+            net, 
             loading
         } = this.props; 
 
         let pieLabels = [], pieData = [], barData = [], barLabels = ['Income', 'Expense']; 
 
-        if(transactionDetails && transactionDetails.categorizedExpenses) {
-            pieLabels = Object.keys(transactionDetails.categorizedExpenses); 
-            pieData = Object.values(transactionDetails.categorizedExpenses).map(val => toFixedNumber(val, 2)); 
-            barData = [toFixedNumber(transactionDetails.incomes, 2), toFixedNumber(transactionDetails.expenses, 2)]; 
+        if(categorizedExpenses.length > 0) {
+            pieLabels = categorizedExpenses.map(obj => obj.category); 
+            pieData = categorizedExpenses.map(obj => obj.total); 
+            barData = [toFixedNumber(net.incomes, 2), toFixedNumber(net.expenses, 2)]; 
         }
     
         return(
             <FinancialOverview 
                 title={"Monthly"}
                 loading={loading}
-                transactionDetails={transactionDetails}
+                // transactionDetails={transactionDetails}
                 pieData={pieData}
                 pieLabels={pieLabels}
                 barData={barData}
@@ -45,7 +46,8 @@ class Chart extends Component {
 
 const mapStateToProps = state => {
     return {
-        transactionDetails: state.transactions.transactionDetails, 
+        categorizedExpenses: state.transactions.categorizedExpenses, 
+        net: state.transactions.net, 
         loading: state.transactions.loadingTransactions
     }
 }; 

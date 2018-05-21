@@ -20,6 +20,10 @@ const initialState = {
         dates: [], 
         categories: []
     }, 
+    net: {
+        incomes: 0,
+        expenses: 0
+    },
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -99,6 +103,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state, 
                 filters: {...state.filters, categories: action.categories}
+            }; 
+        case actionTypes.GET_NET_TRANSACTIONS: 
+            return {
+                ...state, 
+                net: { incomes: action.net.incomes, expenses: action.net.expenses }
             }; 
         default: 
             return {

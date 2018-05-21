@@ -104,6 +104,14 @@ export const getIncomeAndExpenses = (userId, month, year, categoryName = null) =
         apiCalls.getIncomeAndExpenses(month, year, categoryName, transactions => dispatch(setIncomeAndExpenses(transactions))); 
         apiCalls.getCountOfIncomeAndExpenses(month, year, countObj => dispatch(setDateFilter(countObj))); 
         apiCalls.getCountOfIncomeAndExpenseCategories(month, year, countObj => dispatch(setCategoryFilter(countObj))); 
+        apiCalls.getNetIncomeAndExpense(month, year, netArray => dispatch(setNetIncomeAndExpense(netArray))); 
+    }
+}
+
+const setNetIncomeAndExpense = (netArray) => {
+    return {
+        type: actionTypes.GET_NET_TRANSACTIONS, 
+        net: netArray[0]
     }
 }
 
