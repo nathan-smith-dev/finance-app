@@ -35,18 +35,18 @@ class MonthYearSelector extends Component {
                         floatingLabelText="Month"
                         value={trackedDates.month}
                         onChange={this.changeMonth}>
-                        <MenuItem value={0} primaryText="January" />
-                        <MenuItem value={1} primaryText="February" />
-                        <MenuItem value={2} primaryText="March" />
-                        <MenuItem value={3} primaryText="April" />
-                        <MenuItem value={4} primaryText="May" />
-                        <MenuItem value={5} primaryText="June" />
-                        <MenuItem value={6} primaryText="July" />
-                        <MenuItem value={7} primaryText="August" />
-                        <MenuItem value={8} primaryText="September" />
-                        <MenuItem value={9} primaryText="October" />
-                        <MenuItem value={10} primaryText="November" />
-                        <MenuItem value={11} primaryText="December" />
+                        <MenuItem value={1} primaryText="January" />
+                        <MenuItem value={2} primaryText="February" />
+                        <MenuItem value={3} primaryText="March" />
+                        <MenuItem value={4} primaryText="April" />
+                        <MenuItem value={5} primaryText="May" />
+                        <MenuItem value={6} primaryText="June" />
+                        <MenuItem value={7} primaryText="July" />
+                        <MenuItem value={8} primaryText="August" />
+                        <MenuItem value={9} primaryText="September" />
+                        <MenuItem value={10} primaryText="October" />
+                        <MenuItem value={11} primaryText="November" />
+                        <MenuItem value={12} primaryText="December" />
                     </SelectField>
                 </Column>
                 <Column width="xs-50">

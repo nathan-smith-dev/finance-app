@@ -9,9 +9,17 @@ const initialState = {
     transactionIds: [],
     trackedDates: {
         year: today.getFullYear(), 
-        month: today.getMonth()
+        month: today.getMonth() + 1
     }, 
-    loadingTransactions: true
+    loadingTransactions: true, 
+    incomes: [],
+    expenses: [],
+    transactions: [],
+    categorizedExpenses: [],
+    filters: {
+        dates: [], 
+        categories: []
+    }, 
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -61,6 +69,36 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state, 
                 annualDetails: action.details
+            }; 
+        case actionTypes.GET_USER_INCOMES: 
+            return {
+                ...state, 
+                incomes: action.incomes
+            }; 
+        case actionTypes.GET_USER_EXPENSES: 
+            return {
+                ...state, 
+                expenses: action.expenses
+            }; 
+        case actionTypes.GET_USER_INCOMES_AND_EXPENSES: 
+            return {
+                ...state, 
+                transactions: action.transactions
+            }; 
+        case actionTypes.GET_USER_CATEGORIZED_EXPENSES: 
+            return {
+                ...state, 
+                categorizedExpenses: action.categorizedExpenses
+            }; 
+        case actionTypes.GET_FILTER_DATE: 
+            return {
+                ...state, 
+                filters: {...state.filters, dates: action.date}
+            }; 
+        case actionTypes.GET_FILTER_CATEGORIES: 
+            return {
+                ...state, 
+                filters: {...state.filters, categories: action.categories}
             }; 
         default: 
             return {

@@ -14,6 +14,9 @@ export const getProfileSuccess = (profile) => {
 export const getProfile = (profile) => {
     return (dispatch, getState) => {
         if(profile) {
+            dispatch(transactionActions.getIncomes(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
+            dispatch(transactionActions.getIncomeAndExpenses(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
+            dispatch(transactionActions.getExpenses(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getTransactions(profile.uid, getState().transactions.trackedDates.month, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getAnnualTransactions(profile.uid, getState().transactions.trackedDates.year));     
             dispatch(transactionActions.getTransactionCategories(profile.uid));     

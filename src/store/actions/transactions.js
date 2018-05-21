@@ -1,6 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
+import { withAuth } from '../../firebase/auth';
+import * as apiCalls from '../../api-calls' ; 
+import * as utilities from '../../utlities/utilities'; 
 
 export const getTransactionsSuccess = (transactions) => {
     // console.log(transactions); 
@@ -68,6 +70,74 @@ const transactionsToIncomeExpenseAndCategory = (transactions) => {
         expenses: expenses, 
         categorizedExpenses: categories
     }; 
+}
+
+export const getIncomes = (userId, month, year) => {
+    return dispatch => {
+        apiCalls.getIncomes(month, year, incomes => dispatch(setIncomes(incomes))); 
+    }
+}
+
+const setIncomes = (incomes) => {
+    return {
+        type: actionTypes.GET_USER_INCOMES, 
+        incomes: incomes
+    }
+}
+
+export const getExpenses = (userId, month, year) => {
+    return dispatch => {
+        apiCalls.getExpenses(month, year, expenses => dispatch(setExpenses(expenses))); 
+        apiCalls.getCategorizedExpenses(month, year, expenses => dispatch(setCategorizedExpenses(expenses))); 
+    }
+}
+
+const setExpenses = expenes => {
+    return {
+        type: actionTypes.GET_USER_EXPENSES, 
+        expenses: expenes
+    }
+}
+
+export const getIncomeAndExpenses = (userId, month, year, categoryName = null) => {
+    return dispatch => {
+        apiCalls.getIncomeAndExpenses(month, year, categoryName, transactions => dispatch(setIncomeAndExpenses(transactions))); 
+        apiCalls.getCountOfIncomeAndExpenses(month, year, countObj => dispatch(setDateFilter(countObj))); 
+        apiCalls.getCountOfIncomeAndExpenseCategories(month, year, countObj => dispatch(setCategoryFilter(countObj))); 
+    }
+}
+
+const setIncomeAndExpenses = (transactions) => {
+    const estDateConversion = transactions.map(trans => {
+        return {...trans, date: utilities.calcTimezoneOffset(new Date(trans.date))}
+    })
+    return {
+        type: actionTypes.GET_USER_INCOMES_AND_EXPENSES, 
+        transactions: estDateConversion
+    }
+}
+
+const setDateFilter = (objArray) => {
+    const dates = objArray.map(obj => utilities.calcTimezoneOffset(new Date(obj.date))); 
+    return {
+        type: actionTypes.GET_FILTER_DATE, 
+        date: dates
+    }
+}
+
+const setCategoryFilter = (objArray) => {
+    const categories = objArray.map(obj => obj.category); 
+    return {
+        type: actionTypes.GET_FILTER_CATEGORIES, 
+        categories: categories
+    }
+}
+
+const setCategorizedExpenses = categories => {
+    return {
+        type: actionTypes.GET_USER_CATEGORIZED_EXPENSES, 
+        categorizedExpenses: categories
+    }
 }
 
 export const getTransactions = (userId, month, year) => {
@@ -163,6 +233,6 @@ export const newTransactionDate = (uid, month, year) => {
 export const changeTransactionDate = (uid, month, year) => {
     return dispatch => {
         dispatch(newTransactionDate(uid, month, year)); 
-        dispatch(getTransactions(uid, month, year)); 
+        dispatch(getIncomeAndExpenses(uid, month, year)); 
     }
 }; 

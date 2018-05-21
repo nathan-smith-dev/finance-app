@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'; 
 
-import * as utilities from '../../utlities/utilities'; 
 import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
 import * as transactionActions from '../../store/actions/transactions'; 
-import { convertTransactionToDbValues } from '../../utlities/utilities'; 
+import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
 
 import {
   Table,
@@ -33,7 +32,7 @@ class TransactionsTable extends Component {
             date: new Date()
         }, 
         userUid: null, 
-        filterBy: 0, 
+        filterBy: "None", 
         subFilter: 0, 
         openEdit: false
     }; 
@@ -101,15 +100,24 @@ class TransactionsTable extends Component {
         }); 
     }; 
 
-    handleFilter = (value, isSub = false) => {
-        !isSub
-            ? this.setState({
-                filterBy: value,
-                subFilter: 0
-            })
-            : this.setState({
+    handleFilter = (value, isSubfilter = false) => {
+        if(!isSubfilter && value !== "None") {
+            this.setState({ 
+                filterBy: value, 
+                subFilter: value === "Category" ? this.props.fitlerCategories[0] : this.props.fitlerDates[0] 
+            }); 
+        }
+        else if(isSubfilter) {
+            this.setState({
                 subFilter: value
             })
+        }
+        if(value === "None") {
+            this.setState({ 
+                filterBy: value, 
+                subFilter: "" 
+            }); 
+        }
     }
     
     render() {
@@ -118,26 +126,20 @@ class TransactionsTable extends Component {
                 <TableRowColumn><CircularProgress /></TableRowColumn>
             </TableRow>
         ); 
-        let  transArray = []; 
-        if(this.props.transactions && Object.keys(this.props.transactions).length > 0) {
+        let transArray = []; 
+        if(this.props.transactions.length > 0) {
             transArray = [...this.props.transactions]; 
-            var subFilters = [
-                [this.props.transactionCategories], 
-                [utilities.filterUniqueArray(transArray.map(trans => trans.date.day))]
-            ]; 
-            transArray.sort((a, b) => a.date.day - b.date.day); 
-            transArray.reverse(); 
-            if(this.state.filterBy === 1) {
-                transArray = transArray.filter(trans => trans.category === subFilters[this.state.filterBy-1][0][this.state.subFilter])
+            if(this.state.filterBy === "Category") {
+                transArray = transArray.filter(trans => trans.category === this.state.subFilter);
             }
-            if(this.state.filterBy === 2) {
-                transArray = transArray.filter(trans => trans.date.day === subFilters[this.state.filterBy-1][0][this.state.subFilter])
+            else if(this.state.filterBy === "Date") {
+                transArray = transArray.filter(trans => trans.date.getDate() === this.state.subFilter.getDate());
             }
             transactions = transArray.map((trans) => {
-                const color = trans.type === "Income" ? green500 : red500; 
+                const color = trans.type === "Income" ? green500 : red500;                 
                 return (
                     <TableRow key={trans.id}>
-                        <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
+                        <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${formatDate(new Date(trans.date))}`}</TableRowColumn>
                         <TableRowColumn style={{color: color, width: '30%'}}>
                             <div style={{width: 50, textAlign: 'right'}} >
                                 {parseFloat(trans.amount).toFixed(2)}
@@ -148,7 +150,7 @@ class TransactionsTable extends Component {
                 ); 
             }); 
         }
-        else if(this.props.transactions && this.props.transactions === -1) {
+        else if(!this.props.expenses.length && !this.props.loading) {
             transactions = (
                 <TableRow>
                     <TableRowColumn style={{color: red300}}>No Transactions For Selected Time Period</TableRowColumn>
@@ -176,27 +178,33 @@ class TransactionsTable extends Component {
                             style={{width: '100%'}}
                             floatingLabelText="Filter"
                             value={this.state.filterBy}
-                            onChange={(event, key) => this.handleFilter(key)}
+                            onChange={(event, index, value) => this.handleFilter(value)}
                             >
-                            <MenuItem value={0} primaryText="None" />
-                            <MenuItem value={1} primaryText="Category" />
-                            <MenuItem value={2} primaryText="Date" />
+                            <MenuItem value={"None"} primaryText="None" />
+                            <MenuItem value={"Category"} primaryText="Category" />
+                            <MenuItem value={"Date"} primaryText="Date" />
                         </SelectField>
                     </Column>
                     <Column style={{overflow: 'hidden'}} width="xs-50">
                         <SelectField
-                            disabled={!this.state.filterBy}
+                            disabled={this.state.filterBy === "None"}
                             style={{width: '100%'}}
                             floatingLabelText="Subfilter"
                             value={this.state.subFilter}
-                            onChange={(event, key) => this.handleFilter(key, true)}
+                            onChange={(event, key, value) => this.handleFilter(value, true)}
                             >
                             {
-                                this.state.filterBy > 0
-                                    ? subFilters[this.state.filterBy-1][0].map((filter,index) => {
-                                        return <MenuItem key={index} value={index} primaryText={filter} />
-                                    })
-                                    : null
+                                (() => {
+                                    if(this.state.filterBy === 'Category')
+                                        return this.props.fitlerCategories.map((cat, index) => {
+                                            return <MenuItem key={index} value={cat} primaryText={cat} />
+                                        })
+                                    else if(this.state.filterBy === "Date")
+                                        return this.props.fitlerDates.map((date, index) => {
+                                            const stringDate = `${date.getMonth() + 1}-${date.getDate()}`;
+                                            return <MenuItem key={index} value={date} primaryText={stringDate} />
+                                        })
+                                })()
                             }
                         </SelectField>
                     </Column>
@@ -230,7 +238,13 @@ class TransactionsTable extends Component {
 
 const mapStateToProps = state => {
     return {
-        transactions: state.transactions.userTransactions, 
+        expenses: state.transactions.expenses, 
+        incomes: state.transactions.incomes, 
+        transactions: state.transactions.transactions, 
+        loading: state.transactions.loadingTransactions, 
+        fitlerCategories: state.transactions.filters.categories, 
+        fitlerDates: state.transactions.filters.dates, 
+        // transactions: state.transactions.userTransactions, 
         trackedDates: state.transactions.trackedDates,
         userProfile: state.auth.userProfile,
         transactionCategories: state.transactions.transactionCategories
