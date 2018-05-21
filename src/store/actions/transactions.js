@@ -242,5 +242,6 @@ export const changeTransactionDate = (uid, month, year) => {
     return dispatch => {
         dispatch(newTransactionDate(uid, month, year)); 
         dispatch(getIncomeAndExpenses(uid, month, year)); 
+        dispatch(getExpenses(uid, month, year)); 
     }
 }; 
