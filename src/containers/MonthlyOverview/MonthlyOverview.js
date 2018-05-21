@@ -35,7 +35,8 @@ class Chart extends Component {
             <FinancialOverview 
                 title={"Monthly"}
                 loading={loading}
-                // transactionDetails={transactionDetails}
+                net={net}
+                categorizedExpenses={categorizedExpenses}
                 pieData={pieData}
                 pieLabels={pieLabels}
                 barData={barData}

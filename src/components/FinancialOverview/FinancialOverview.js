@@ -14,21 +14,17 @@ import Row from '../../hoc/Grid/Row/Row';
 import Column from '../../hoc/Grid/Column/Column'; 
 import { red300 } from 'material-ui/styles/colors'; 
 
-const financialOverview = ({ loading = true, transactionDetails, selector = true, title,  
+const financialOverview = ({ loading = true, categorizedExpenses, selector = true, title, net,   
     pieData, pieLabels, barData, barLabels }) => {
 
-    let income = 0, expense = 0; 
-    if(transactionDetails && transactionDetails.expenses) {
-        income = transactionDetails.incomes; 
-        expense = transactionDetails.expenses; 
-    }
+    let income = net.incomes, expense = net.expenses; 
 
     let noTransactions = null;
 
-    if(!loading && ( transactionDetails && (!transactionDetails.categorizedExpenses || transactionDetails.categorizedExpenses.length > 0))) {
+    if(!loading && categorizedExpenses.length < 1) {
         noTransactions = <h5 style={{color: red300}}>No transaction data for selected time period. </h5>; 
     }
-    else if(!(transactionDetails && transactionDetails.categorizedExpenses)) {
+    else if(categorizedExpenses.length < 1) {
         noTransactions = (
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <CircularProgress />
@@ -52,7 +48,7 @@ const financialOverview = ({ loading = true, transactionDetails, selector = true
                                         <CategoryTable 
                                             incomes={income} 
                                             expenses={expense} 
-                                            transactionDetails={transactionDetails} />
+                                            categorizedExpenses={categorizedExpenses} />
                                     </div>
                                     {selector && (<MonthYearSelector />)}
                                 </Paper>
@@ -96,6 +92,7 @@ financialOverview.propTypes = {
     pieLabels: PropTypes.array, 
     barData: PropTypes.array, 
     barLabels: PropTypes.array, 
+    net: PropTypes.object
 }; 
 
 export default financialOverview;

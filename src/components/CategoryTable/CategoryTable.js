@@ -12,17 +12,16 @@ import {
 import { colors } from '../Charts/PieChart/PieChart'; 
 
 
-const categoryTable = ({ incomes, expenses, transactionDetails }) => {
-    if(transactionDetails && transactionDetails.categorizedExpenses) {
-        const categories = Object.keys(transactionDetails.categorizedExpenses).map((key, index) => {
+const categoryTable = ({ incomes, expenses, categorizedExpenses }) => {
+    if(categorizedExpenses.length > 0) {
+        const categories = categorizedExpenses.map((cat, index) => {
             return {
-                category: key, 
+                category: cat.category, 
                 colorIndex: index, 
-                total: (transactionDetails.categorizedExpenses[key]).toFixed(2), 
-                percentage: Math.floor((transactionDetails.categorizedExpenses[key]/expenses)*100)
+                total: (cat.total).toFixed(2), 
+                percentage: Math.floor((cat.total/expenses)*100)
             }
         })
-        categories.sort((a, b) => b.percentage - a.percentage); 
         var tableContents = categories.map(cat => {
             return (
                 <TableRow key={cat.category}>
@@ -53,7 +52,7 @@ const categoryTable = ({ incomes, expenses, transactionDetails }) => {
 categoryTable.propTypes = {
     incomes: PropTypes.number, 
     expenses: PropTypes.number, 
-    transactionDetails: PropTypes.object
+    categorizedExpenses: PropTypes.array
 }; 
 
 export default categoryTable; 
