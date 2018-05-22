@@ -44,7 +44,25 @@ export const getIncomeAndExpenses = (userId, month, year, categoryName = null) =
         apiCalls.getNetIncomeAndExpense(month, year, netArray => dispatch(setNetIncomeAndExpense(netArray))); 
         apiCalls.getUserCategories(categoriesArray => dispatch(setUserCategories(categoriesArray))); 
         apiCalls.getAllCategories(categoriesArray => dispatch(setAllCategories(categoriesArray))); 
+        // Annual Calls
+        apiCalls.getAnnualCategorizedExpenses(year, expenses => dispatch(setAnnualCategorizedExpenses(expenses)));
+        apiCalls.getAnnualNetIncomeAndExpense(year, nets => dispatch(setAnnualNets(nets))); 
     }
+}
+
+const setAnnualCategorizedExpenses = (expenses) => {
+    return {
+        type: actionTypes.GET_ANNUAL_USER_EXPENSES, 
+        expenses: expenses
+    }; 
+}
+
+const setAnnualNets = (nets) => {
+    return {
+        type: actionTypes.GET_ANNUAL_USER_NETS, 
+        netIncomes: nets[0].incomes,
+        netExpenses: nets[0].expenses,
+    }; 
 }
 
 const setNetIncomeAndExpense = (netArray) => {

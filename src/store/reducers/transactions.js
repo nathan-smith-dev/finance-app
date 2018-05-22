@@ -90,6 +90,16 @@ const reducer = (state = initialState, action) => {
                 ...state, 
                 allCategories: action.allCategories
             }; 
+        case actionTypes.GET_ANNUAL_USER_NETS: 
+            return {
+                ...state, 
+                annualData: { ...state.annualData, netIncomes: action.netIncomes, netExpenses: action.netExpenses }
+            }; 
+        case actionTypes.GET_ANNUAL_USER_EXPENSES: 
+            return {
+                ...state, 
+                annualData: { ...state.annualData, categorizedExpenses: action.expenses }
+            }; 
         default: 
             return {
                 ...state, 
