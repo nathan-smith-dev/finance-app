@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; 
 
 import { withAuth } from '../../firebase/auth'; 
+import { connect } from 'react-redux'; 
 import axios from 'axios'; 
 
 import SelectField from 'material-ui/SelectField'; 
@@ -10,11 +11,22 @@ import MenuItem from 'material-ui/MenuItem';
 
 class CategoryInput extends Component {
     static propTypes = {
-        categories: PropTypes.array.isRequired, 
         notificationHandler: PropTypes.func, 
         userId: PropTypes.string, 
         onChange: PropTypes.func,
         onCategoryAdded: PropTypes.func
+    }
+
+    static defaultProps = {
+        allCategories: [], 
+        userCategories: [],
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            ...prevState, 
+            category: nextProps.categoryId ? nextProps.categoryId : ""
+        }
     }
 
     state = { 
@@ -27,8 +39,9 @@ class CategoryInput extends Component {
         const { onChange } = this.props; 
 
         if(this.props.categories.length >= index) {
+            console.log(this.props.categories[index])
             this.setState({
-                category: this.props.categories[index]
+                category: this.props.categories[index].id
             }, () => onChange(this.state.category)); 
         }
     }
@@ -81,18 +94,25 @@ class CategoryInput extends Component {
 
     render() {
         const {
-            categories,
+            userCategories,
+            allCategories,
         } = this.props; 
-        
+
+        const categories = userCategories.map(cat => { return {...cat}}); 
+
+        if(!userCategories.find(cat => cat.id === this.state.category)) { // Make sure the category shows even if its not a user category
+            categories.push(allCategories.find(cat => cat.id === this.state.category)); 
+        }
+
         return (
             <div style={{display: 'flex', alignItems: 'center'}} >
                 <SelectField
-                    floatingLabelText="Category"
                     value={this.state.category}
+                    floatingLabelText="Category"
                     onChange={this.handleCategoryChange} >
                     {categories.map((cat, index) => {
                         return (
-                            <MenuItem key={index} value={cat} primaryText={cat} />
+                            <MenuItem key={cat.id} value={cat.id} primaryText={cat.category} />
                         ); 
                     })}
                 </SelectField>
@@ -107,4 +127,11 @@ class CategoryInput extends Component {
     }
 }; 
 
-export default CategoryInput; 
+const mapStateToProps = state => {
+    return {
+        userCategories: state.transactions.userCategories, 
+        allCategories: state.transactions.allCategories
+    }; 
+}; 
+
+export default connect(mapStateToProps)(CategoryInput); 

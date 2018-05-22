@@ -24,6 +24,8 @@ const initialState = {
         incomes: 0,
         expenses: 0
     },
+    userCategories: [],
+    allCategories: [], 
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -45,9 +47,10 @@ const reducer = (state = initialState, action) => {
         case actionTypes.GET_USER_CATEGORIES: 
             return {
                 ...state,
-                trackedDates: {...state.trackedDates},                
-                transactionCategories: action.transactionCategories, 
-                transactionIds: action.transactionIds
+                userCategories: action.categories
+                // trackedDates: {...state.trackedDates},                
+                // transactionCategories: action.transactionCategories, 
+                // transactionIds: action.transactionIds
             }; 
         case actionTypes.GET_USER_TRANSACTIONS_FAILED: 
             // console.log('failed'); 
@@ -108,6 +111,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state, 
                 net: { incomes: action.net.incomes, expenses: action.net.expenses }
+            }; 
+        case actionTypes.GET_ALL_CATEGORIES: 
+            return {
+                ...state, 
+                allCategories: action.allCategories
             }; 
         default: 
             return {

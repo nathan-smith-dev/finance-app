@@ -105,6 +105,8 @@ export const getIncomeAndExpenses = (userId, month, year, categoryName = null) =
         apiCalls.getCountOfIncomeAndExpenses(month, year, countObj => dispatch(setDateFilter(countObj))); 
         apiCalls.getCountOfIncomeAndExpenseCategories(month, year, countObj => dispatch(setCategoryFilter(countObj))); 
         apiCalls.getNetIncomeAndExpense(month, year, netArray => dispatch(setNetIncomeAndExpense(netArray))); 
+        apiCalls.getUserCategories(categoriesArray => dispatch(setUserCategories(categoriesArray))); 
+        apiCalls.getAllCategories(categoriesArray => dispatch(setAllCategories(categoriesArray))); 
     }
 }
 
@@ -112,6 +114,20 @@ const setNetIncomeAndExpense = (netArray) => {
     return {
         type: actionTypes.GET_NET_TRANSACTIONS, 
         net: netArray[0]
+    }
+}
+
+const setAllCategories = (categoryArray) => {
+    return {
+        type: actionTypes.GET_ALL_CATEGORIES, 
+        allCategories: categoryArray
+    }
+}
+
+const setUserCategories = (categories) => {
+    return {
+        type: actionTypes.GET_USER_CATEGORIES, 
+        categories: categories
     }
 }
 

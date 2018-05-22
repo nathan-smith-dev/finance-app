@@ -47,6 +47,7 @@ class NewTransactionDialog extends Component {
             amount: this.props.amount, 
             type: this.props.type, 
             category: this.props.category, 
+            categoryId: this.props.categoryId, 
             desc: this.props.desc, 
         }, 
         showNewCategory: false, 
@@ -60,6 +61,7 @@ class NewTransactionDialog extends Component {
                 amount: nextProps.amount ? nextProps.amount : prevState.newExpense.amount, 
                 type: nextProps.type ? nextProps.type : prevState.newExpense.type, 
                 category: nextProps.category ? nextProps.transactionCategories.indexOf(nextProps.category) : prevState.newExpense.category, 
+                categoryId: nextProps.categoryId ? nextProps.categoryId : prevState.newExpense.categoryId, 
                 desc: nextProps.desc ? nextProps.desc : prevState.newExpense.desc, 
                 transId: nextProps.transId ? nextProps.transId : null
             }
@@ -133,7 +135,6 @@ class NewTransactionDialog extends Component {
             show, 
             toggler, 
             forceExpense, 
-            transactionCategories, 
         } = this.props; 
 
         const actions = 
@@ -183,7 +184,7 @@ class NewTransactionDialog extends Component {
                         </SelectField>
                     </div>
                     <CategoryInput 
-                        categories={transactionCategories}
+                        categoryId={this.state.newExpense.categoryId}
                         notificationHandler={this.props.showNotification}
                         userId={this.props.userProfile.uid}
                         onChange={this.handleCategoryChange}

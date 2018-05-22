@@ -79,6 +79,7 @@ class TransactionsTable extends Component {
                 amount: expense.amount,
                 date: expense.date, 
                 category: expense.category, 
+                categoryId: expense.categoryId,
                 id: expense.id, 
                 type: expense.type, 
                 desc: expense.desc
@@ -229,6 +230,7 @@ class TransactionsTable extends Component {
                     amount={this.state.selectedExpense.amount + ""}
                     type={this.state.selectedExpense.type}
                     category={this.state.selectedExpense.category}
+                    categoryId={this.state.selectedExpense.categoryId}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />
             </Fragment>

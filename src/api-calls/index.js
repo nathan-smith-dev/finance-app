@@ -104,3 +104,31 @@ export const getNetIncomeAndExpense = (month, year, callback) => {
             }); 
     }); 
 }
+
+export const getUserCategories = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/categories`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getUserCategories(callback), 125); 
+            }); 
+    }); 
+}
+
+export const getAllCategories = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/categories/all`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getAllCategories(callback), 125); 
+            }); 
+    }); 
+}
