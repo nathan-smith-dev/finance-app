@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; 
 import classes from './TransactionDialog.css'; 
 
-import * as transactionActionCreators from '../../store/actions/transactions'; 
 import * as notificationActions from '../../store/actions/notifications'; 
 import { connect } from 'react-redux'; 
 
@@ -210,7 +209,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getCategories: (id) => dispatch(transactionActionCreators.getTransactionCategories(id)), 
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)),
     }
 }

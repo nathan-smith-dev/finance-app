@@ -3,10 +3,6 @@ import * as actionTypes from '../actions/actionTypes';
 const today = new Date(); 
 
 const initialState = {
-    userTransactions: {}, 
-    transactionDetails: {}, 
-    transactionCategories: [], 
-    transactionIds: [],
     trackedDates: {
         year: today.getFullYear(), 
         month: today.getMonth() + 1
@@ -38,44 +34,16 @@ const reducer = (state = initialState, action) => {
                     month: action.month
                 }
             }; 
-        case actionTypes.GET_USER_TRANSACTIONS_SUCCESS: 
-            return {
-                ...state,
-                trackedDates: {...state.trackedDates},
-                userTransactions: action.userTransactions
-            }; 
         case actionTypes.GET_USER_CATEGORIES: 
             return {
                 ...state,
                 userCategories: action.categories
-                // trackedDates: {...state.trackedDates},                
-                // transactionCategories: action.transactionCategories, 
-                // transactionIds: action.transactionIds
-            }; 
-        case actionTypes.GET_USER_TRANSACTIONS_FAILED: 
-            // console.log('failed'); 
-            return {
-                ...state,
-                userTransactions: -1, 
-                trackedDates: {...state.trackedDates},                
             }; 
         case actionTypes.GET_USER_TRANSACTIONS: 
-            // console.log('get transactions');         
             return {
                 ...state, 
                 trackedDates: {...state.trackedDates},
                 loadingTransactions: action.loading                
-            }; 
-        case actionTypes.FLATTEN_TRANSACTION_DATA: 
-            return {
-                ...state, 
-                trackedDates: {...state.trackedDates},                
-                transactionDetails: action.details
-            }; 
-        case actionTypes.GET_ANNUAL_USER_TRANSACTIONS: 
-            return {
-                ...state, 
-                annualDetails: action.details
             }; 
         case actionTypes.GET_USER_INCOMES: 
             return {

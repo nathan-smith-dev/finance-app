@@ -5,7 +5,6 @@ import classes from './Transactions.css';
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
 import { connect } from 'react-redux';
-import * as transactionActions from '../../store/actions/transactions';
 import * as notificationsActions from '../../store/actions/notifications';
 import { convertTransactionToDbValues } from '../../utlities/utilities'; 
 
@@ -25,7 +24,6 @@ class Transactions extends Component {
         userProfile: PropTypes.object, 
         trackedDates: PropTypes.object, 
         showNotification: PropTypes.func, 
-        getTransactions: PropTypes.func
     }
 
     state = {
@@ -44,7 +42,7 @@ class Transactions extends Component {
             this.props.showNotification("Added transaction");   
             axios.post(url, postObj)
                 .then(response => {
-                    this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+                    // this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
                 }) 
                 .catch(err => {
                     console.log(err); 
@@ -97,7 +95,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationsActions.showNotification(true, text)), 
-        getTransactions: (uid, month, year) => dispatch(transactionActions.getTransactions(uid, month, year))
     }
 }
 

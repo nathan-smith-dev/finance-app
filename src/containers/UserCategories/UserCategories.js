@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
-import * as transactionActions from '../../store/actions/transactions'; 
 import * as notificationActions from '../../store/actions/notifications'; 
 
 import Row from '../../hoc/Grid/Row/Row'; 
@@ -110,7 +109,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getTransactionCategories: (uid) => dispatch(transactionActions.getTransactionCategories(uid)),
         notify: (message) => dispatch(notificationActions.showNotification(true, message)),
     }
 }

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
-import * as transactionActions from '../../store/actions/transactions'; 
 import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
 
 import {
@@ -256,7 +255,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)), 
-        getTransactions: (cUid, month, year) => dispatch(transactionActions.getTransactions(cUid, month, year))
     }; 
 }; 
 
