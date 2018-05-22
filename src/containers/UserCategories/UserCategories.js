@@ -74,11 +74,11 @@ class UserCategories extends Component {
                             <List>
                                 {
                                     this.props.categories 
-                                        ? this.props.categories.map((cat, index) => {
+                                        ? this.props.categories.map((cat) => {
                                             return <ListItem 
-                                                key={index} 
-                                                primaryText={cat} 
-                                                onClick={() => this.toggleWarning(cat)} />
+                                                key={cat.id} 
+                                                primaryText={cat.category} 
+                                                onClick={() => this.toggleWarning(cat.category)} />
                                         })
                                         : null
                                 }
@@ -101,8 +101,7 @@ class UserCategories extends Component {
 
 const mapStateToProps = state => {
     return {
-        categories: state.transactions.transactionCategories, 
-        catIds: state.transactions.transactionIds, 
+        categories: state.transactions.userCategories, 
         userProfile: state.auth.userProfile
     }; 
 }; 
