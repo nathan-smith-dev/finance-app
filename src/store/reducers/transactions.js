@@ -22,6 +22,11 @@ const initialState = {
     },
     userCategories: [],
     allCategories: [], 
+    annualData: {
+        categorizedExpenses: [],
+        netIncomes: 0, 
+        netExpenses: 0, 
+    }
 }; 
 
 const reducer = (state = initialState, action) => {

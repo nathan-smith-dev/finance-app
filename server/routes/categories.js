@@ -32,6 +32,8 @@ router.get('/totals', (req, res) => {
         let query = `EXEC GetUserCategoryTotals @userId = ${decodedToken.uid}`; 
         if(req.query.year && req.query.month)
             query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
+        else if(req.query.annual)
+            query += `, @date = '${req.query.annual}-01-01', @forYear = 1`; 
 
         const result = queryDataBase(query); 
         result.then(record => {

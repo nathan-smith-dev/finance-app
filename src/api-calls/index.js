@@ -63,6 +63,20 @@ export const getCategorizedExpenses = (month, year, callback) => {
     }); 
 }; 
 
+export const getAnnualCategorizedExpenses = (year, callback) => {
+    withAuth(authToken => {
+        instance.get(`/categories/totals?annual=${year}`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message);                
+                setTimeout(() => getAnnualCategorizedExpenses(year, callback), 125); 
+            }); 
+    }); 
+}; 
+
 export const getCountOfIncomeAndExpenses = (month, year, callback) => {
     withAuth(authToken => {
         instance.get(`/transactions/dates?month=${month}&year=${year}`, { headers: { 'x-auth-token': authToken } })
@@ -101,6 +115,20 @@ export const getNetIncomeAndExpense = (month, year, callback) => {
             .catch(err => {
                 console.log(err.message); 
                 setTimeout(() => getNetIncomeAndExpense(month, year, callback), 125); 
+            }); 
+    }); 
+}
+
+export const getAnnualNetIncomeAndExpense = (year, callback) => {
+    withAuth(authToken => {
+        instance.get(`/expenses/totals?annual=${year}`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getAnnualNetIncomeAndExpense(year, callback), 125); 
             }); 
     }); 
 }
