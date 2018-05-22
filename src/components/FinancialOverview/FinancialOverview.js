@@ -84,7 +84,6 @@ const financialOverview = ({ loading = true, categorizedExpenses, selector = tru
 }
 
 financialOverview.propTypes = {
-    transactionDetails: PropTypes.object,
     loading: PropTypes.bool, 
     income: PropTypes.number, 
     expense: PropTypes.number, 

@@ -13,23 +13,25 @@ class Annual extends Component {
 
     render() {
         const { 
-            annualDetails, 
+            annualData, 
             loading
         } = this.props; 
 
         let pieLabels = [], pieData = [], barData = [], barLabels = ['Income', 'Expense']; 
+        const net = { incomes: annualData.netIncomes, expenses: annualData.netExpenses }; 
 
-        if(annualDetails && annualDetails.categorizedExpenses) {
-            pieLabels = Object.keys(annualDetails.categorizedExpenses); 
-            pieData = Object.values(annualDetails.categorizedExpenses).map(val => toFixedNumber(val, 2)); 
-            barData = [toFixedNumber(annualDetails.incomes, 2), toFixedNumber(annualDetails.expenses, 2)]; 
+        if(annualData && annualData.categorizedExpenses) {
+            pieLabels = annualData.categorizedExpenses.map(cat => cat.category); 
+            pieData = annualData.categorizedExpenses.map(cat => cat.total);
+            barData = [toFixedNumber(annualData.netIncomes, 2), toFixedNumber(annualData.netExpenses, 2)]; 
         }
     
         return(
             <FinancialOverview 
+                categorizedExpenses={annualData.categorizedExpenses}
+                net={net}
                 title="Annual"
                 loading={loading}
-                transactionDetails={annualDetails}
                 pieData={pieData}
                 pieLabels={pieLabels}
                 barData={barData}
@@ -41,7 +43,7 @@ class Annual extends Component {
 
 const mapStateToProps = state => {
     return {
-        annualDetails: state.transactions.annualDetails, 
+        annualData: state.transactions.annualData, 
     }; 
 }; 
 
