@@ -85,7 +85,7 @@ class TransactionsTable extends Component {
             }, 
             openExpense: !this.state.openExpense, 
             userUid: this.props.userProfile.uid
-        }); 
+        }, () => console.log(this.state.selectedExpense)); 
     }
 
     toggleSelectExpense = () => {
