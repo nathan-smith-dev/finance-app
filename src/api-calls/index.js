@@ -170,7 +170,7 @@ export const deleteUserCategory = (id, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => deleteUserCategory(callback), 125); 
+                setTimeout(() => deleteUserCategory(id, callback), 125); 
             }); 
     }); 
 }
