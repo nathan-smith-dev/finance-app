@@ -1,10 +1,9 @@
 import React, { Component } from 'react'; 
 
 import { connect } from 'react-redux'; 
-import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth';
 import * as apiCalls from '../../api-calls'; 
 import * as notificationActions from '../../store/actions/notifications'; 
+import * as transactionActions from '../../store/actions/transactions'; 
 
 import Row from '../../hoc/Grid/Row/Row'; 
 import Column from '../../hoc/Grid/Column/Column'; 
@@ -22,7 +21,10 @@ class UserCategories extends Component {
     }
 
     deleteCategory = () => {
-        apiCalls.deleteUserCategory(this.state.categoryId, (data) => console.log(data)); 
+        apiCalls.deleteUserCategory(this.state.categoryId, (data) => {
+            this.toggleWarning(); 
+            this.props.getIncomeAndExpenses(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+        }); 
     }
 
     toggleWarning = (categoryName = null, categoryId = null) => {
@@ -31,7 +33,7 @@ class UserCategories extends Component {
                 showWarning: !this.state.showWarning, 
                 category: categoryName, 
                 categoryId: categoryId
-            }, () => console.log(this.state)); 
+            }); 
         }
         else {
             this.setState({
@@ -91,13 +93,15 @@ class UserCategories extends Component {
 const mapStateToProps = state => {
     return {
         categories: state.transactions.userCategories, 
-        userProfile: state.auth.userProfile
+        userProfile: state.auth.userProfile, 
+        trackedDates: state.transactions.trackedDates
     }; 
 }; 
 
 const mapDispatchToProps = dispatch => {
     return {
         notify: (message) => dispatch(notificationActions.showNotification(true, message)),
+        getIncomeAndExpenses: (userId, month, year) => dispatch(transactionActions.getIncomeAndExpenses(userId, month, year)),
     }
 }
 
