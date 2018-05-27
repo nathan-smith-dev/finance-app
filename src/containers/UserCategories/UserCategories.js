@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux'; 
 import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
+import { withAuth } from '../../firebase/auth';
+import * as apiCalls from '../../api-calls'; 
 import * as notificationActions from '../../store/actions/notifications'; 
 
 import Row from '../../hoc/Grid/Row/Row'; 
@@ -16,33 +17,21 @@ import FlatButton from 'material-ui/FlatButton';
 class UserCategories extends Component {
     state = {
         showWarning: false, 
-        category: null
+        category: null,
+        categoryId: null
     }
 
     deleteCategory = () => {
-        const index = this.props.categories.indexOf(this.state.category); 
-        withAuth(authToken => {
-            this.props.notify("Category deleted."); 
-            const url = `${this.props.userProfile.uid}/transactions/categories/${this.props.catIds[index]}.json?auth=${authToken}`
-            axios.delete(url)
-                .then(response => {
-                    // console.log(response); 
-                    this.props.getTransactionCategories(this.props.userProfile.uid); 
-                    this.toggleWarning(); 
-                })
-                .catch(error => {
-                    console.log(error); 
-                    this.props.notify("Failed to delete category. "); 
-                }); 
-        })
+        apiCalls.deleteUserCategory(this.state.categoryId, (data) => console.log(data)); 
     }
 
-    toggleWarning = (category = null) => {
-        if(category) {
+    toggleWarning = (categoryName = null, categoryId = null) => {
+        if(categoryName && categoryId) {
             this.setState({
                 showWarning: !this.state.showWarning, 
-                category: category
-            }); 
+                category: categoryName, 
+                categoryId: categoryId
+            }, () => console.log(this.state)); 
         }
         else {
             this.setState({
@@ -78,7 +67,7 @@ class UserCategories extends Component {
                                             return <ListItem 
                                                 key={cat.id} 
                                                 primaryText={cat.category} 
-                                                onClick={() => this.toggleWarning(cat.category)} />
+                                                onClick={() => this.toggleWarning(cat.category, cat.id)} />
                                         })
                                         : null
                                 }

@@ -92,5 +92,27 @@ router.get('/:id', (req, res) => {
     });
 }); 
 
+router.delete('/:id', (req, res) => {
+    const idToken = req.header('x-auth-token'); 
+    if(!idToken) return res.status(401).send('No auth token.'); 
+
+    verifyToken(idToken, decodedToken => {
+        console.log(req.params.id)
+        let query = `EXEC DeleteUserCategory @categoryId = ${req.params.id}, @userId = ${decodedToken.uid}`; 
+
+        const result = queryDataBase(query); 
+        result.then(record => {
+            res.body = record.recordset; 
+            res.send(record.recordset); 
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).send('Error completing request to server. '); 
+        })
+    }, err => {
+        res.status(401).send('Invalid token. ');         
+    });
+}); 
+
 
 module.exports = router; 
