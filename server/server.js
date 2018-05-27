@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json()); 
 app.use(helmet()); 
-app.use(cors({ origin: true, allowedHeaders: 'x-auth-token' }));
+app.use(cors({ origin: true, allowedHeaders: ['x-auth-token', 'Content-Type'] }));
   
 
 app.use('/api/expenses', expenses); 

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 
 import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
-import { withAuth } from '../../firebase/auth'; 
-import axios from 'axios'; 
+import * as transactionActions from '../../store/actions/transactions';  
 import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
+import * as apiCalls from '../../api-calls'; 
 
 import {
   Table,
@@ -37,39 +37,43 @@ class TransactionsTable extends Component {
     }; 
 
     deletePost = () => {
-        withAuth((authToken) => {
-            const url = `${this.state.userUid}/transactions/${this.state.selectedExpense.date.year}/${this.state.selectedExpense.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`
-            axios.delete(url)
-            .then(response => {
-                this.props.showNotification("Deleted transaction"); 
-                this.props.getTransactions(this.state.userUid, this.state.selectedExpense.date.month, this.state.selectedExpense.date.year); 
-                this.toggleSelectExpense(); 
-            })
-            .catch(err => {
-                console.log(err); 
-            })
-        });
+        // withAuth((authToken) => {
+        //     const url = `${this.state.userUid}/transactions/${this.state.selectedExpense.date.year}/${this.state.selectedExpense.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`
+        //     axios.delete(url)
+        //     .then(response => {
+        //         this.props.showNotification("Deleted transaction"); 
+        //         this.props.getTransactions(this.state.userUid, this.state.selectedExpense.date.month, this.state.selectedExpense.date.year); 
+        //         this.toggleSelectExpense(); 
+        //     })
+        //     .catch(err => {
+        //         console.log(err); 
+        //     })
+        // });
     }; 
 
     updateTransaction = (obj) => {
-        const postObj = convertTransactionToDbValues(obj); 
-        withAuth((authToken) => {
-            this.props.showNotification("Updated transaction");      
-            const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
-            axios.patch(url, postObj)
-                .then(response => {
-                    this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
-                    if(this.props.focusedRoommate) {
-                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
-                    }
-                    this.toggleEdit(); 
-                    this.toggleSelectExpense(); 
-                }) 
-                .catch(err => {
-                    console.log(err); 
-                    this.props.showNotification("Error updating transaction");
-                })
-        })
+        apiCalls.updateTransaction(obj, (data) => {
+            this.props.getIncomeAndExpenses(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+            this.toggleEdit(); 
+            this.toggleSelectExpense(); 
+        }); 
+        // withAuth((authToken) => {
+        //     this.props.showNotification("Updated transaction");      
+        //     const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
+        //     axios.patch(url, postObj)
+        //         .then(response => {
+        //             this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+        //             if(this.props.focusedRoommate) {
+        //                 this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
+        //             }
+        //             this.toggleEdit(); 
+        //             this.toggleSelectExpense(); 
+        //         }) 
+        //         .catch(err => {
+        //             console.log(err); 
+        //             this.props.showNotification("Error updating transaction");
+        //         })
+        // })
     }
 
     selectExpense = (expense) => {
@@ -255,6 +259,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)), 
+        getIncomeAndExpenses: (userId, month, year) => dispatch(transactionActions.getIncomeAndExpenses(userId, month, year)),        
     }; 
 }; 
 

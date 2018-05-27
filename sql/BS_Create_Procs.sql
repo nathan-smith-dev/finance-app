@@ -522,6 +522,30 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'UpdateIncome' )
+DROP PROC UpdateIncome 
+GO 
+
+CREATE PROC UpdateIncome 
+	@incomeId uniqueidentifier, 
+	@amount money, 
+	@date date, 
+	@desc text, 
+	@categoryId uniqueidentifier
+AS
+	BEGIN
+		UPDATE Incomes
+			SET 
+				Amount = @amount, 
+				[Date] = @date, 
+				[Description] = @desc, 
+				CategoryID = @categoryId
+		WHERE IncomeID = @incomeId
+		
+		EXEC GetUserIncome @incomeId = @incomeId
+    END
+GO
+
 --DELETES
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteExpense' )
 DROP PROC DeleteExpense 

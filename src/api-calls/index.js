@@ -161,6 +161,23 @@ export const getAllCategories = (callback) => {
     }); 
 }
 
+export const updateTransaction = (transObj, callback) => {
+    const { transId, amount, date, desc, categoryId, type } = transObj; 
+    const url = type === 'Income' ? `/incomes/${transId}` : `/expenses/${transId}`; 
+
+    withAuth(authToken => {
+        instance.put(url, transObj, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => updateTransaction(transObj, callback), 125); 
+            }); 
+    }); 
+}
+
 export const deleteUserCategory = (id, callback) => {
     withAuth(authToken => {
         instance.delete(`/categories/${id}`, { headers: { 'x-auth-token': authToken } })

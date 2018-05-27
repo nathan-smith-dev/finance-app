@@ -117,15 +117,15 @@ class NewTransactionDialog extends Component {
         const { onSubmit } = this.props; 
         onSubmit({...this.state.newExpense}); 
 
-        window.setTimeout(() => { // Delay because UX feels like transaction is erased before the dialog closes
-            this.setState({newExpense: {
-                date: new Date(), 
-                amount: "", 
-                type: "Expense", 
-                category: null, 
-                desc: ""
-            }}); 
-        }, 1000); 
+        // window.setTimeout(() => { // Delay because UX feels like transaction is erased before the dialog closes
+        //     this.setState({newExpense: {
+        //         date: new Date(), 
+        //         amount: "", 
+        //         type: "Expense", 
+        //         category: null, 
+        //         desc: ""
+        //     }}); 
+        // }, 1000); 
     }
 
     render() {
