@@ -76,7 +76,7 @@ router.get('/:id', (req, res) => {
 
     verifyToken(idToken, decodedToken => {
         console.log(req.params.id)
-        let query = `EXEC GetUserCategory @categoryId = ${req.params.id}, @userId = ${decodedToken.uid}`; 
+        let query = `EXEC GetUserCategory @categoryId = '${req.params.id}', @userId = ${decodedToken.uid}`; 
 
         const result = queryDataBase(query); 
         result.then(record => {
@@ -98,7 +98,7 @@ router.delete('/:id', (req, res) => {
 
     verifyToken(idToken, decodedToken => {
         console.log(req.params.id)
-        let query = `EXEC DeleteUserCategory @categoryId = ${req.params.id}, @userId = ${decodedToken.uid}`; 
+        let query = `EXEC DeleteUserCategory @categoryId = '${req.params.id}', @userId = ${decodedToken.uid}`; 
 
         const result = queryDataBase(query); 
         result.then(record => {
