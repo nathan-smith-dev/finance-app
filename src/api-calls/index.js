@@ -163,7 +163,7 @@ export const getAllCategories = (callback) => {
 
 export const deleteUserCategory = (id, callback) => {
     withAuth(authToken => {
-        instance.get(`/categories/${id}`, { headers: { 'x-auth-token': authToken } })
+        instance.delete(`/categories/${id}`, { headers: { 'x-auth-token': authToken } })
             .then(res => {
                 // console.log(res.data); 
                 callback(res.data); 
