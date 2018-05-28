@@ -563,6 +563,22 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteIncome' )
+DROP PROC DeleteIncome 
+GO 
+
+CREATE PROC DeleteIncome 
+	@incomeId uniqueidentifier
+AS
+	BEGIN
+		EXEC GetUserIncome @incomeId = @incomeId
+
+		DELETE
+		FROM Incomes
+		WHERE IncomeID = @incomeId
+    END
+GO
+
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteUserCategory' )
 DROP PROC DeleteUserCategory 
 GO 
