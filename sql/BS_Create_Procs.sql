@@ -479,6 +479,18 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetAllUsers' )
+DROP PROC GetAllUsers 
+GO 
+
+CREATE PROC GetAllUsers 
+AS
+	BEGIN
+		SELECT UserID as uid, FirstName as [name], Email as email
+		FROM Users
+    END
+GO
+
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetUserCategory' )
 DROP PROC GetUserCategory 
 GO 
