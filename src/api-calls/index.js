@@ -163,7 +163,7 @@ export const getAllCategories = (callback) => {
 
 export const getAllUsers = (callback) => {
     withAuth(authToken => {
-        instance.get(`/roommates/all`, { headers: { 'x-auth-token': authToken } })
+        instance.get(`/users`, { headers: { 'x-auth-token': authToken } })
             .then(res => {
                 // console.log(res.data); 
                 callback(res.data); 
@@ -171,6 +171,34 @@ export const getAllUsers = (callback) => {
             .catch(err => {
                 console.log(err.message); 
                 setTimeout(() => getAllUsers(callback), 125); 
+            }); 
+    }); 
+}
+
+export const getUser = (id, callback) => {
+    withAuth(authToken => {
+        instance.get(`/users/${id}`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getUser(id, callback), 125); 
+            }); 
+    }); 
+}
+
+export const addUser = (userObj, callback) => {
+    withAuth(authToken => {
+        instance.post(`/users`, userObj, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => addUser(userObj, callback), 125); 
             }); 
     }); 
 }

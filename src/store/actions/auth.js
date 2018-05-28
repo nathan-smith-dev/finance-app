@@ -1,8 +1,6 @@
 import * as actionTypes from './actionTypes';
 import * as transactionActions from './transactions'; 
 import * as roommateActions from './roommates'; 
-import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
 import * as apiCalls from '../../api-calls'; 
 
 export const getProfileSuccess = (profile) => {
@@ -29,23 +27,11 @@ export const getProfile = (profile) => {
 };
 
 export const addProfileToDb = (profile) => {
+    const names = profile.displayName.split(' '); 
+    const filteredProfile = { id: profile.uid, email: profile.email, firstName: names[0], lastName: names[1] }; 
     return dispatch => {
-        withAuth(authToken => {
-            const url = `profiles/${profile.uid}.json?auth=${authToken}`; 
-            axios.get(url)
-            .then(response => {
-                if(!response.data) {
-                    const profileObj = {
-                        uid: profile.uid,
-                        email: profile.email, 
-                        name: profile.displayName
-                    }; 
-                    axios.put(url, profileObj); 
-                }
-            })
-            .catch(error => {
-                console.log(error); 
-            })
+        apiCalls.addUser(filteredProfile, user => {
+            // console.log(user)
         }); 
         return; 
     }; 
