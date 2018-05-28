@@ -62,8 +62,9 @@ router.post('/', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC CreateUser @id = '${value.id}', , @fName = '${value.firstName}', @lName = '${value.lastName}', @email = '${value.email}'`; 
+        let query = `EXEC CreateUser @id = '${value.id}', @fName = '${value.firstName}', @lName = '${value.lastName}', @email = '${value.email}'`; 
 
+        console.log(query)
         const result = queryDataBase(query); 
         result.then(record => {
             res.body = record.recordset; 
