@@ -162,7 +162,7 @@ export const getAllCategories = (callback) => {
 }
 
 export const updateTransaction = (transObj, callback) => {
-    const { transId, amount, date, desc, categoryId, type } = transObj; 
+    const { transId, type } = transObj; 
     const url = type === 'Income' ? `/incomes/${transId}` : `/expenses/${transId}`; 
 
     withAuth(authToken => {
@@ -188,6 +188,22 @@ export const deleteUserCategory = (id, callback) => {
             .catch(err => {
                 console.log(err.message); 
                 setTimeout(() => deleteUserCategory(id, callback), 125); 
+            }); 
+    }); 
+}
+
+export const deleteTransaction = (id, type, callback) => {
+    const url = type === 'Income' ? `/incomes/${id}` : `/expenses/${id}`; 
+
+    withAuth(authToken => {
+        instance.delete(url, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => deleteTransaction(id, type, callback), 125); 
             }); 
     }); 
 }
