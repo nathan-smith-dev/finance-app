@@ -21,6 +21,8 @@ AS
 	IF NOT EXISTS ( SELECT UserID FROM Users WHERE UserID = @id ) 
 	INSERT INTO Users(UserID, FirstName, LastName, Email) 
 	VALUES(@id, @fName, @lName, @email)
+
+	EXEC GetUser @userId = @id
 GO
 
 IF EXISTS ( SELECT [name] FROM sys.procedures WHERE [name] = 'CreateExpense' )
