@@ -161,6 +161,20 @@ export const getAllCategories = (callback) => {
     }); 
 }
 
+export const getAllUsers = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/roommates/all`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getAllUsers(callback), 125); 
+            }); 
+    }); 
+}
+
 export const updateTransaction = (transObj, callback) => {
     const { transId, type } = transObj; 
     const url = type === 'Income' ? `/incomes/${transId}` : `/expenses/${transId}`; 

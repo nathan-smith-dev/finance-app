@@ -3,6 +3,7 @@ import * as transactionActions from './transactions';
 import * as roommateActions from './roommates'; 
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
+import * as apiCalls from '../../api-calls'; 
 
 export const getProfileSuccess = (profile) => {
     return {
@@ -59,17 +60,8 @@ export const setAllUsers = (users) => {
 
 export const getAllUsers = () => {
     return dispatch => {
-        withAuth(authToken => {
-            const url = `profiles/.json?auth=${authToken}`; 
-            axios.get(url)
-                .then(response => {
-                    const users = Object.values(response.data); 
-                    // console.log(users); 
-                    dispatch(setAllUsers(users)); 
-                })
-                .catch(error => {
-                    console.log(error); 
-                })
-        })
+        apiCalls.getAllUsers(users => {
+            dispatch(setAllUsers(users)); 
+        }); 
     }
 }
