@@ -491,6 +491,20 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetUser' )
+DROP PROC GetUser 
+GO 
+
+CREATE PROC GetUser
+	@userId varchar(28)
+AS
+	BEGIN
+		SELECT UserID as uid, FirstName as [name], Email as email
+		FROM Users
+		WHERE UserID = @userId
+    END
+GO
+
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetUserCategory' )
 DROP PROC GetUserCategory 
 GO 
