@@ -8,6 +8,7 @@ const incomes = require('./routes/incomes');
 const transactions = require('./routes/transactions'); 
 const roommates = require('./routes/roommates'); 
 const categories = require('./routes/categories'); 
+const users = require('./routes/users'); 
 
 const app = express(); 
 
@@ -20,6 +21,7 @@ app.use('/api/expenses', expenses);
 app.use('/api/incomes', incomes); 
 app.use('/api/transactions', transactions); 
 app.use('/api/roommates', roommates); 
+app.use('/api/users', users); 
 app.use('/api/categories', categories); 
 
 app.get('/api/temp', (req, res) => {
