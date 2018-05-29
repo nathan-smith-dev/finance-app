@@ -1,9 +1,8 @@
 import React, { Component } from 'react'; 
 import PropTypes from 'prop-types'; 
 
-import { withAuth } from '../../firebase/auth'; 
 import { connect } from 'react-redux'; 
-import axios from 'axios'; 
+import * as apiCalls from '../../api-calls'; 
 
 import SelectField from 'material-ui/SelectField'; 
 import NewCategoryDialog from '../../components/NewCategoryDialog/NewCategoryDialog'; 
@@ -36,12 +35,11 @@ class CategoryInput extends Component {
     }
 
     handleCategoryChange = (event, index) => {
-        const { onChange } = this.props; 
+        const { onChange, userCategories } = this.props; 
 
-        if(this.props.categories.length >= index) {
-            console.log(this.props.categories[index])
+        if(userCategories && userCategories.length >= index) {
             this.setState({
-                category: this.props.categories[index].id
+                category: this.props.userCategories[index].id
             }, () => onChange(this.state.category)); 
         }
     }
@@ -69,26 +67,16 @@ class CategoryInput extends Component {
         } = this.props; 
         
         const category = this.state.newCategory;
-        const postObj = {}; 
-        postObj[category.toLowerCase()] = category;
-        console.log(notificationHandler) 
-        notificationHandler("Added category."); 
-        withAuth((authToken) => {
-            axios.post(`${userId}/transactions/categories.json?auth=${authToken}`, postObj)
-                .then(response => {
-                    // console.log(response);
-                    onCategoryAdded(userId); 
-                    this.toggleNewCategory(); 
-                    this.setState({
-                        newCategory: "",
-                        category: category
-                    }, () => onChange(this.state.category))
-                }) 
-                .catch(err => {
-                    console.log(err); 
-                    notificationHandler("Failed to add category."); 
-                })
-        })
+        apiCalls.createUserCategory({ category: category }, data => {
+            console.log(data); 
+            notificationHandler("Added category."); 
+            onCategoryAdded(userId); 
+            this.toggleNewCategory(); 
+            this.setState({
+                newCategory: "",
+                category: category
+            }, () => onChange(this.state.category))
+        }); 
     }
     
 
@@ -98,11 +86,16 @@ class CategoryInput extends Component {
             allCategories,
         } = this.props; 
 
-        const categories = userCategories.map(cat => { return {...cat}}); 
+        const categories = userCategories.map(cat => { 
+            return (
+                <MenuItem key={cat.id} value={cat.id} primaryText={cat.category} />
+            );
+        }); 
 
         if(!userCategories.find(cat => cat.id === this.state.category)) { // Make sure the category shows even if its not a user category
             categories.push(allCategories.find(cat => cat.id === this.state.category)); 
         }
+        
 
         return (
             <div style={{display: 'flex', alignItems: 'center'}} >
@@ -110,11 +103,7 @@ class CategoryInput extends Component {
                     value={this.state.category}
                     floatingLabelText="Category"
                     onChange={this.handleCategoryChange} >
-                    {categories.map((cat, index) => {
-                        return (
-                            <MenuItem key={cat.id} value={cat.id} primaryText={cat.category} />
-                        ); 
-                    })}
+                    {categories}
                 </SelectField>
                 <NewCategoryDialog 
                     show={this.state.showNewCategory}

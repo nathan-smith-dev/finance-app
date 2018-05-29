@@ -50,6 +50,12 @@ export const getIncomeAndExpenses = (userId, month, year, categoryName = null) =
     }
 }
 
+export const getUserCategories = () => {
+    return dispatch => {
+        apiCalls.getUserCategories(categoriesArray => dispatch(setUserCategories(categoriesArray)));     
+    }; 
+}; 
+
 const setAnnualCategorizedExpenses = (expenses) => {
     return {
         type: actionTypes.GET_ANNUAL_USER_EXPENSES, 

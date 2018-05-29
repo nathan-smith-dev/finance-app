@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './TransactionDialog.css'; 
 
 import * as notificationActions from '../../store/actions/notifications'; 
+import * as transactionActions from '../../store/actions/transactions'; 
 import { connect } from 'react-redux'; 
 
 import Dialog from 'material-ui/Dialog';
@@ -210,6 +211,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)),
+        getCategories: () => dispatch(transactionActions.getUserCategories()),
     }
 }
 
