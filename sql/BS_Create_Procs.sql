@@ -85,6 +85,8 @@ AS
 	IF NOT EXISTS ( SELECT * FROM UserCategories WHERE UserID = @userId AND CategoryID = @catId )
 	INSERT INTO UserCategories (UserID, CategoryID)
 	VALUES (@userId, @catId)
+
+	EXEC GetUserCategory @userId = @userId, @categoryId = @catId
 GO
 
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'CreateRoomateExpense' )
