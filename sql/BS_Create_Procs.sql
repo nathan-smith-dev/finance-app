@@ -607,6 +607,7 @@ AS
 			rr.RequesterID as roomateId,
 			u.FirstName as firstName, 
 			u.LastName as lastName, 
+			u.Email as email,
 			rr.DateSent as date
 		FROM RoommateRequests as rr
 		JOIN Users as u ON u.UserID = rr.RequesterID
