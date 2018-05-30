@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios'; 
 import { withAuth } from '../../firebase/auth'; 
+import * as apiCalls from '../../api-calls'; 
 
 export const getRoommateRequests = (uid) => {
     return dispatch => {
@@ -29,18 +30,14 @@ export const setRoomateRequests = (requests) => {
 
 export const getRoommates = (uid) => {
     return dispatch => {
-        withAuth(authToken => {
-            const url = `${uid}/roommates/mates.json?auth=${authToken}`; 
-            axios.get(url)
-                .then(response => {
-                    // console.log(Object.values(response.data)); 
-                    const data = response.data; 
-                    if(data) {
-                        dispatch(setRoommates(Object.values(data))); 
-                        dispatch(setRoommateNotifications(Object.values(data))); 
-                    }
-                })
-                .catch(error => console.log(error)); 
+        apiCalls.getRoommates(roommate => {
+            dispatch(setRoommates(roommate)); 
+        }); 
+        apiCalls.getRoommateNotifications(notifcations => {
+            let data = {}; 
+            for(let notification of notifcations)
+                data[notification.roomateId] = notification.notifications;             
+            dispatch(updateRoommateNotifications(data)); 
         }); 
     }
 }
@@ -52,21 +49,27 @@ export const setRoommates = (roommates) => {
     }; 
 }; 
 
-export const setRoommateNotifications = (roommates) => {
-    let notifications = {}; 
-    if(roommates && roommates.length > 0) {
-        for(let mate of roommates) {
-            if(mate.transactions) {
-                for(let trans of Object.values(mate.transactions)) {
-                    if(trans.new) {
-                        notifications[mate.uid] = notifications[mate.uid] ? notifications[mate.uid]+1 : 1; 
-                    }
-                }
-            }
-        }
-    }
-    return updateRoommateNotifications(notifications); 
-}
+// export const setRoommateNotifications = (roommates) => {
+//     let notifications = {}; 
+//     console.log(roommates.length)
+//     if(roommates && roommates.length > 0) {
+//         for(let mate of roommates) {
+//             // console.log(mate.id)
+//             // apiCalls.getRoommateNotifications(mate.id, notifications => {
+//             //     notifications[mate.id] = notifications;
+//             //     console.log(notifications); 
+//             // }); 
+//             // if(mate.transactions) {
+//             //     for(let trans of Object.values(mate.transactions)) {
+//             //         if(trans.new) {
+//             //             notifications[mate.uid] = notifications[mate.uid] ? notifications[mate.uid]+1 : 1; 
+//             //         }
+//             //     }
+//             // }
+//         }
+//     }
+//     // return updateRoommateNotifications(notifications); 
+// }
 
 export const updateRoommateNotifications = (notifications) => {
     return {

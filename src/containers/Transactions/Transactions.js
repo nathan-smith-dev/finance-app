@@ -48,19 +48,6 @@ class Transactions extends Component {
             this.props.getIncomeAndExpenses(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year);             
             this.props.showNotification("Added transaction");  
         });
-        // withAuth((authToken) => {
-        //     const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`; 
-        //     this.toggleDialog(); 
-        //     this.props.showNotification("Added transaction");   
-        //     axios.post(url, postObj)
-        //         .then(response => {
-        //             // this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
-        //         }) 
-        //         .catch(err => {
-        //             console.log(err); 
-        //             this.props.showNotification("Error adding transaction");
-        //         })
-        // })
     }
 
     render() {

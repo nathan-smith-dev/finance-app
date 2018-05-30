@@ -189,6 +189,34 @@ export const getUser = (id, callback) => {
     }); 
 }
 
+export const getRoommates = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/roommates`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getRoommates(callback), 125); 
+            }); 
+    }); 
+}
+
+export const getRoommateNotifications = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/roommates/expenses/notifications`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getRoommateNotifications(callback), 125); 
+            }); 
+    }); 
+}
+
 export const addUser = (userObj, callback) => {
     withAuth(authToken => {
         instance.post(`/users`, userObj, { headers: { 'x-auth-token': authToken } })

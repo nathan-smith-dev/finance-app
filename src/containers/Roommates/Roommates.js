@@ -192,9 +192,9 @@ class Roommates extends Component {
                                     this.props.mates 
                                         ? this.props.mates.map((user) => {
                                             return <MenuItem 
-                                                rightIcon={this.props.roommateNotifications[user.uid] ? <Badge badgeContent={this.props.roommateNotifications[user.uid]} primary={true} /> : null}
-                                                key={user.uid} 
-                                                primaryText={user.name} 
+                                                rightIcon={this.props.roommateNotifications[user.id] ? <Badge badgeContent={this.props.roommateNotifications[user.id]} primary={true} /> : null}
+                                                key={user.id} 
+                                                primaryText={`${user.firstName} ${user.lastName}`} 
                                                 onClick={() => this.redirectToRoommate(user.uid)} />
                                         })
                                         : <MenuItem primaryText="No current roommates" />
