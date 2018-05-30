@@ -92,5 +92,5 @@ CREATE TABLE RoommateRequests (
 	Pending bit DEFAULT 1,
 	PRIMARY KEY (RequestID), 
 	FOREIGN KEY (RecipientID) REFERENCES Users(UserID), 
-	FOREIGN KEY (RecipientID) REFERENCES Users(UserID), 
+	FOREIGN KEY (RequesterID) REFERENCES Users(UserID), 
 );
