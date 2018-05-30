@@ -257,7 +257,7 @@ class RoommateTransactionTable extends Component {
                     type="Expense"
                     date={this.state.selectedExpense.date}                    
                     amount={this.state.selectedExpense.amount}
-                    category={this.state.selectedExpense.category}
+                    categoryId={this.state.selectedExpense.category}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />
                 <TransactionDialog 

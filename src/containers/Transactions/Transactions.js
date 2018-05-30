@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; 
 import classes from './Transactions.css'; 
 
-import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
 import { connect } from 'react-redux';
 import * as notificationsActions from '../../store/actions/notifications';
-import { convertTransactionToDbValues } from '../../utlities/utilities'; 
+import * as transactionActions from '../../store/actions/transactions';
+import * as apiCalls from '../../api-calls'; 
 
 import TransactionsTable from '../TransactionsTable/TransactionsTable'; 
 import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
@@ -35,20 +34,33 @@ class Transactions extends Component {
     }
 
     sendNewTransaction = (newExpense) => {
-        const postObj = convertTransactionToDbValues(newExpense); 
-        withAuth((authToken) => {
-            const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`; 
+        console.log(newExpense)
+        const postObj = {
+            type: newExpense.type, 
+            amount: +newExpense.amount, 
+            date: newExpense.date, 
+            desc: newExpense.desc, 
+            categoryId: newExpense.categoryId
+        }; 
+        apiCalls.createTransaction(postObj, data => {
+            console.log('post', data); 
             this.toggleDialog(); 
-            this.props.showNotification("Added transaction");   
-            axios.post(url, postObj)
-                .then(response => {
-                    // this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
-                }) 
-                .catch(err => {
-                    console.log(err); 
-                    this.props.showNotification("Error adding transaction");
-                })
-        })
+            this.props.getIncomeAndExpenses(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year);             
+            this.props.showNotification("Added transaction");  
+        });
+        // withAuth((authToken) => {
+        //     const url = `${this.props.userProfile.uid}/transactions/${postObj.date.year}/${postObj.date.month}.json?auth=${authToken}`; 
+        //     this.toggleDialog(); 
+        //     this.props.showNotification("Added transaction");   
+        //     axios.post(url, postObj)
+        //         .then(response => {
+        //             // this.props.getTransactions(this.props.userProfile.uid, this.props.trackedDates.month, this.props.trackedDates.year); 
+        //         }) 
+        //         .catch(err => {
+        //             console.log(err); 
+        //             this.props.showNotification("Error adding transaction");
+        //         })
+        // })
     }
 
     render() {
@@ -95,6 +107,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationsActions.showNotification(true, text)), 
+        getIncomeAndExpenses: (userId, month, year) => dispatch(transactionActions.getIncomeAndExpenses(userId, month, year)),                
     }
 }
 

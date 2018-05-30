@@ -21,7 +21,6 @@ class NewTransactionDialog extends Component {
         show: PropTypes.bool.isRequired, // shows the new transaction dialog 
         amount: PropTypes.string, 
         type: PropTypes.string, 
-        category: PropTypes.string, 
         desc: PropTypes.string, 
         showNotification: PropTypes.func, 
         getCategories: PropTypes.func, 
@@ -36,7 +35,7 @@ class NewTransactionDialog extends Component {
         date: new Date(), 
         amount: "",
         type: "Expense",
-        category: null, 
+        categoryId: null, 
         desc: "", 
         transactionCategories: []
     }
@@ -58,11 +57,10 @@ class NewTransactionDialog extends Component {
             ...prevState, 
             newExpense: {
                 date: nextProps.date && nextProps.date.year ? new Date(nextProps.date.year, nextProps.date.month, nextProps.date.day) : prevState.newExpense.date, 
-                amount: nextProps.amount ? nextProps.amount : prevState.newExpense.amount, 
+                amount: nextProps.amount ? nextProps.amount : "", 
                 type: nextProps.type ? nextProps.type : prevState.newExpense.type, 
-                category: nextProps.category ? nextProps.transactionCategories.indexOf(nextProps.category) : prevState.newExpense.category, 
                 categoryId: nextProps.categoryId ? nextProps.categoryId : prevState.newExpense.categoryId, 
-                desc: nextProps.desc ? nextProps.desc : prevState.newExpense.desc, 
+                desc: nextProps.desc ? nextProps.desc : "", 
                 transId: nextProps.transId ? nextProps.transId : null
             }
         }
@@ -100,7 +98,7 @@ class NewTransactionDialog extends Component {
         this.setState({
             newExpense: {
                 ...this.state.newExpense, 
-                category: cat
+                categoryId: cat
             }
         }); 
     }
@@ -116,6 +114,7 @@ class NewTransactionDialog extends Component {
 
     handleSubmit = () => {
         const { onSubmit } = this.props; 
+        console.log(this.state.newExpense)
         onSubmit({...this.state.newExpense}); 
 
         // window.setTimeout(() => { // Delay because UX feels like transaction is erased before the dialog closes

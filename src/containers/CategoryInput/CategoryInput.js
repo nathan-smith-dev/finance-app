@@ -92,8 +92,9 @@ class CategoryInput extends Component {
             );
         }); 
 
-        if(!userCategories.find(cat => cat.id === this.state.category)) { // Make sure the category shows even if its not a user category
-            categories.push(allCategories.find(cat => cat.id === this.state.category)); 
+        if(this.state.category && !userCategories.find(cat => cat.id === this.state.category)) { // Make sure the category shows even if its not a user category
+            const missingCat = allCategories.find(cat => cat.id === this.state.category); 
+            categories.push(<MenuItem key={missingCat.id} value={missingCat.id} primaryText={missingCat.category} />); 
         }
         
 

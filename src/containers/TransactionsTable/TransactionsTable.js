@@ -210,7 +210,6 @@ class TransactionsTable extends Component {
                     title="Edit Income or Expense"
                     amount={this.state.selectedExpense.amount + ""}
                     type={this.state.selectedExpense.type}
-                    category={this.state.selectedExpense.category}
                     categoryId={this.state.selectedExpense.categoryId}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />

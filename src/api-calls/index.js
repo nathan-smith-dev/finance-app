@@ -217,6 +217,22 @@ export const createUserCategory = (categoryObj, callback) => {
     }); 
 }
 
+export const createTransaction = (transObj, callback) => {
+    const url = transObj.type === 'Income' ? `/incomes` : `/expenses`; 
+
+    withAuth(authToken => {
+        instance.post(url, transObj, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => createTransaction(transObj, callback), 125); 
+            }); 
+    }); 
+}
+
 export const updateTransaction = (transObj, callback) => {
     const { transId, type } = transObj; 
     const url = type === 'Income' ? `/incomes/${transId}` : `/expenses/${transId}`; 
