@@ -29,28 +29,61 @@ IF EXISTS ( SELECT [name] FROM sys.procedures WHERE [name] = 'CreateExpense' )
 DROP PROC CreateExpense
 GO
 
-CREATE PROC CreateExpense @catName varchar(50), @userId varchar(28), @amount money, @desc text, @date Date
+CREATE PROC CreateExpense 
+	@catName varchar(50) = null, 
+	@categoryId uniqueidentifier = null, 
+	@userId varchar(28), 
+	@amount money, 
+	@desc text, @date Date
 AS 
 	DECLARE @catId uniqueidentifier; 
-	SELECT @catId = CategoryID FROM Categories WHERE Name = @catName; 
+	IF @categoryId IS NOT NULL
+	BEGIN 
+		SET @catId = @categoryId
+	END
+	ELSE
+	BEGIN
+		SELECT @catId = CategoryID FROM Categories WHERE Name = @catName; 
+	END
 	PRINT @catId; 
-	IF EXISTS ( SELECT CategoryID FROM Categories WHERE Name = @catName ) 
-	INSERT INTO Expenses(UserID, Amount, CategoryID, Description, Date) 
-	VALUES(@userId, @amount, @catId, @desc, @date)
+
+	DECLARE @id uniqueidentifier; 
+	SET @id = NEWID(); 
+	INSERT INTO Expenses(ExpenseID, UserID, Amount, CategoryID, Description, Date) 
+	VALUES(@id, @userId, @amount, @catId, @desc, @date)
+
+	EXEC GetUserExpense @expenseId = @id; 
 GO
 
 IF EXISTS ( SELECT [name] FROM sys.procedures WHERE [name] = 'CreateIncome' )
 DROP PROC CreateIncome
 GO
 
-CREATE PROC CreateIncome @catName varchar(50), @userId varchar(28), @amount money, @desc text, @date Date
+CREATE PROC CreateIncome 
+	@catName varchar(50) = null,
+	@categoryId uniqueidentifier = null, 
+	@userId varchar(28), 
+	@amount money, 
+	@desc text, 
+	@date Date
 AS 
 	DECLARE @catId uniqueidentifier; 
-	SELECT @catId = CategoryID FROM Categories WHERE Name = @catName; 
+	IF @categoryId IS NOT NULL
+	BEGIN 
+		SET @catId = @categoryId
+	END
+	ELSE
+	BEGIN
+		SELECT @catId = CategoryID FROM Categories WHERE Name = @catName; 
+	END
 	PRINT @catId; 
-	IF EXISTS ( SELECT CategoryID FROM Categories WHERE Name = @catName ) 
-	INSERT INTO Incomes(UserID, Amount, CategoryID, Description, Date) 
-	VALUES(@userId, @amount, @catId, @desc, @date)
+	
+	DECLARE @id uniqueidentifier; 
+	SET @id = NEWID(); 
+	INSERT INTO Incomes(IncomeID, UserID, Amount, CategoryID, Description, Date) 
+	VALUES(@id, @userId, @amount, @catId, @desc, @date)
+
+	EXEC GetUserIncome @incomeId = @id; 
 GO
 
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'CreateRoommate' )

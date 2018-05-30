@@ -46,6 +46,30 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post('/', (req, res) => {
+    const idToken = req.header('x-auth-token'); 
+    if(!idToken) return res.status(401).send('No auth token.'); 
+
+    const { error, value } = Joi.validate(req.body, schema, { stripUnknown : true }); 
+    if(error) res.status(400).send(error.message);
+
+    verifyToken(idToken, decodedToken => {
+        let query = `EXEC CreateIncome @userId = ${decodedToken.uid}, @amount = ${value.amount}, @date = '${formatDate(value.date)}', @desc = '${value.desc}', @categoryId = '${value.categoryId}'`; 
+
+        const result = queryDataBase(query); 
+        result.then(record => {
+            res.body = record.recordset; 
+            res.send(record.recordset); 
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).send('Error completing request to server. '); 
+        })
+    }, err => {
+        res.status(401).send('Invalid token. ');         
+    });
+}); 
+
 router.get('/totals', (req, res) => {
     const idToken = req.header('x-auth-token'); 
     if(!idToken) return res.status(401).send('No auth token.'); 
