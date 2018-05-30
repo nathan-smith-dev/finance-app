@@ -349,17 +349,16 @@ GO
 
 CREATE PROC GetRoommateExpenseNotifications 
 	@expenseTo varchar(28),
-	@expenseFrom varchar(28), 
 	@date Date = null
 AS
 	BEGIN
 		SELECT 
+			re.ExpenseFrom as roomateId,
 			COUNT(*) as notifications
 		FROM RoommateExpenses as re
 		WHERE 
 			re.Acknowledge = 0 AND
 			re.ExpenseTo = @expenseTo AND
-			re.ExpenseFrom = @expenseFrom AND 
 			(@date IS NULL OR (MONTH(re.Date) = MONTH(@date) AND YEAR(re.Date) = YEAR(@date)))
 		GROUP BY re.ExpenseFrom
     END
