@@ -335,10 +335,33 @@ AS
 		JOIN Categories as c ON c.CategoryID = re.CategoryID
 		JOIN Users as u ON u.UserID = re.ExpenseFrom
 		WHERE 
+			re.Resolved = 0 AND
 			re.ExpenseTo = @expenseTo AND
 			re.ExpenseFrom = @expenseFrom AND 
 			(@date IS NULL OR (MONTH(re.Date) = MONTH(@date) AND YEAR(re.Date) = YEAR(@date)))
 		ORDER BY re.Date DESC
+    END
+GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoommateExpenseNotifications' )
+DROP PROC GetRoommateExpenseNotifications
+GO 
+
+CREATE PROC GetRoommateExpenseNotifications 
+	@expenseTo varchar(28),
+	@expenseFrom varchar(28), 
+	@date Date = null
+AS
+	BEGIN
+		SELECT 
+			COUNT(*) as notifications
+		FROM RoommateExpenses as re
+		WHERE 
+			re.Acknowledge = 0 AND
+			re.ExpenseTo = @expenseTo AND
+			re.ExpenseFrom = @expenseFrom AND 
+			(@date IS NULL OR (MONTH(re.Date) = MONTH(@date) AND YEAR(re.Date) = YEAR(@date)))
+		GROUP BY re.ExpenseFrom
     END
 GO
 
