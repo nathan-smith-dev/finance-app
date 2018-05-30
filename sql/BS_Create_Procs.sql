@@ -99,6 +99,20 @@ INSERT INTO Roommates (Roommate1ID, Roommate2ID)
 VALUES (@id1, @id2)
 GO 
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'CreateRoommateRequest' )
+DROP PROC CreateRoommateRequest
+GO
+
+CREATE PROC CreateRoommateRequest
+	@requesterId varchar(28), 
+	@recipientId varchar(28)
+AS 
+IF EXISTS ( SELECT * FROM Users WHERE UserID = @requesterId ) 
+IF EXISTS ( SELECT * FROM Users WHERE UserID = @recipientId )
+INSERT INTO RoommateRequests(RequesterID, RecipientID)
+VALUES (@requesterId, @recipientId)
+GO 
+
 IF EXISTS ( SELECT [name] FROM sys.procedures WHERE [name] = 'CreateUserCategory' )
 DROP PROC CreateUserCategory
 GO 
@@ -578,6 +592,25 @@ AS
 		JOIN Categories as c ON c.CategoryID = uc.CategoryID
 		WHERE uc.CategoryID = @categoryId AND uc.UserID = @userId
 		ORDER BY c.[Name]
+    END
+GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoomateRequests' )
+DROP PROC GetRoomateRequests 
+GO 
+
+CREATE PROC GetRoomateRequests 
+	@userId varchar(28)
+AS
+	BEGIN
+		SELECT 
+			rr.RequesterID as roomateId,
+			u.FirstName as firstName, 
+			u.LastName as lastName, 
+			rr.DateSent as date
+		FROM RoommateRequests as rr
+		JOIN Users as u ON u.UserID = rr.RequesterID
+		WHERE rr.Pending = 1 AND rr.RecipientID = @userId
     END
 GO
 
