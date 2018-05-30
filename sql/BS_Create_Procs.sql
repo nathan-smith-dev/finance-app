@@ -604,6 +604,8 @@ CREATE PROC GetRoomateRequests
 AS
 	BEGIN
 		SELECT 
+			rr.RequestID as id,
+			rr.Pending as pending,
 			rr.RequesterID as roomateId,
 			u.FirstName as firstName, 
 			u.LastName as lastName, 
@@ -614,6 +616,29 @@ AS
 		WHERE rr.Pending = 1 AND rr.RecipientID = @userId
     END
 GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoomateRequest' )
+DROP PROC GetRoomateRequest 
+GO 
+
+CREATE PROC GetRoomateRequest 
+	@requestId uniqueidentifier
+AS
+	BEGIN
+		SELECT 
+			rr.RequestID as id,
+			rr.Pending as pending,
+			rr.RequesterID as roomateId,
+			u.FirstName as firstName, 
+			u.LastName as lastName, 
+			u.Email as email,
+			rr.DateSent as date
+		FROM RoommateRequests as rr
+		JOIN Users as u ON u.UserID = rr.RequesterID
+		WHERE rr.RequestID = @requestId
+    END
+GO
+
 
 
 --PUTS
@@ -664,6 +689,45 @@ AS
 		EXEC GetUserIncome @incomeId = @incomeId
     END
 GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'AcceptRoomateRequest' )
+DROP PROC AcceptRoomateRequest 
+GO 
+
+CREATE PROC AcceptRoomateRequest 
+	@requestId uniqueidentifier
+AS
+	BEGIN
+		UPDATE RoommateRequests
+			SET Pending = 0
+		WHERE RequestID = @requestId
+
+		DECLARE @userId varchar(28);
+		DECLARE @roomateId varchar(28); 
+
+		SELECT 
+			@userId = rr.RecipientID, 
+			@roomateId = rr.RequesterID
+		FROM RoommateRequests as rr
+		WHERE rr.RequestID = @requestId
+
+		EXEC CreateRoommate @id1 = @userId, @id2 = @roomateId
+
+		SELECT 
+			u.UserID as id,
+			u.FirstName as firstName, 
+			u.LastName as lastName, 
+			u.Email as email
+		FROM Roommates as r
+		JOIN 
+			Users as u ON 
+			r.Roommate2ID = u.UserID
+		WHERE 
+			r.Roommate1ID = @userId AND 
+			r.Roommate2ID = @roomateId
+    END
+GO
+
 
 --DELETES
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteExpense' )
