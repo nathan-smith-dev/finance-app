@@ -1,6 +1,7 @@
 import axios from 'axios'; 
 import { withAuth } from '../firebase/auth'; 
 
+
 const instance = axios.create({ baseURL: 'https://nsmith.site/api/', timeout: 1000 }); 
 
 export const getIncomes = (month, year, callback) => {
@@ -213,6 +214,20 @@ export const getRoommateNotifications = (callback) => {
             .catch(err => {
                 console.log(err.message); 
                 setTimeout(() => getRoommateNotifications(callback), 125); 
+            }); 
+    }); 
+}
+
+export const getRoommateRequests = (callback) => {
+    withAuth(authToken => {
+        instance.get(`/roommates/requests`, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getRoommateRequests(callback), 125); 
             }); 
     }); 
 }

@@ -98,7 +98,7 @@ class Roommates extends Component {
 
     toggleRoommateRequest = (id) => {
         this.setState({
-            currentRoommateRequest: this.props.roommateRequests.find(req => req.uid === id), 
+            currentRoommateRequest: this.props.roommateRequests.find(req => req.roomateId === id), 
             showRoommateRequest: !this.state.showRoommateRequest
         }); 
     }
@@ -224,10 +224,10 @@ class Roommates extends Component {
                                             this.props.roommateRequests 
                                             ? this.props.roommateRequests.map(request => {
                                                     return <MenuItem 
-                                                                key={request.uid} 
-                                                                primaryText={request.name} 
+                                                                key={request.roomateId} 
+                                                                primaryText={`${request.firstName} ${request.lastName}`} 
                                                                 onClick={(uid) => {
-                                                                    this.toggleRoommateRequest(request.uid); 
+                                                                    this.toggleRoommateRequest(request.roomateId); 
                                                                     this.togglePopover(); 
                                                                 }} />
                                                 })

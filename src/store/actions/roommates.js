@@ -5,19 +5,25 @@ import * as apiCalls from '../../api-calls';
 
 export const getRoommateRequests = (uid) => {
     return dispatch => {
-        withAuth(authToken => {
-            const url = `${uid}/roommates/requests.json?auth=${authToken}`; 
-            axios.get(url)
-                .then(response => {
-                    if(response.data) {
-                        dispatch(setRoomateRequests(Object.values(response.data))); 
-                    }
-                    else if(!response.data) {
-                        dispatch(setRoomateRequests(null)); 
-                    }
-                })
-                .catch(error => console.log(error)); 
+        apiCalls.getRoommateRequests(requests => {
+            if(requests.length > 0)
+                dispatch(setRoomateRequests(requests)); 
+            else 
+                dispatch(setRoomateRequests(null));                 
         }); 
+        // withAuth(authToken => {
+        //     const url = `${uid}/roommates/requests.json?auth=${authToken}`; 
+        //     axios.get(url)
+        //         .then(response => {
+        //             if(response.data) {
+        //                 dispatch(setRoomateRequests(Object.values(response.data))); 
+        //             }
+        //             else if(!response.data) {
+        //                 dispatch(setRoomateRequests(null)); 
+        //             }
+        //         })
+        //         .catch(error => console.log(error)); 
+        // }); 
     }
 }; 
 
