@@ -1,8 +1,6 @@
 import React, { Component } from 'react'; 
 
 import { connect } from 'react-redux'; 
-import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
 import * as roommateActions from '../../store/actions/roommates'; 
 import { withRouter } from 'react-router-dom'; 
 import * as apiCalls from '../../api-calls'; 
@@ -142,7 +140,7 @@ class Roommates extends Component {
                                                 rightIcon={this.props.roommateNotifications[user.id] ? <Badge badgeContent={this.props.roommateNotifications[user.id]} primary={true} /> : null}
                                                 key={user.id} 
                                                 primaryText={`${user.firstName} ${user.lastName}`} 
-                                                onClick={() => this.redirectToRoommate(user.uid)} />
+                                                onClick={() => this.redirectToRoommate(user.id)} />
                                         })
                                         : <MenuItem primaryText="No current roommates" />
                                 }                             

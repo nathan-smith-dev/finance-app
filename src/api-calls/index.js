@@ -232,6 +232,31 @@ export const getRoommateRequests = (callback) => {
     }); 
 }
 
+export const getRoommateIncomesAndExpenses = (roommatesArr, callback) => {
+    withAuth(authToken => {
+        const roommateIds = roommatesArr.map(r => r.id); 
+        let promises = []; 
+        for(let id of roommateIds) {
+            promises.push(instance.get(`/roommates/expenses/user/${id}`, { headers: { 'x-auth-token': authToken } })); 
+        }
+        axios.all(promises)
+            .then(results => {
+                let data = {}; 
+                results.map(incomesAndExpenses => {
+                    if(incomesAndExpenses.data && incomesAndExpenses.data.length > 0) {
+                        data[incomesAndExpenses.data[0].roommateId] = incomesAndExpenses.data.map(ie => { return {...ie, date: new Date(ie.date) }});
+                    }
+                }); 
+                callback(data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => getRoommateIncomesAndExpenses(roommatesArr, callback), 125); 
+            }); 
+    }); 
+}
+
+
 export const acceptRoommateRequests = (id, accept, callback) => {
     withAuth(authToken => {
         instance.put(`/roommates/requests/${id}`, { accept: accept }, { headers: { 'x-auth-token': authToken } })

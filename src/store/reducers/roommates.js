@@ -5,6 +5,7 @@ const initialState = {
     mates: null, 
     focusedRoommate: null,
     notifications: {}, 
+    mateTransactions: [], 
 }; 
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +38,11 @@ const reducer = (state = initialState, action) => {
                     // transactionsTo: [...state.focusedRoommate.transactionsTo], 
                     transactionsToAndFrom: action.transactions
                 },
+            }; 
+        case actionTypes.GET_ROOMATES_TRANSACTIONS: 
+            return {
+                ...state,
+                mateTransactions: action.transactions,
             }; 
         default: 
             return {

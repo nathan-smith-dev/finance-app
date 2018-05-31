@@ -6,7 +6,7 @@ import * as notificationActions from '../../store/actions/notifications';
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
 import * as roommateActions from '../../store/actions/roommates'; 
-import { convertTransactionToDbValues } from '../../utlities/utilities'; 
+import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
 
 import {
     Table,
@@ -93,7 +93,7 @@ class RoommateTransactionTable extends Component {
     }; 
 
     canToggleExpense = () => {
-        return this.state.selectedExpense && this.state.selectedExpense.direction !== 'from'; 
+        return this.state.selectedExpense && this.state.selectedExpense.direction !== 'From'; 
     }
 
     toggleEdit = () => {
@@ -171,16 +171,17 @@ class RoommateTransactionTable extends Component {
     }
 
     render() {
-        const transArray = this.props.focusedRoommate && this.props.focusedRoommate.transactionsToAndFrom
-            ? this.props.focusedRoommate.transactionsToAndFrom 
+        const { focusedRoommate, mateTransactions } = this.props; 
+        const transArray = focusedRoommate && mateTransactions[focusedRoommate.uid]
+            ? mateTransactions[focusedRoommate.uid]
             : []; 
             
         const transactions = transArray.map((trans, index) => {
-            const color = trans.direction === "to" ? 'green' : 'red'; 
+            const color = trans.direction === "To" ? 'green' : 'red'; 
             const newStyle = trans.new && trans.direction !== 'to' ? {backgroundColor: '#C0D1E5'} : null;
             return (
                 <TableRow style={newStyle} key={index}>
-                    <TableRowColumn style={{width: '25%', paddingRight: 0}} >{`${trans.date.month + 1}/${trans.date.day}`}</TableRowColumn>
+                    <TableRowColumn style={{width: '25%', paddingRight: 0}} >{formatDate(trans.date)}</TableRowColumn>
                     <TableRowColumn style={{color: color, width: '30%'}}>
                         <div style={{width: 50, textAlign: 'right'}} >
                             {parseFloat(trans.amount).toFixed(2)}
@@ -275,6 +276,7 @@ const mapStateToProps = state => {
     return {
         userProfile: state.auth.userProfile, 
         focusedRoommate: state.roommates.focusedRoommate, 
+        mateTransactions: state.roommates.mateTransactions, 
         roommateNotifications: state.roommates.notifications,         
     }; 
 }; 
