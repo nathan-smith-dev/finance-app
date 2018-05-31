@@ -40,60 +40,19 @@ class Roommates extends Component {
     }; 
 
     handleDeleteRoommateRequest = () => {
-        withAuth(authToken => {
-            const roommate = this.state.currentRoommateRequest;  
-            const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
-            axios.delete(url)
-                .then(response => {
-                    this.toggleRoommateRequest(); 
-                    this.props.getRoommateRequests(this.props.userProfile.uid); 
-                })
-                .catch(error => {
-                    console.log(error); 
-                }); 
-        }); 
+        apiCalls.acceptRoommateRequests(this.state.currentRoommateRequest.id, false, data => {
+            this.toggleRoommateRequest(); 
+            this.props.getRoommateRequests(this.props.userProfile.uid); 
+            this.props.getRoommates(this.props.userProfile.uid); 
+        });
     }
 
     handleAcceptRoommate = () => {
-        apiCalls.acceptRoommateRequests(this.state.currentRoommateRequest.id, data => {
+        apiCalls.acceptRoommateRequests(this.state.currentRoommateRequest.id, true, data => {
             this.toggleRoommateRequest(); 
             this.props.getRoommateRequests(this.props.userProfile.uid); 
             this.props.getRoommates(this.props.userProfile.uid); 
         }); 
-        // withAuth(authToken => {
-        //     const roommate = this.state.currentRoommateRequest;  
-        //     const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
-        //     axios.delete(url)
-        //         .then(response => {
-        //             this.toggleRoommateRequest(); 
-        //             this.props.getRoommateRequests(this.props.userProfile.uid); 
-        //         })
-        //         .catch(error => {
-        //             console.log(error); 
-        //         }); 
-        //     const putURL = `${this.props.userProfile.uid}/roommates/mates/${roommate.uid}.json?auth=${authToken}`; 
-        //     axios.put(putURL, roommate)
-        //         .then(response => {
-        //             // console.log(response);
-        //         })
-        //         .catch(error => {
-        //             console.log(error); 
-        //         }); 
-        //     const oppositePutUrl = `${roommate.uid}/roommates/mates/${this.props.userProfile.uid}.json?auth=${authToken}`;
-        //     const currentUser = {
-        //         date: new Date(), 
-        //         name: this.props.userProfile.displayName, 
-        //         email: this.props.userProfile.email, 
-        //         uid: this.props.userProfile.uid
-        //     }; 
-        //     axios.put(oppositePutUrl, currentUser)
-        //         .then(response => {
-        //             // console.log(response);
-        //         })
-        //         .catch(error => {
-        //             console.log(error); 
-        //         }); 
-        // }) 
     }
 
     toggleNewRoomate = () => { 
@@ -128,25 +87,7 @@ class Roommates extends Component {
     }
 
     sendRoommateRequest = () => {
-        const newRoomate = {...this.state.newRoommate}; 
-        const user = this.props.userProfile; 
-        const thisUser = {
-            uid: user.uid, 
-            date: new Date(), 
-            name: user.displayName, 
-            email: user.email
-        }; 
-        withAuth(authToken => {
-            this.toggleNewRoomate(); 
-            const url = `${newRoomate.uid}/roommates/requests/${thisUser.uid}.json?auth=${authToken}`; 
-            axios.put(url, thisUser)
-                .then(response => {
-                    // console.log(response); 
-                })
-                .catch(error => {
-                    console.log(error); 
-                })
-        })
+        apiCalls.createRoommateRequests(this.state.newRoomate.uid, data => console.log(data)); 
     }
 
     redirectToRoommate = (uid) => {

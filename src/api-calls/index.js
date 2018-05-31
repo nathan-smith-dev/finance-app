@@ -232,16 +232,30 @@ export const getRoommateRequests = (callback) => {
     }); 
 }
 
-export const acceptRoommateRequests = (id, callback) => {
+export const acceptRoommateRequests = (id, accept, callback) => {
     withAuth(authToken => {
-        instance.put(`/roommates/requests/${id}`, null, { headers: { 'x-auth-token': authToken } })
+        instance.put(`/roommates/requests/${id}`, { accept: accept }, { headers: { 'x-auth-token': authToken } })
             .then(res => {
                 // console.log(res.data); 
                 callback(res.data); 
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => acceptRoommateRequests(id, callback), 125); 
+                setTimeout(() => acceptRoommateRequests(id, accept, callback), 125); 
+            }); 
+    }); 
+}
+
+export const createRoommateRequests = (recipientId, callback) => {
+    withAuth(authToken => {
+        instance.post(`/roommates/requests`, { recipientId: recipientId }, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => createRoommateRequests(recipientId, callback), 125); 
             }); 
     }); 
 }
