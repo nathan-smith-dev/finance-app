@@ -107,10 +107,17 @@ CREATE PROC CreateRoommateRequest
 	@requesterId varchar(28), 
 	@recipientId varchar(28)
 AS 
-IF EXISTS ( SELECT * FROM Users WHERE UserID = @requesterId ) 
-IF EXISTS ( SELECT * FROM Users WHERE UserID = @recipientId )
-INSERT INTO RoommateRequests(RequesterID, RecipientID)
-VALUES (@requesterId, @recipientId)
+BEGIN
+	IF EXISTS ( SELECT * FROM Users WHERE UserID = @requesterId ) 
+	IF EXISTS ( SELECT * FROM Users WHERE UserID = @recipientId )
+	BEGIN
+		DECLARE @id uniqueidentifier = NEWID(); 
+		INSERT INTO RoommateRequests(RequestID, RequesterID, RecipientID)
+		VALUES (@id, @requesterId, @recipientId)
+
+		EXEC GetRoomateRequest @requestId = @id
+	END
+END
 GO 
 
 IF EXISTS ( SELECT [name] FROM sys.procedures WHERE [name] = 'CreateUserCategory' )
@@ -695,36 +702,45 @@ DROP PROC AcceptRoomateRequest
 GO 
 
 CREATE PROC AcceptRoomateRequest 
-	@requestId uniqueidentifier
+	@requestId uniqueidentifier,
+	@accept bit = 1 
 AS
 	BEGIN
 		UPDATE RoommateRequests
 			SET Pending = 0
 		WHERE RequestID = @requestId
 
-		DECLARE @userId varchar(28);
-		DECLARE @roomateId varchar(28); 
+		IF @accept = 1
+		BEGIN
+			DECLARE @userId varchar(28);
+			DECLARE @roomateId varchar(28); 
 
-		SELECT 
-			@userId = rr.RecipientID, 
-			@roomateId = rr.RequesterID
-		FROM RoommateRequests as rr
-		WHERE rr.RequestID = @requestId
+			SELECT 
+				@userId = rr.RecipientID, 
+				@roomateId = rr.RequesterID
+			FROM RoommateRequests as rr
+			WHERE rr.RequestID = @requestId
 
-		EXEC CreateRoommate @id1 = @userId, @id2 = @roomateId
+			EXEC CreateRoommate @id1 = @userId, @id2 = @roomateId
 
-		SELECT 
-			u.UserID as id,
-			u.FirstName as firstName, 
-			u.LastName as lastName, 
-			u.Email as email
-		FROM Roommates as r
-		JOIN 
-			Users as u ON 
-			r.Roommate2ID = u.UserID
-		WHERE 
-			r.Roommate1ID = @userId AND 
-			r.Roommate2ID = @roomateId
+			SELECT 
+				u.UserID as id,
+				u.FirstName as firstName, 
+				u.LastName as lastName, 
+				u.Email as email
+			FROM Roommates as r
+			JOIN 
+				Users as u ON 
+				r.Roommate2ID = u.UserID
+			WHERE 
+				r.Roommate1ID = @userId AND 
+				r.Roommate2ID = @roomateId
+		END
+		ELSE
+		BEGIN
+			EXEC GetRoomateRequest @requestId = @requestId
+		END
+
     END
 GO
 
@@ -776,5 +792,21 @@ AS
 		DELETE
 		FROM UserCategories
 		WHERE CategoryID = @categoryId AND UserID = @userId
+    END
+GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteRoommateRequest' )
+DROP PROC DeleteRoommateRequest 
+GO 
+
+CREATE PROC DeleteRoommateRequest 
+	@requestId uniqueidentifier
+AS
+	BEGIN
+		EXEC GetRoomateRequest @requestId = @requestId
+
+		DELETE
+		FROM RoommateRequests
+		WHERE RequestID = @requestId
     END
 GO
