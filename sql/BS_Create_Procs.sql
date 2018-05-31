@@ -385,6 +385,49 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoommateIncomesAndExpenses' )
+DROP PROC GetRoommateIncomesAndExpenses
+GO 
+
+CREATE PROC GetRoommateIncomesAndExpenses 
+	@expenseTo varchar(28), 
+	@expenseFrom varchar(28)
+AS
+	BEGIN
+		SELECT
+			re.RoommateExpenseID as id, 
+			c.Name as category,
+			c.CategoryID as categoryId,
+			re.Amount as amount, 
+			re.Date as [date], 
+			re.Description as [desc], 
+			re.ExpenseFrom as roommateId, 
+			'From' as direction
+		FROM RoommateExpenses as re
+		JOIN Categories as c ON re.CategoryID = c.CategoryID
+		WHERE re.ExpenseFrom = @expenseFrom AND re.ExpenseTo = @expenseTo
+
+		UNION  ALL 
+
+		SELECT
+			re.RoommateExpenseID as id, 
+			c.Name as category,
+			c.CategoryID as categoryId,
+			re.Amount as amount, 
+			re.Date as [date], 
+			re.Description as [desc], 
+			re.ExpenseTo as roommateId, 
+			'To' as direction
+		FROM RoommateExpenses as re
+		JOIN Categories as c ON re.CategoryID = c.CategoryID
+		WHERE re.ExpenseFrom = @expenseTo AND re.ExpenseTo = @expenseFrom
+
+		ORDER BY [Date] DESC
+
+
+    END
+GO
+
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetUserCategories' )
 DROP PROC GetUserCategories
 GO 

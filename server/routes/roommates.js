@@ -147,13 +147,13 @@ router.get('/expenses/notifications', (req, res) => {
     });
 }); 
 
-router.get('/expenses/:id', (req, res) => {
+router.get('/expenses/user/:id', (req, res) => {
     const idToken = req.header('x-auth-token'); 
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
         console.log(req.header('expenseFrom'));
-        let query = `EXEC GetRoommateExpenses @expenseTo = ${decodedToken.uid}, @expenseFrom = ${req.params.id}`; 
+        let query = `EXEC GetRoommateIncomesAndExpenses @expenseTo = ${decodedToken.uid}, @expenseFrom = ${req.params.id}`; 
         if(req.query.year && req.query.month)
             query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
             
