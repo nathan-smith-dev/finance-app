@@ -232,6 +232,20 @@ export const getRoommateRequests = (callback) => {
     }); 
 }
 
+export const acceptRoommateRequests = (id, callback) => {
+    withAuth(authToken => {
+        instance.put(`/roommates/requests/${id}`, null, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => acceptRoommateRequests(id, callback), 125); 
+            }); 
+    }); 
+}
+
 export const addUser = (userObj, callback) => {
     withAuth(authToken => {
         instance.post(`/users`, userObj, { headers: { 'x-auth-token': authToken } })

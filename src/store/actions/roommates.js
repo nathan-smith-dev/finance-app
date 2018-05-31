@@ -11,19 +11,6 @@ export const getRoommateRequests = (uid) => {
             else 
                 dispatch(setRoomateRequests(null));                 
         }); 
-        // withAuth(authToken => {
-        //     const url = `${uid}/roommates/requests.json?auth=${authToken}`; 
-        //     axios.get(url)
-        //         .then(response => {
-        //             if(response.data) {
-        //                 dispatch(setRoomateRequests(Object.values(response.data))); 
-        //             }
-        //             else if(!response.data) {
-        //                 dispatch(setRoomateRequests(null)); 
-        //             }
-        //         })
-        //         .catch(error => console.log(error)); 
-        // }); 
     }
 }; 
 
@@ -54,28 +41,6 @@ export const setRoommates = (roommates) => {
         mates: roommates 
     }; 
 }; 
-
-// export const setRoommateNotifications = (roommates) => {
-//     let notifications = {}; 
-//     console.log(roommates.length)
-//     if(roommates && roommates.length > 0) {
-//         for(let mate of roommates) {
-//             // console.log(mate.id)
-//             // apiCalls.getRoommateNotifications(mate.id, notifications => {
-//             //     notifications[mate.id] = notifications;
-//             //     console.log(notifications); 
-//             // }); 
-//             // if(mate.transactions) {
-//             //     for(let trans of Object.values(mate.transactions)) {
-//             //         if(trans.new) {
-//             //             notifications[mate.uid] = notifications[mate.uid] ? notifications[mate.uid]+1 : 1; 
-//             //         }
-//             //     }
-//             // }
-//         }
-//     }
-//     // return updateRoommateNotifications(notifications); 
-// }
 
 export const updateRoommateNotifications = (notifications) => {
     return {

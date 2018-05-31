@@ -5,6 +5,7 @@ import axios from 'axios';
 import { withAuth } from '../../firebase/auth'; 
 import * as roommateActions from '../../store/actions/roommates'; 
 import { withRouter } from 'react-router-dom'; 
+import * as apiCalls from '../../api-calls'; 
 
 import Paper from '../../hoc/Paper/Paper'; 
 import Row from  '../../hoc/Grid/Row/Row';
@@ -54,40 +55,45 @@ class Roommates extends Component {
     }
 
     handleAcceptRoommate = () => {
-        withAuth(authToken => {
-            const roommate = this.state.currentRoommateRequest;  
-            const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
-            axios.delete(url)
-                .then(response => {
-                    this.toggleRoommateRequest(); 
-                    this.props.getRoommateRequests(this.props.userProfile.uid); 
-                })
-                .catch(error => {
-                    console.log(error); 
-                }); 
-            const putURL = `${this.props.userProfile.uid}/roommates/mates/${roommate.uid}.json?auth=${authToken}`; 
-            axios.put(putURL, roommate)
-                .then(response => {
-                    // console.log(response);
-                })
-                .catch(error => {
-                    console.log(error); 
-                }); 
-            const oppositePutUrl = `${roommate.uid}/roommates/mates/${this.props.userProfile.uid}.json?auth=${authToken}`;
-            const currentUser = {
-                date: new Date(), 
-                name: this.props.userProfile.displayName, 
-                email: this.props.userProfile.email, 
-                uid: this.props.userProfile.uid
-            }; 
-            axios.put(oppositePutUrl, currentUser)
-                .then(response => {
-                    // console.log(response);
-                })
-                .catch(error => {
-                    console.log(error); 
-                }); 
-        }) 
+        apiCalls.acceptRoommateRequests(this.state.currentRoommateRequest.id, data => {
+            this.toggleRoommateRequest(); 
+            this.props.getRoommateRequests(this.props.userProfile.uid); 
+            this.props.getRoommates(this.props.userProfile.uid); 
+        }); 
+        // withAuth(authToken => {
+        //     const roommate = this.state.currentRoommateRequest;  
+        //     const url = `${this.props.userProfile.uid}/roommates/requests/${roommate.uid}.json?auth=${authToken}`; 
+        //     axios.delete(url)
+        //         .then(response => {
+        //             this.toggleRoommateRequest(); 
+        //             this.props.getRoommateRequests(this.props.userProfile.uid); 
+        //         })
+        //         .catch(error => {
+        //             console.log(error); 
+        //         }); 
+        //     const putURL = `${this.props.userProfile.uid}/roommates/mates/${roommate.uid}.json?auth=${authToken}`; 
+        //     axios.put(putURL, roommate)
+        //         .then(response => {
+        //             // console.log(response);
+        //         })
+        //         .catch(error => {
+        //             console.log(error); 
+        //         }); 
+        //     const oppositePutUrl = `${roommate.uid}/roommates/mates/${this.props.userProfile.uid}.json?auth=${authToken}`;
+        //     const currentUser = {
+        //         date: new Date(), 
+        //         name: this.props.userProfile.displayName, 
+        //         email: this.props.userProfile.email, 
+        //         uid: this.props.userProfile.uid
+        //     }; 
+        //     axios.put(oppositePutUrl, currentUser)
+        //         .then(response => {
+        //             // console.log(response);
+        //         })
+        //         .catch(error => {
+        //             console.log(error); 
+        //         }); 
+        // }) 
     }
 
     toggleNewRoomate = () => { 
@@ -257,6 +263,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getRoommateRequests: (uid) => dispatch(roommateActions.getRoommateRequests(uid)), 
+        getRoommates: (uid) => dispatch(roommateActions.getRoommates(uid)), 
         setFocusedRoomate: (roommate) => dispatch(roommateActions.setFocusedRoomate(roommate)), 
     }
 }
