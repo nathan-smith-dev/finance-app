@@ -97,15 +97,6 @@ export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {
     }; 
 }; 
 
-const addKeyIdsAndDirection = (obj, dir) => {
-    if(obj && Object.keys(obj).length > 0) {
-        return Object.keys(obj).map(key => {
-            return {...obj[key], id: key, direction: dir}
-        })
-    }
-    return []; 
-}; 
-
 export const setRoomateTransactionsToAndFrom = (transactions) => {
     return {
         type: actionTypes.GET_ROOMATE_TRANS_TO_AND_FROM, 

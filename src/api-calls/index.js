@@ -246,6 +246,7 @@ export const getRoommateIncomesAndExpenses = (roommatesArr, callback) => {
                     if(incomesAndExpenses.data && incomesAndExpenses.data.length > 0) {
                         data[incomesAndExpenses.data[0].roommateId] = incomesAndExpenses.data.map(ie => { return {...ie, date: new Date(ie.date) }});
                     }
+                    return 0; // stops webpack compiler warning
                 }); 
                 callback(data); 
             })
@@ -267,6 +268,20 @@ export const updateRoommateExpense = (expenseObj, callback) => {
             .catch(err => {
                 console.log(err.message); 
                 setTimeout(() => updateRoommateExpense(expenseObj, callback), 125); 
+            }); 
+    }); 
+}
+
+export const createRoommateExpense = (expenseObj, callback) => {
+    withAuth(authToken => {
+        instance.post(`/roommates/expenses`, expenseObj, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => createRoommateExpense(expenseObj, callback), 125); 
             }); 
     }); 
 }
