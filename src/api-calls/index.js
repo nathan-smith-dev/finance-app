@@ -257,6 +257,20 @@ export const getRoommateIncomesAndExpenses = (roommatesArr, callback) => {
 }
 
 
+export const updateRoommateExpense = (expenseObj, callback) => {
+    withAuth(authToken => {
+        instance.put(`/roommates/expenses/${expenseObj.id}`, expenseObj, { headers: { 'x-auth-token': authToken } })
+            .then(res => {
+                // console.log(res.data); 
+                callback(res.data); 
+            })
+            .catch(err => {
+                console.log(err.message); 
+                setTimeout(() => updateRoommateExpense(expenseObj, callback), 125); 
+            }); 
+    }); 
+}
+
 export const acceptRoommateRequests = (id, accept, callback) => {
     withAuth(authToken => {
         instance.put(`/roommates/requests/${id}`, { accept: accept }, { headers: { 'x-auth-token': authToken } })

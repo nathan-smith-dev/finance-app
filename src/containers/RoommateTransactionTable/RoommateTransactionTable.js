@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as notificationActions from '../../store/actions/notifications';  
 import { withAuth } from '../../firebase/auth'; 
 import axios from 'axios'; 
+import * as apiCalls from '../../api-calls'; 
 import * as roommateActions from '../../store/actions/roommates'; 
 import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
 
@@ -49,13 +50,8 @@ class RoommateTransactionTable extends Component {
     selectExpense = (expense) => {
         this.setState({
             selectedExpense: {
+                ...expense,
                 amount: expense.amount + "",
-                date: expense.date, 
-                category: expense.category, 
-                id: expense.id, 
-                type: expense.type, 
-                desc: expense.desc, 
-                direction: expense.direction
             }, 
             userUid: this.props.userProfile.uid
         }, () => {
@@ -66,30 +62,15 @@ class RoommateTransactionTable extends Component {
     toggleSelectExpense = () => {
         this.setState({
             openExpense: !this.state.openExpense
-        }); 
-        withAuth((authToken) => {
-            const url = `${this.props.userProfile.uid}/roommates/mates/${this.props.focusedRoommate.uid}/transactions/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
-            axios.get(url)
-                .then(response => {
-                    if(response.data.new) {
-                        axios.patch(url, {new: false})
-                            .then(response => {
-                                if(this.props.focusedRoommate) {
-                                    const notifications = {
-                                        ...this.props.roommateNotifications, 
-                                        [this.props.focusedRoommate.uid]: this.props.roommateNotifications[this.props.focusedRoommate.uid]-1
-                                    }; 
-                                    this.props.updateRoommateNotifications(notifications); 
-                                    this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
-                                }
-                            }) 
-                            .catch(err => {
-                                console.log(err); 
-                            })
-                    }
-                })
-                .catch(error => console.log(error)); 
-        })
+        }, () => console.log(this.state.selectedExpense)); 
+        const { selectedExpense } = this.state; 
+        if(!selectedExpense.acknowledged && selectedExpense.direction === 'From') {
+            console.log('PUT to updated acknowldeged')
+            const updatedExpense = { ...selectedExpense, acknowledged: true, resolved: false }; 
+            apiCalls.updateRoommateExpense(updatedExpense, data => {
+                this.props.getRoommates(this.props.userProfile.uid); 
+            }); 
+        }
     }; 
 
     canToggleExpense = () => {
@@ -115,18 +96,13 @@ class RoommateTransactionTable extends Component {
     }
 
     deleteRoommateExpense = () => {
-        withAuth((authToken) => {
-            const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions/${this.state.selectedExpense.id}.json?auth=${authToken}`
-            axios.delete(url)
-            .then(response => {
-                this.props.showNotification("Deleted transaction"); 
-                this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.state.userUid); 
-                this.toggleSelectExpense(); 
-            })
-            .catch(err => {
-                console.log(err); 
-            })
-        });
+        const { selectedExpense } = this.state; 
+        const updatedExpense = { ...selectedExpense, resolved: true };         
+        apiCalls.updateRoommateExpense(updatedExpense, data => {
+            this.props.getRoommates(this.props.userProfile.uid); 
+            this.props.showNotification("Deleted transaction"); 
+            this.toggleSelectExpense(); 
+        }); 
     }; 
 
     sendTransaction = (obj) => {
@@ -178,7 +154,7 @@ class RoommateTransactionTable extends Component {
             
         const transactions = transArray.map((trans, index) => {
             const color = trans.direction === "To" ? 'green' : 'red'; 
-            const newStyle = trans.new && trans.direction !== 'to' ? {backgroundColor: '#C0D1E5'} : null;
+            const newStyle = !trans.acknowledged && trans.direction !== 'To' ? {backgroundColor: '#C0D1E5'} : null;
             return (
                 <TableRow style={newStyle} key={index}>
                     <TableRowColumn style={{width: '25%', paddingRight: 0}} >{formatDate(trans.date)}</TableRowColumn>
@@ -285,7 +261,8 @@ const mapDispatchToProps = dispatch => {
     return {
         showNotification: (text) => dispatch(notificationActions.showNotification(true, text)), 
         getRoommateTransactions: (rUid, cUid) => dispatch(roommateActions.getRoommateTransactionsToAndFrom(rUid, cUid)),
-        updateRoommateNotifications: (notifications) => dispatch(roommateActions.updateRoommateNotifications(notifications))        
+        updateRoommateNotifications: (notifications) => dispatch(roommateActions.updateRoommateNotifications(notifications)),       
+        getRoommates: (uid) => dispatch(roommateActions.getRoommates(uid)),       
     }; 
 }; 
 
