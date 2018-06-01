@@ -151,17 +151,29 @@ CREATE PROC CreateRoomateExpense
 	@expenseTo varchar(28), 
 	@expenseFrom varchar(28), 
 	@amount money, 
-	@catName varchar(50), 
+	@catName varchar(50) = null,
+	@catId uniqueidentifier = null,  
 	@desc text, 
 	@date Date
 AS
-	DECLARE @categoryId uniqueidentifier; 
-	IF EXISTS ( SELECT CategoryID FROM Categories WHERE Name = @catName ) 
-	BEGIN 
-		SELECT @categoryId = CategoryID FROM Categories WHERE Name = @catName
-		INSERT INTO RoommateExpenses (ExpenseTo, ExpenseFrom, Amount, CategoryID, Description, Date)
-		VALUES (@expenseTo, @expenseFrom, @amount, @categoryId, @desc, @date)
-	END 
+	BEGIN
+		DECLARE @categoryId uniqueidentifier; 
+		DECLARE @id uniqueidentifier = NEWID();
+		IF ( @catId IS NOT NULL )
+		BEGIN
+			SET @categoryId = @catId
+		END
+		ELSE
+		BEGIN
+			IF EXISTS ( SELECT CategoryID FROM Categories WHERE Name = @catName ) 
+				SELECT @categoryId = CategoryID FROM Categories WHERE Name = @catName
+		END
+
+		INSERT INTO RoommateExpenses (RoommateExpenseID, ExpenseTo, ExpenseFrom, Amount, CategoryID, Description, Date)
+		VALUES (@id, @expenseTo, @expenseFrom, @amount, @categoryId, @desc, @date)
+
+		EXEC GetRoomateExpense @expenseId = @id
+	END
 GO
 
 

@@ -28,7 +28,8 @@ const rommateExpenseSchema = {
 	date: Joi.date(), 
 	desc: Joi.string(), 
 	acknowledged: Joi.bool(),
-	resolved: Joi.bool()
+    resolved: Joi.bool(), 
+    roommateId: Joi.string().length(28)
 }; 
 
 
@@ -166,6 +167,36 @@ router.get('/expenses/notifications', (req, res) => {
     });
 }); 
 
+router.post('/expenses', (req, res) => {
+    const idToken = req.header('x-auth-token'); 
+    if(!idToken) return res.status(401).send('No auth token.'); 
+
+    const { error, value } = Joi.validate(req.body, rommateExpenseSchema, { stripUnknown : true }); 
+    if(error) res.status(400).send(error.message);
+
+    verifyToken(idToken, decodedToken => {
+        let query = `EXEC CreateRoomateExpense 
+        @expenseTo = '${value.roommateId}',
+        @expenseFrom = ${decodedToken.uid}, 
+        @catId = '${value.categoryId}', 
+        @amount = ${value.amount}, 
+        @date = '${formatDate(value.date)}', 
+        @desc = '${value.desc}'`; 
+
+        const result = queryDataBase(query); 
+        result.then(record => {
+            res.body = record.recordset; 
+            res.send(record.recordset); 
+        })
+        .catch(err => {
+            console.log(err.message)
+            res.status(500).send('Error completing request to server. '); 
+        })
+    }, err => {
+        res.status(401).send('Invalid token. ');         
+    });
+}); 
+
 router.put('/expenses/:id', (req, res) => {
     const idToken = req.header('x-auth-token'); 
     if(!idToken) return res.status(401).send('No auth token.'); 
@@ -202,7 +233,6 @@ router.get('/expenses/user/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.header('expenseFrom'));
         let query = `EXEC GetRoommateIncomesAndExpenses @expenseTo = ${decodedToken.uid}, @expenseFrom = ${req.params.id}`; 
         if(req.query.year && req.query.month)
             query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
