@@ -4,12 +4,31 @@ const queryDataBase = require('../db/sqlserver.js');
 const verifyToken = require('./auth'); 
 const Joi = require('joi');
 
+const formatDate = (date) => {
+    const adjustedDate = calcTimezoneOffset(date); 
+    return `${adjustedDate.getFullYear()}-${adjustedDate.getMonth() + 1}-${adjustedDate.getDate()}`; // add one to month because 0 index 
+}
+
+const calcTimezoneOffset = (date) => {
+    const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() + userTimezoneOffset); 
+}
+
 const requestSchema = {
     recipientId: Joi.string().required()
 }; 
 
 const acceptRejectSchema = {
     accept: Joi.boolean().required()
+}; 
+
+const rommateExpenseSchema = {
+	categoryId: Joi.string().guid(),
+	amount: Joi.number(), 
+	date: Joi.date(), 
+	desc: Joi.string(), 
+	acknowledged: Joi.bool(),
+	resolved: Joi.bool()
 }; 
 
 
@@ -140,6 +159,37 @@ router.get('/expenses/notifications', (req, res) => {
         })
         .catch(err => {
             console.log(err.message);
+            res.status(500).send('Error completing request to server. '); 
+        })
+    }, err => {
+        res.status(401).send('Invalid token. ');         
+    });
+}); 
+
+router.put('/expenses/:id', (req, res) => {
+    const idToken = req.header('x-auth-token'); 
+    if(!idToken) return res.status(401).send('No auth token.'); 
+
+    const { error, value } = Joi.validate(req.body, rommateExpenseSchema, { stripUnknown : true }); 
+    if(error) res.status(400).send(error.message);
+
+    verifyToken(idToken, decodedToken => {
+        let query = `EXEC UpdateRoommateExpense 
+        @expenseId = '${req.params.id}', 
+        @categoryId = '${value.categoryId}', 
+        @amount = ${value.amount}, 
+        @date = '${formatDate(value.date)}', 
+        @desc = '${value.desc}', 
+        @acknowledged = ${value.acknowledged}, 
+        @resolved = ${value.resolved}`; 
+
+        const result = queryDataBase(query); 
+        result.then(record => {
+            res.body = record.recordset; 
+            res.send(record.recordset); 
+        })
+        .catch(err => {
+            console.log(err.message)
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {

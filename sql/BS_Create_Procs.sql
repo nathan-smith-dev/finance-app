@@ -407,7 +407,10 @@ AS
 			'Expense' as type
 		FROM RoommateExpenses as re
 		JOIN Categories as c ON re.CategoryID = c.CategoryID
-		WHERE re.ExpenseFrom = @expenseFrom AND re.ExpenseTo = @expenseTo
+		WHERE 
+			re.ExpenseFrom = @expenseFrom AND 
+			re.ExpenseTo = @expenseTo AND 
+			re.Resolved = 0
 
 		UNION  ALL 
 
@@ -424,7 +427,10 @@ AS
 			'Expense' as type
 		FROM RoommateExpenses as re
 		JOIN Categories as c ON re.CategoryID = c.CategoryID
-		WHERE re.ExpenseFrom = @expenseTo AND re.ExpenseTo = @expenseFrom
+		WHERE 
+			re.ExpenseFrom = @expenseTo AND 
+			re.ExpenseTo = @expenseFrom AND 
+			re.Resolved = 0
 
 		ORDER BY [Date] DESC
 
@@ -693,6 +699,29 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoomateExpense' )
+DROP PROC GetRoomateExpense 
+GO 
+
+CREATE PROC GetRoomateExpense 
+	@expenseId uniqueidentifier
+AS
+	BEGIN
+		SELECT 
+			re.RoommateExpenseID as id, 
+			c.Name as category,
+			c.CategoryID as categoryId,
+			re.Amount as amount, 
+			re.Date as [date], 
+			re.Description as [desc], 
+			re.ExpenseTo as roommateId, 
+			re.Acknowledge as acknowledged,
+			re.Resolved as resolved
+		FROM RoommateExpenses as re
+		JOIN Categories as c ON re.CategoryID = c.CategoryID
+		WHERE re.RoommateExpenseID = @expenseId 
+    END
+GO
 
 
 --PUTS
@@ -788,6 +817,34 @@ AS
 			EXEC GetRoomateRequest @requestId = @requestId
 		END
 
+    END
+GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'UpdateRoommateExpense' )
+DROP PROC UpdateRoommateExpense 
+GO 
+
+CREATE PROC UpdateRoommateExpense 
+	@expenseId uniqueidentifier, 
+	@amount money, 
+	@date date, 
+	@desc text, 
+	@categoryId uniqueidentifier, 
+	@resolved bit, 
+	@acknowledged bit
+AS
+	BEGIN
+		UPDATE RoommateExpenses
+			SET 
+				Amount = @amount, 
+				[Date] = @date, 
+				[Description] = @desc, 
+				CategoryID = @categoryId, 
+				Resolved = @resolved, 
+				Acknowledge = @acknowledged
+		WHERE RoommateExpenseID = @expenseId
+		
+		EXEC GetRoomateExpense @expenseId = @expenseId
     END
 GO
 
