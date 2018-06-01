@@ -402,7 +402,9 @@ AS
 			re.Date as [date], 
 			re.Description as [desc], 
 			re.ExpenseFrom as roommateId, 
-			'From' as direction
+			re.Acknowledge as acknowledged, 
+			'From' as direction, 
+			'Expense' as type
 		FROM RoommateExpenses as re
 		JOIN Categories as c ON re.CategoryID = c.CategoryID
 		WHERE re.ExpenseFrom = @expenseFrom AND re.ExpenseTo = @expenseTo
@@ -417,7 +419,9 @@ AS
 			re.Date as [date], 
 			re.Description as [desc], 
 			re.ExpenseTo as roommateId, 
-			'To' as direction
+			re.Acknowledge as acknowledged, 
+			'To' as direction, 
+			'Expense' as type
 		FROM RoommateExpenses as re
 		JOIN Categories as c ON re.CategoryID = c.CategoryID
 		WHERE re.ExpenseFrom = @expenseTo AND re.ExpenseTo = @expenseFrom
