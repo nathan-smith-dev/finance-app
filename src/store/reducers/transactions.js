@@ -81,6 +81,10 @@ const reducer = (state = initialState, action) => {
                 filters: {...state.filters, categories: action.categories}
             }; 
         case actionTypes.GET_NET_TRANSACTIONS: 
+            if(!action.net.incomes)
+                action.net.incomes = 0; 
+            if(!action.net.expenses)
+                action.net.expenses = 0; 
             return {
                 ...state, 
                 net: { incomes: action.net.incomes, expenses: action.net.expenses }
