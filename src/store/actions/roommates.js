@@ -65,18 +65,21 @@ export const setFocusedRoomateSuccess = (roommate) => {
 }; 
 
 export const setFocusedRoomate = (roommateUid) => {
-    return (dispatch, getState) => {
-        const currentUserUid = getState().auth.userProfile.uid; 
-        withAuth(authToken => {
-            const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
-            axios.get(url)
-                .then(response => {
-                    dispatch(setFocusedRoomateSuccess(response.data)); 
-                    dispatch(getRoommateTransactionsToAndFrom(roommateUid, currentUserUid)); 
-                })
-                .catch(error => console.log(error))
-        }); 
-    }; 
+    return dispatch => {
+        apiCalls.getUser(roommateUid, user => dispatch(setFocusedRoomateSuccess(user[0]))); 
+    }
+    // return (dispatch, getState) => {
+    //     const currentUserUid = getState().auth.userProfile.uid; 
+    //     withAuth(authToken => {
+    //         const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
+    //         axios.get(url)
+    //             .then(response => {
+    //                 dispatch(setFocusedRoomateSuccess(response.data)); 
+    //                 dispatch(getRoommateTransactionsToAndFrom(roommateUid, currentUserUid)); 
+    //             })
+    //             .catch(error => console.log(error))
+    //     }); 
+    // }; 
 }; 
 
 export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {

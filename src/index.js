@@ -12,9 +12,6 @@ import transactionsReducer from './store/reducers/transactions';
 import notificationsReducer from './store/reducers/notifcations'; 
 import roomatesReducer from './store/reducers/roommates'; 
 
-import axios from 'axios'; 
-
-axios.defaults.baseURL = 'https://react-finance-f20df.firebaseio.com/users/'; 
 
 const composeEnhancers =
   typeof window === 'object' &&
