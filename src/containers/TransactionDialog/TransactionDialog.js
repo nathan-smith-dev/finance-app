@@ -56,7 +56,7 @@ class NewTransactionDialog extends Component {
         return {
             ...prevState, 
             newExpense: {
-                date: nextProps.date && nextProps.date.year ? new Date(nextProps.date.year, nextProps.date.month, nextProps.date.day) : prevState.newExpense.date, 
+                date: nextProps.date ? nextProps.date : prevState.newExpense.date, 
                 amount: nextProps.amount ? nextProps.amount : "", 
                 type: nextProps.type ? nextProps.type : prevState.newExpense.type, 
                 categoryId: nextProps.categoryId ? nextProps.categoryId : prevState.newExpense.categoryId, 
@@ -67,7 +67,6 @@ class NewTransactionDialog extends Component {
     }
 
     handleChange = (key, value) => {
-        console.log(value)
         this.setState({
             newExpense: {
                 ...this.state.newExpense, 
@@ -114,7 +113,6 @@ class NewTransactionDialog extends Component {
 
     handleSubmit = () => {
         const { onSubmit } = this.props; 
-        console.log(this.state.newExpense)
         onSubmit({...this.state.newExpense}); 
 
         // window.setTimeout(() => { // Delay because UX feels like transaction is erased before the dialog closes

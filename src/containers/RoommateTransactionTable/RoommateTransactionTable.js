@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import classes from './RoommateTransactionTable.css'; 
 import { connect } from 'react-redux'; 
 import * as notificationActions from '../../store/actions/notifications';  
-import { withAuth } from '../../firebase/auth'; 
-import axios from 'axios'; 
 import * as apiCalls from '../../api-calls'; 
 import * as roommateActions from '../../store/actions/roommates'; 
-import { convertTransactionToDbValues, formatDate } from '../../utlities/utilities'; 
+import { formatDate } from '../../utlities/utilities'; 
 
 import {
     Table,
@@ -62,7 +60,7 @@ class RoommateTransactionTable extends Component {
     toggleSelectExpense = () => {
         this.setState({
             openExpense: !this.state.openExpense
-        }, () => console.log(this.state.selectedExpense)); 
+        }); 
         const { selectedExpense } = this.state; 
         if(!selectedExpense.acknowledged && selectedExpense.direction === 'From') {
             console.log('PUT to updated acknowldeged')
@@ -106,44 +104,24 @@ class RoommateTransactionTable extends Component {
     }; 
 
     sendTransaction = (obj) => {
-        const postObj = convertTransactionToDbValues(obj); 
-        postObj.new = true; 
-        withAuth((authToken) => {
-            const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions.json?auth=${authToken}`; 
-            this.props.showNotification("Sent transaction");      
-            axios.post(url, postObj)
-                .then(response => {
-                    if(this.props.focusedRoommate) {
-                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
-                    }
-                    this.toggleShowNewTransaction(); 
-                    this.toggleEdit(); 
-                }) 
-                .catch(err => {
-                    console.log(err); 
-                    this.props.showNotification("Error updating transaction");
-                })
-        })
+        const postObj = { ...obj, roommateId: this.props.focusedRoommate.uid }; 
+        console.log(postObj);
+        apiCalls.createRoommateExpense(postObj, data => {
+            this.props.getRoommates(this.props.userProfile.uid);             
+            this.toggleShowNewTransaction(); 
+            this.toggleEdit(); 
+        }); 
     }
     
     updateTransaction = (obj) => {
-        const postObj = convertTransactionToDbValues(obj); 
-        withAuth((authToken) => {
-            const url = `${this.props.focusedRoommate.uid}/roommates/mates/${this.props.userProfile.uid}/transactions/${this.state.selectedExpense.id}.json?auth=${authToken}`; 
-            this.props.showNotification("Updated transaction");      
-            axios.patch(url, postObj)
-                .then(response => {
-                    if(this.props.focusedRoommate) {
-                        this.props.getRoommateTransactions(this.props.focusedRoommate.uid, this.props.userProfile.uid); 
-                    }
-                    this.toggleSelectExpense(); 
-                    this.toggleShowEditTransaction(); 
-                }) 
-                .catch(err => {
-                    console.log(err); 
-                    this.props.showNotification("Error updating transaction");
-                })
-        })
+        const updatedExpense = { ...obj, acknowledged: false, resolved: false, id: obj.transId };   
+        console.log(updatedExpense);  
+        apiCalls.updateRoommateExpense(updatedExpense, data => {
+            this.props.getRoommates(this.props.userProfile.uid); 
+            this.props.showNotification("Updated transaction"); 
+            this.toggleSelectExpense(); 
+            this.toggleShowEditTransaction();             
+        }); 
     }
 
     render() {
@@ -234,7 +212,7 @@ class RoommateTransactionTable extends Component {
                     type="Expense"
                     date={this.state.selectedExpense.date}                    
                     amount={this.state.selectedExpense.amount}
-                    categoryId={this.state.selectedExpense.category}
+                    categoryId={this.state.selectedExpense.categoryId}
                     desc={this.state.selectedExpense.desc}
                     transId={this.state.selectedExpense.id} />
                 <TransactionDialog 
