@@ -8,32 +8,52 @@ async function migrateData() { // Migrates Google Firebase data to Local SQL Dat
     // Categories for each User
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/3.json'); 
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/4.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/5.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/3.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/4.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/5.json'); 
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/3.json'); 
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/4.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/5.json'); 
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/3.json'); 
     query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/4.json'); 
+    query += await getCategoriesFromTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/5.json'); 
     // Roommates
     query += await getRoommates('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/roommates/mates.json', 'qkyZJaB4YafgZpsua7JmN42C28t2'); 
     query += await getRoommates('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/roommates/mates.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3'); 
     query += await getRoommates('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/roommates/mates.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2'); 
+    query += await getRoommates('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/roommates/mates.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1'); 
     // UserCategories 
     query += await getUserCategories('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/categories.json', 'qkyZJaB4YafgZpsua7JmN42C28t2'); 
     query += await getUserCategories('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/categories.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3'); 
     query += await getUserCategories('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/categories.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2'); 
+    query += await getUserCategories('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/categories.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1'); 
     // Expenses and Incomes for each User
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/3.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2'); 
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/4.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions/2018/5.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2'); 
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/3.json', 'qkyZJaB4YafgZpsua7JmN42C28t2'); 
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/4.json', 'qkyZJaB4YafgZpsua7JmN42C28t2'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/transactions/2018/5.json', 'qkyZJaB4YafgZpsua7JmN42C28t2'); 
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/3.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3'); 
     query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/4.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions/2018/5.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/3.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/4.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1'); 
+    query += await getTransactions('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions/2018/5.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1'); 
     // Roommate Expenses
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/roommates/mates/qkyZJaB4YafgZpsua7JmN42C28t2/transactions.json', 'qkyZJaB4YafgZpsua7JmN42C28t2', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2');     
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/roommates/mates/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/I0pcMkiwHDX77EIZ59lLMQaa9cp2/roommates/mates/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2');     
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/roommates/mates/qkyZJaB4YafgZpsua7JmN42C28t2/transactions.json', 'qkyZJaB4YafgZpsua7JmN42C28t2', 'rinaXxoFn6SZBoF8F7nV00A87KD3');     
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/roommates/mates/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2', 'rinaXxoFn6SZBoF8F7nV00A87KD3');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/rinaXxoFn6SZBoF8F7nV00A87KD3/roommates/mates/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1', 'rinaXxoFn6SZBoF8F7nV00A87KD3');     
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/roommates/mates/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3', 'qkyZJaB4YafgZpsua7JmN42C28t2');     
     query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/roommates/mates/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2', 'qkyZJaB4YafgZpsua7JmN42C28t2');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/qkyZJaB4YafgZpsua7JmN42C28t2/roommates/mates/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/transactions.json', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1', 'qkyZJaB4YafgZpsua7JmN42C28t2');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/roommates/mates/rinaXxoFn6SZBoF8F7nV00A87KD3/transactions.json', 'rinaXxoFn6SZBoF8F7nV00A87KD3', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/roommates/mates/I0pcMkiwHDX77EIZ59lLMQaa9cp2/transactions.json', 'I0pcMkiwHDX77EIZ59lLMQaa9cp2', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1');     
+    query += await getRoomateExpenses('https://react-finance-f20df.firebaseio.com/users/j8hXDqfY8KP35NsyE1q7hiIR4Ol1/roommates/mates/qkyZJaB4YafgZpsua7JmN42C28t2/transactions.json', 'qkyZJaB4YafgZpsua7JmN42C28t2', 'j8hXDqfY8KP35NsyE1q7hiIR4Ol1');     
 
     // console.log(query);
     queryDataBase(query); 
@@ -65,7 +85,10 @@ function queryDataBase(query) {
 // sql.on('error', err => console.log(err));
 
 async function getCategoriesFromTransactions(url) {
-    const transactions = Object.values((await axios.get(url)).data); 
+    let transactions = (await axios.get(url)).data; 
+    if(transactions)
+        transactions = Object.values((await axios.get(url)).data); 
+    else return '\n'; 
     let query = ''; 
     for(let trans of transactions) {
         if(trans.type === 'Income' && !trans.category)
@@ -76,7 +99,10 @@ async function getCategoriesFromTransactions(url) {
 }
 
 async function getUserProfiles(url) {
-    const users = Object.values((await axios.get(url)).data); 
+    let users = (await axios.get(url)).data; 
+    if(users)
+        users = Object.values((await axios.get(url)).data); 
+    else return '\n'; 
     let query = ''; 
     for(let user of users) {
         const names = user.name.split(' '); 
@@ -86,7 +112,10 @@ async function getUserProfiles(url) {
 }
 
 async function getTransactions(url, uid) {
-    const transactions = Object.values((await axios.get(url)).data); 
+    let transactions = (await axios.get(url)).data; 
+    if(transactions)
+        transactions = Object.values((await axios.get(url)).data); 
+    else return '\n'; 
     let query = ''; 
     for(let trans of transactions) {
         if(trans.type === 'Expense') {
@@ -100,7 +129,10 @@ async function getTransactions(url, uid) {
 }
 
 async function getRoommates(url, uid) {
-    const roommateIds = Object.keys((await axios.get(url)).data); 
+    let roommateIds = (await axios.get(url)).data; 
+    if(roommateIds)
+        roommateIds = Object.keys((await axios.get(url)).data); 
+    else return '\n'; 
     let query = ''; 
     for(let mateId of roommateIds) {
         query += `EXEC CreateRoommate @id1 = '${uid}', @id2 = '${mateId}'\n`; 
@@ -109,7 +141,10 @@ async function getRoommates(url, uid) {
 }
 
 async function getUserCategories(url, uid) {
-    const categories = Object.values((await axios.get(url)).data);
+    let categories = (await axios.get(url)).data; 
+    if(categories)
+        categories = Object.values((await axios.get(url)).data); 
+    else return '\n'; 
     let query = '';     
     for(let category of categories) {
         const catName = Object.values(category)[0].trim(); 
