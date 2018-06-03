@@ -146,8 +146,8 @@ class RoommateTransactionTable extends Component {
             ); 
         }); 
 
-        const totalTo = transArray.filter(trans => trans.direction === 'to').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
-        const totalFrom = transArray.filter(trans => trans.direction === 'from').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
+        const totalTo = transArray.filter(trans => trans.direction === 'To').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
+        const totalFrom = transArray.filter(trans => trans.direction === 'From').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
         const netTotal = totalTo - totalFrom; 
 
         return(
