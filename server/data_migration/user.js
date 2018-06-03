@@ -65,7 +65,8 @@ const config = {
     user: 'webapp',
     password: 'Hps@051418',
     server: 'localhost\\SQLEXPRESS', // You can use 'localhost\\instance' to connect to named instance
-    database: 'budget-space__test'
+    // database: 'budget-space__test'
+    database: 'budget-space__prod'
 }
 
 function queryDataBase(query) {
