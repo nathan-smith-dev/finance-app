@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet'); 
 const cors = require('cors'); 
 const verifyToken = require('./routes/auth');
+const path = require('path'); 
 
 const expenses = require('./routes/expenses'); 
 const incomes = require('./routes/incomes'); 
@@ -32,10 +33,11 @@ app.get('/api/temp', (req, res) => {
     })
 }); 
 
-app.use('/roommates', express.static(__dirname + '/build'));
-app.use(express.static(__dirname + '/build'));
+const reqPath = path.join(__dirname, '../', 'build'); 
+app.use(express.static(reqPath));
+app.use((req, res) => res.sendFile(`${reqPath}\\index.html`)); 
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`); 
-})
+}); 
