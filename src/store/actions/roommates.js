@@ -1,6 +1,4 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios'; 
-import { withAuth } from '../../firebase/auth'; 
 import * as apiCalls from '../../api-calls'; 
 
 export const getRoommateRequests = (uid) => {
@@ -68,45 +66,11 @@ export const setFocusedRoomate = (roommateUid) => {
     return dispatch => {
         apiCalls.getUser(roommateUid, user => dispatch(setFocusedRoomateSuccess(user[0]))); 
     }
-    // return (dispatch, getState) => {
-    //     const currentUserUid = getState().auth.userProfile.uid; 
-    //     withAuth(authToken => {
-    //         const url = `profiles/${roommateUid}.json?auth=${authToken}`; 
-    //         axios.get(url)
-    //             .then(response => {
-    //                 dispatch(setFocusedRoomateSuccess(response.data)); 
-    //                 dispatch(getRoommateTransactionsToAndFrom(roommateUid, currentUserUid)); 
-    //             })
-    //             .catch(error => console.log(error))
-    //     }); 
-    // }; 
 }; 
 
 export const getRoommateTransactionsToAndFrom = (fromUid, toUid) => {
     return dispatch => {
-        // withAuth(authToken => {
-        //     const urlFrom = `${toUid}/roommates/mates/${fromUid}/transactions.json?auth=${authToken}`; 
-        //     const urlTo = `${fromUid}/roommates/mates/${toUid}/transactions.json?auth=${authToken}`; 
-        //     axios.all([
-        //         axios.get(urlFrom).catch(error => console.log(error)), 
-        //         axios.get(urlTo).catch(error => console.log(error))
-        //     ])
-        //     .then(axios.spread((resFrom, resTo) => {
-        //         const data = addKeyIdsAndDirection(resFrom.data, 'from').concat(addKeyIdsAndDirection(resTo.data, 'to'));
-        //         data.sort((a,b) => b.date.day - a.date.day); 
-        //         dispatch(setRoomateTransactionsToAndFrom(data)); 
-        //     }))
-        // }); 
     }; 
-}; 
-
-const addKeyIdsAndDirection = (obj, dir) => {
-    if(obj && Object.keys(obj).length > 0) {
-        return Object.keys(obj).map(key => {
-            return {...obj[key], id: key, direction: dir}
-        })
-    }
-    return []; 
 }; 
 
 export const setRoomateTransactionsToAndFrom = (transactions) => {
