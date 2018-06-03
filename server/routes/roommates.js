@@ -26,7 +26,7 @@ const rommateExpenseSchema = {
 	categoryId: Joi.string().guid(),
 	amount: Joi.number(), 
 	date: Joi.date(), 
-	desc: Joi.string(), 
+	desc: Joi.string().allow(''), 
 	acknowledged: Joi.bool(),
     resolved: Joi.bool(), 
     roommateId: Joi.string().length(28)
