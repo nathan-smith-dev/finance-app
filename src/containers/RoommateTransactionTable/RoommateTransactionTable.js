@@ -18,7 +18,8 @@ import {
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TransactionDialog from '../TransactionDialog/TransactionDialog'; 
-import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog'; 
+import ViewTransactionDialog from '../../components/ViewTransactionDialog/ViewTransactionDialog';
+import CircularProgress from 'material-ui/CircularProgress';  
 import { green500, red500  } from 'material-ui/styles/colors'; 
 
 class RoommateTransactionTable extends Component {
@@ -35,15 +36,6 @@ class RoommateTransactionTable extends Component {
         subFilter: 0, 
         openEdit: false
     }; 
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if(this.props.focusedRoommate 
-            && this.props.transactionsToAndFrom
-            && this.props.focusedRoommate.transactionsToAndFrom.length === nextProps.focusedRoommate.transactionsToAndFrom.length)
-            return false; 
-        
-        return true; 
-    }
 
     selectExpense = (expense) => {
         this.setState({
@@ -130,7 +122,7 @@ class RoommateTransactionTable extends Component {
             ? mateTransactions[focusedRoommate.uid]
             : []; 
             
-        const transactions = transArray.map((trans, index) => {
+        let transactions = transArray.map((trans, index) => {
             const color = trans.direction === "To" ? 'green' : 'red'; 
             const newStyle = !trans.acknowledged && trans.direction !== 'To' ? {backgroundColor: '#C0D1E5'} : null;
             return (
@@ -145,6 +137,16 @@ class RoommateTransactionTable extends Component {
                 </TableRow>
             ); 
         }); 
+
+        if(!focusedRoommate || !mateTransactions) {
+            transactions = (
+                <TableRow>
+                    <TableRowColumn>
+                        <CircularProgress />
+                    </TableRowColumn>
+                </TableRow>
+            );
+        }
 
         const totalTo = transArray.filter(trans => trans.direction === 'To').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
         const totalFrom = transArray.filter(trans => trans.direction === 'From').map(trans => trans.amount).reduce((a, b) => a + b, 0); 
