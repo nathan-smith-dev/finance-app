@@ -347,6 +347,22 @@ AS
     END
 GO
 
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoommate' )
+DROP PROC GetRoommate
+GO 
+
+CREATE PROC GetRoommate 
+	@id1 varchar(28), 
+	@id2 varchar(28)
+AS
+	BEGIN
+		SELECT *
+		FROM Roommates
+		WHERE 
+			(Roommate1ID = @id1 OR Roommate2ID = @id1) AND (Roommate1ID = @id2 OR Roommate2ID = @id2)
+    END
+GO
+
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'GetRoommateExpenses' )
 DROP PROC GetRoommateExpenses
 GO 
@@ -877,6 +893,24 @@ AS
 		WHERE ExpenseID = @expenseId
     END
 GO
+
+IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteRoommate' )
+DROP PROC DeleteRoommate 
+GO 
+
+CREATE PROC DeleteRoommate 
+	@id1 varchar(28),
+	@id2 varchar(28)
+AS
+	BEGIN
+		EXEC GetRoommate @id1 = @id1, @id2 = @id2
+
+		DELETE
+		FROM Roommates
+		WHERE (Roommate1ID = @id1 OR Roommate2ID = @id1) AND (Roommate1ID = @id2 OR Roommate2ID = @id2)
+    END
+GO
+
 
 IF EXISTS ( SELECT [name] from sys.procedures WHERE [name] = 'DeleteIncome' )
 DROP PROC DeleteIncome 
