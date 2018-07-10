@@ -2,7 +2,7 @@ import axios from 'axios';
 import { withAuth } from '../firebase/auth'; 
 
 
-const instance = axios.create({ baseURL: 'https://nsmith.site/api/', timeout: 1000 }); 
+const instance = axios.create({ baseURL: 'https://budget-space.com/api/', timeout: 1000 }); 
 
 export const getIncomes = (month, year, callback) => {
     withAuth(authToken => {
