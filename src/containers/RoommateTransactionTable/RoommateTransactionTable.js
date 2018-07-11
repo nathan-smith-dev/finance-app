@@ -87,7 +87,7 @@ class RoommateTransactionTable extends Component {
 
     deleteRoommateExpense = () => {
         const { selectedExpense } = this.state; 
-        const updatedExpense = { ...selectedExpense, resolved: true };         
+        const updatedExpense = { ...selectedExpense, resolved: true, acknowledged: true };         
         apiCalls.updateRoommateExpense(updatedExpense, data => {
             this.props.getRoommates(this.props.userProfile.uid); 
             this.props.showNotification("Deleted transaction"); 
