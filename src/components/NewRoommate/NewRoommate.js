@@ -25,15 +25,19 @@ const newRoommate = (props) => {
             >
             <AutoComplete
                 style={{maxWidth: '80%'}}
-                floatingLabelText="Add Roommate"
-                filter={AutoComplete.caseInsensitiveFilter}
+                floatingLabelText="Roommate Email"
+                filter={autoCompleteFilter}
                 onNewRequest={props.onNewRequest}
                 dataSource={props.filteredUsers}
-                dataSourceConfig={{text: 'name', value: 'value'}}
+                dataSourceConfig={{text: 'email', value: 'value'}}
                 onUpdateInput={props.onUpdateInput}
             />
         </Dialog>
     ); 
+}; 
+
+const autoCompleteFilter = (searchText, key) => {
+    return key.toLowerCase().includes(searchText.toLowerCase()) && searchText.length > 3; 
 }; 
 
 export default newRoommate; 

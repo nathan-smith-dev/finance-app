@@ -32,6 +32,7 @@ class Roommates extends Component {
     }; 
 
     handleRoommateChange = (roommate) => {
+        console.log(roommate); 
         this.setState({
             newRoommate: roommate
         }); 
@@ -85,7 +86,9 @@ class Roommates extends Component {
     }
 
     sendRoommateRequest = () => {
-        apiCalls.createRoommateRequests(this.state.newRoomate.uid, data => console.log(data)); 
+        console.log(this.state.newRoommate); 
+        const uid = this.state.newRoommate.uid; 
+        apiCalls.createRoommateRequests(uid, data => this.toggleNewRoomate()); 
     }
 
     redirectToRoommate = (uid) => {
