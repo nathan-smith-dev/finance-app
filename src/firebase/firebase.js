@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 
 const config = {
     apiKey: "AIzaSyBHg0EROkE4LBvIavGbe9qa5KIj3AAtoMw",
-    authDomain: "auth.budget-space.com",
+    authDomain: "react-finance-f20df.firebaseapp.com",
     databaseURL: "https://react-finance-f20df.firebaseio.com",
     projectId: "react-finance-f20df",
     storageBucket: "react-finance-f20df.appspot.com",
