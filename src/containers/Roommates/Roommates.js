@@ -32,7 +32,6 @@ class Roommates extends Component {
     }; 
 
     handleRoommateChange = (roommate) => {
-        console.log(roommate); 
         this.setState({
             newRoommate: roommate
         }); 
@@ -86,7 +85,6 @@ class Roommates extends Component {
     }
 
     sendRoommateRequest = () => {
-        console.log(this.state.newRoommate); 
         const uid = this.state.newRoommate.uid; 
         apiCalls.createRoommateRequests(uid, data => this.toggleNewRoomate()); 
     }
@@ -100,11 +98,11 @@ class Roommates extends Component {
     render() {
         const users = Object.keys(this.props.allUsers).length > 0 ? this.props.allUsers : null;
         const currentUser = this.props.userProfile ? this.props.userProfile : {}; 
-        const currentUserMates = this.props.mates ? this.props.mates : {}; 
+        const currentUserMates = this.props.mates ? this.props.mates : []; 
         let filteredUsers = []; 
         if(users && currentUser) {
             filteredUsers = users.filter(user => {
-                if(user.uid !== currentUser.uid && currentUserMates.length) {
+                if(user.uid !== currentUser.uid) {
                     for(let mate of currentUserMates) {
                         if(mate.uid === user.uid) {
                             return false; 
