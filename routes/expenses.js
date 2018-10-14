@@ -1,6 +1,13 @@
 const express = require('express'); 
 const router = express.Router(); 
-const queryDataBase = require('../db/sqlserver.js'); 
+const { 
+    createExpense, 
+    getUserExpenses, 
+    getExpense, 
+    getTotalIncomesAndExpenes,
+    updateExpense, 
+    deleteExpense
+} = require('../db/postgres');
 const verifyToken = require('./auth'); 
 const Joi = require('joi'); 
 
@@ -26,16 +33,18 @@ router.get('/', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetUserExpenses @userId = ${decodedToken.uid}`; 
+        const today = new Date();
+        let date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
+        let categoryName;
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`; 
+            date = `'${+req.query.year}-${+req.query.month}-01'`; 
         if(req.query.category)
-            query += `, @categoryName = ${req.query.category}`; 
+            categoryName = req.query.category; 
 
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getUserExpenses(decodedToken.uid, date, categoryName)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message); 
@@ -54,12 +63,10 @@ router.post('/', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC CreateExpense @userId = ${decodedToken.uid}, @amount = ${value.amount}, @date = '${formatDate(value.date)}', @desc = '${value.desc}', @categoryId = '${value.categoryId}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        createExpense(decodedToken.uid, value.amount, value.desc, formatDate(value.date), null, value.categoryId)
+        .then(result => {
+            res.body = result[0]; 
+            res.status(200).send(result[0]);  
         })
         .catch(err => {
             console.log(err.message)
@@ -75,16 +82,18 @@ router.get('/totals', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetTotalIncomesAndExpenses @userId = ${decodedToken.uid}`; 
+        let forYear = false;
+        const today = new Date();
+        let date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`; 
+            date = `'${+req.query.year}-${+req.query.month}-01'`; 
         else if(req.query.annual)
-            query += `, @date = '${req.query.annual}-01-01', @forYear = 1`; 
+            forYear = true; 
 
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getTotalIncomesAndExpenes(decodedToken.uid, date, forYear)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message); 
@@ -100,13 +109,10 @@ router.get('/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.params.id)
-        let query = `EXEC GetUserExpense @expenseId = '${req.params.id}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getExpense(req.params.id)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)
@@ -122,13 +128,10 @@ router.delete('/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.params.id)
-        let query = `EXEC DeleteExpense @expenseId = '${req.params.id}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        deleteExpense(req.params.id)
+        .then(result =>{
+            res.body = result[0],
+            res.status(200).send(result[0])
         })
         .catch(err => {
             console.log(err.message)
@@ -147,12 +150,10 @@ router.put('/:id', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC UpdateExpense @expenseId = '${req.params.id}', @amount = ${value.amount}, @date = '${formatDate(value.date)}', @desc = '${value.desc}', @categoryId = '${value.categoryId}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        updateExpense(req.params.id, value.amount, formatDate(value.date), value.desc, value.categoryId)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)

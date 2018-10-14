@@ -1,6 +1,6 @@
 const express = require('express'); 
 const router = express.Router(); 
-const queryDataBase = require('../db/sqlserver.js'); 
+const { createUser, getAllUsers, getUser } = require('../db/postgres');
 const verifyToken = require('./auth'); 
 const Joi = require('joi'); 
 
@@ -16,12 +16,10 @@ router.get('/', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetAllUsers`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getAllUsers()
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);
@@ -37,13 +35,10 @@ router.get('/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.params.id); 
-        let query = `EXEC GetUser @userId = '${req.params.id}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getUser(req.params.id)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message)
@@ -62,13 +57,10 @@ router.post('/', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC CreateUser @id = '${value.id}', @fName = '${value.firstName}', @lName = '${value.lastName}', @email = '${value.email}'`; 
-
-        console.log(query)
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        createUser(value.id, value.firstName, value.lastName, value.email)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)

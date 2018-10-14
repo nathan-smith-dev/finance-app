@@ -1,6 +1,7 @@
 const express = require('express'); 
 const router = express.Router(); 
-const queryDataBase = require('../db/sqlserver.js'); 
+const { getCountOfTransactionsByDate, getCountOfTransactionCategories } = require('../db/postgres');
+const { getUserIncomesAndExpenses } = require('../db/postgres');
 const verifyToken = require('./auth'); 
 
 router.get('/', (req, res) => {
@@ -8,16 +9,18 @@ router.get('/', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetUserIncomesAndExpenses @userId = ${decodedToken.uid}`; 
+        const today = new Date();
+        let date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
+        let categoryName;
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`; 
+            date = `'${+req.query.year}-${+req.query.month}-01'`; 
         if(req.query.category)
-            query += `, @categoryName = ${req.query.category}`; 
+            categoryName = req.query.category; 
 
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getUserIncomesAndExpenses(decodedToken.uid, date, categoryName)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message); 
@@ -33,14 +36,15 @@ router.get('/dates', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetCountOfTransactionsByDate @userId = ${decodedToken.uid}`; 
+        const today = new Date();
+        let date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
+            date = `'${+req.query.year}-${+req.query.month}-01'`;
 
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getCountOfTransactionsByDate(decodedToken.uid, date)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);
@@ -56,14 +60,15 @@ router.get('/categories', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetCountOfTransactionCategories @userId = ${decodedToken.uid}`; 
+        const today = new Date();
+        let date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
         if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
+            date = `'${+req.query.year}-${+req.query.month}-01'`;
 
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getCountOfTransactionCategories(decodedToken.uid, date)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);

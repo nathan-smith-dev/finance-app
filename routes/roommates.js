@@ -1,6 +1,17 @@
 const express = require('express'); 
 const router = express.Router(); 
-const queryDataBase = require('../db/sqlserver.js'); 
+const { 
+    createRoommateRequest, 
+    createRoommateExpense, 
+    getUserRoommates, 
+    getRoommateExpenseNotifications, 
+    getRoommateIncomesAndExpenses,
+    getRoomateRequests,
+    getRoomateRequest, 
+    acceptRoommateRequest,
+    updateRoommateExpense,
+    deleteRoommate
+} = require('../db/postgres');
 const verifyToken = require('./auth'); 
 const Joi = require('joi');
 
@@ -38,12 +49,10 @@ router.get('/', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetUserRoommates @userId = ${decodedToken.uid}`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getUserRoommates(decodedToken.uid)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message)
@@ -59,12 +68,10 @@ router.get('/requests', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetRoomateRequests @userId = ${decodedToken.uid}`; 
-            
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getRoomateRequests(decodedToken.uid)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);
@@ -83,12 +90,10 @@ router.post('/requests', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC CreateRoommateRequest @requesterId = ${decodedToken.uid}, @recipientId = '${value.recipientId}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        createRoommateRequest(decodedToken.uid, value.recipientId)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)
@@ -104,12 +109,10 @@ router.get('/requests/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetRoomateRequest @requestId = '${req.params.id}'`; 
-            
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getRoomateRequest(req.params.id)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message);
@@ -128,12 +131,10 @@ router.put('/requests/:id', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC AcceptRoomateRequest @requestId = '${req.params.id}', @accept = ${value.accept}`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        acceptRoommateRequest(req.params.id, value.accept)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)
@@ -149,14 +150,10 @@ router.get('/expenses/notifications', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetRoommateExpenseNotifications @expenseTo = ${decodedToken.uid}`; 
-        if(req.query.year && req.query.month)
-            query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
-            
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        getRoommateExpenseNotifications(decodedToken.uid, date)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);
@@ -175,21 +172,13 @@ router.post('/expenses', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC CreateRoomateExpense 
-        @expenseTo = '${value.roommateId}',
-        @expenseFrom = ${decodedToken.uid}, 
-        @catId = '${value.categoryId}', 
-        @amount = ${value.amount}, 
-        @date = '${formatDate(value.date)}', 
-        @desc = '${value.desc}'`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        createRoommateExpense(value.roommateId, decodedToken.uid, value.amount, value.desc, formatDate(value.date), null, value.categoryId)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).status(result[0]);
         })
         .catch(err => {
-            console.log(err.message)
+            console.log(err.message);
             res.status(500).send('Error completing request to server. '); 
         })
     }, err => {
@@ -205,19 +194,10 @@ router.put('/expenses/:id', (req, res) => {
     if(error) res.status(400).send(error.message);
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC UpdateRoommateExpense 
-        @expenseId = '${req.params.id}', 
-        @categoryId = '${value.categoryId}', 
-        @amount = ${value.amount}, 
-        @date = '${formatDate(value.date)}', 
-        @desc = '${value.desc}', 
-        @acknowledged = ${value.acknowledged}, 
-        @resolved = ${value.resolved}`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        updateRoommateExpense(req.params.id, value.amount, formatDate(value.date), value.desc, value.categoryId, value.resolved, value.acknowledged)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)
@@ -233,14 +213,13 @@ router.get('/expenses/user/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        let query = `EXEC GetRoommateIncomesAndExpenses @expenseTo = ${decodedToken.uid}, @expenseFrom = ${req.params.id}`; 
         if(req.query.year && req.query.month)
             query += `, @date = '${+req.query.year}-${+req.query.month}-01'`;
-            
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+
+        getRoommateIncomesAndExpenses(decodedToken.uid, req.params.id)
+        .then(result => {
+            res.body = result;
+            res.status(200).send(result);
         })
         .catch(err => {
             console.log(err.message);
@@ -256,13 +235,10 @@ router.delete('/:id', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
-        console.log(req.params.id)
-        let query = `EXEC DeleteRoommate @id1 = '${req.params.id}', @id2 = ${decodedToken.uid}`; 
-
-        const result = queryDataBase(query); 
-        result.then(record => {
-            res.body = record.recordset; 
-            res.send(record.recordset); 
+        deleteRoommate(req.params.id, decodedToken.uid)
+        .then(result => {
+            res.body = result[0];
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message)

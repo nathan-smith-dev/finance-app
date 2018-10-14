@@ -68,7 +68,7 @@ CREATE FUNCTION create_expense(
 )
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -106,7 +106,7 @@ CREATE FUNCTION create_income(
 )
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -225,7 +225,7 @@ RETURNS TABLE(
     id UUID, 
     category VARCHAR(50),
     categoryId UUID,
-    amount MONEY, 
+    amount NUMERIC, 
     "date" TIMESTAMPTZ, 
     "desc" TEXT, 
     roommateId VARCHAR(28), 
@@ -261,7 +261,7 @@ CREATE FUNCTION get_user_expenses(
 )
 RETURNS TABLE(
 	id UUID, 
-	amount MONEY, 
+	amount NUMERIC, 
 	categoryId UUID, 
 	category VARCHAR(50),
 	"date" TIMESTAMPTZ,
@@ -272,7 +272,7 @@ BEGIN
     RETURN QUERY
     SELECT 
         e.id, 
-        e.amount,
+        CAST(e.amount AS NUMERIC),
         ca.id as "categoryId", 
         ca.name as "category",
         e.date, 
@@ -293,7 +293,7 @@ DROP FUNCTION IF EXISTS get_expense(UUID);
 CREATE FUNCTION get_expense(expId UUID)
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -304,7 +304,7 @@ BEGIN
     RETURN QUERY
     SELECT 
         e.id,
-        e.amount,
+        CAST(e.amount AS NUMERIC),
         e.category_id AS categoryId,
         ca.name AS category,
         e.date,
@@ -324,7 +324,7 @@ CREATE FUNCTION get_user_incomes(
 )
 RETURNS TABLE(
 	id UUID, 
-	amount MONEY, 
+	amount NUMERIC, 
 	categoryId UUID, 
 	category VARCHAR(50),
 	"date" TIMESTAMPTZ,
@@ -335,7 +335,7 @@ BEGIN
     RETURN QUERY
     SELECT 
         e.id, 
-        e.amount,
+        CAST(e.amount AS NUMERIC),
         ca.id as "categoryId", 
         ca.name as "category",
         e.date, 
@@ -356,7 +356,7 @@ DROP FUNCTION IF EXISTS get_income(UUID);
 CREATE FUNCTION get_income(incId UUID)
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -367,7 +367,7 @@ BEGIN
     RETURN QUERY
     SELECT 
         i.id,
-        i.amount,
+        CAST(i.amount AS NUMERIC),
         i.category_id AS categoryId,
         ca.name AS category,
         i.date,
@@ -387,7 +387,7 @@ CREATE FUNCTION get_user_incomes_and_expenses(
 )
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -401,7 +401,7 @@ BEGIN
     RETURN QUERY
     SELECT 
         i.id,
-        i.amount, 
+        CAST(i.amount AS NUMERIC), 
         i.category_id AS "categoryId",
         ca.name AS "category",
         i.date, 
@@ -420,7 +420,7 @@ BEGIN
 
     SELECT 
         e.id,
-        e.amount, 
+        CAST(e.amount AS NUMERIC), 
         e.category_id AS "categoryId",
         ca.name AS "category",
         e.date, 
@@ -444,8 +444,8 @@ DROP FUNCTION IF EXISTS get_user_roommates(VARCHAR(28));
 CREATE FUNCTION get_user_roommates(userId VARCHAR(28))
 RETURNS TABLE(
     id VARCHAR(28),
-    firstName VARCHAR(50), 
-    lastName VARCHAR(50), 
+    "firstName" VARCHAR(50), 
+    "lastName" VARCHAR(50), 
     email VARCHAR(50)
 ) AS 
 $BODY$
@@ -497,7 +497,7 @@ RETURNS TABLE(
     id UUID,
     roommateId VARCHAR(28), 
     category VARCHAR(50), 
-    amount MONEY, 
+    amount NUMERIC, 
     "desc" TEXT, 
     "date" TIMESTAMPTZ
 ) AS 
@@ -508,7 +508,7 @@ BEGIN
         re.id AS id,
         u.id AS roommateId, 
         c.name AS category, 
-        re.amount, 
+        CAST(re.amount AS NUMERIC), 
         re.description AS "desc", 
         re.date
     FROM roommate_expenses AS re
@@ -558,7 +558,7 @@ RETURNS TABLE(
     id UUID, 
     category VARCHAR(50),
     "categoryId" UUID,
-    amount MONEY, 
+    amount NUMERIC, 
     "date" TIMESTAMPTZ, 
     "desc" TEXT, 
     "roommateId" VARCHAR(28), 
@@ -577,7 +577,7 @@ BEGIN
         re.id, 
         c.name AS category,
         c.id AS "categoryId",
-        re.amount, 
+        CAST(re.amount AS NUMERIC), 
         re.date, 
         re.description AS "desc", 
         re.expense_from AS "roommateId", 
@@ -597,7 +597,7 @@ BEGIN
         re.id, 
         c.name AS category,
         c.id AS "categoryId",
-        re.amount, 
+        CAST(re.amount AS NUMERIC), 
         re.date, 
         re.description AS "desc", 
         re.expense_to AS "roommateId", 
@@ -626,7 +626,7 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT 
-        c.category_id as id, 
+        c.id, 
         c.name as category
     FROM user_categories as uc
     JOIN categories as c ON uc.category_id = c.id
@@ -643,14 +643,14 @@ CREATE FUNCTION get_user_category_totals(
 	forYear BOOLEAN DEFAULT false
 )
 RETURNS TABLE(
-    total MONEY, 
+    total NUMERIC, 
     category VARCHAR(50)
 ) AS 
 $BODY$
 BEGIN
 	RETURN QUERY
     SELECT 
-        SUM(e.amount) AS total, 
+        SUM(CAST(e.amount AS NUMERIC)) AS total, 
         c.name AS category
     FROM expenses e
     JOIN categories c ON c.id = e.category_id
@@ -676,8 +676,8 @@ CREATE FUNCTION get_total_incomes_and_expenses(
 	forYear BOOLEAN DEFAULT false
 )
 RETURNS TABLE(
-    incomes MONEY, 
-    expenses MONEY
+    incomes NUMERIC, 
+    expenses NUMERIC
 ) AS
 $BODY$
 BEGIN
@@ -685,7 +685,7 @@ BEGIN
     SELECT incmes AS "incomes", expnses AS "expenses"
     FROM
     (
-        SELECT SUM(i.amount) AS incmes
+        SELECT SUM(CAST(i.amount AS NUMERIC)) AS incmes
         FROM incomes i
         WHERE 
             (forYear = FALSE AND 
@@ -699,7 +699,7 @@ BEGIN
     ) A
     CROSS JOIN
     (
-        SELECT SUM(e.amount) AS expnses
+        SELECT SUM(CAST(e.amount AS NUMERIC)) AS expnses
         FROM Expenses e
         WHERE 
             (forYear = FALSE AND 
@@ -939,7 +939,7 @@ RETURNS TABLE(
     id UUID, 
     category VARCHAR(50),
     categoryId UUID,
-    amount MONEY, 
+    amount NUMERIC, 
     "date" TIMESTAMPTZ, 
     "desc" TEXT, 
     roommateId VARCHAR(28), 
@@ -953,7 +953,7 @@ BEGIN
         re.id, 
         c.name AS category,
         c.id AS categoryId,
-        re.amount, 
+        CAST(re.amount AS NUMERIC), 
         re.date, 
         re.description AS "desc", 
         re.expense_to AS "roommateId", 
@@ -977,7 +977,7 @@ CREATE FUNCTION update_expense(
 )
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -1008,7 +1008,7 @@ CREATE FUNCTION update_income(
 )
 RETURNS TABLE(
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -1080,7 +1080,7 @@ RETURNS TABLE(
     id UUID, 
     category VARCHAR(50),
     categoryId UUID,
-    amount MONEY, 
+    amount NUMERIC, 
     "date" TIMESTAMPTZ, 
     "desc" TEXT, 
     roommateId VARCHAR(28), 
@@ -1108,7 +1108,7 @@ LANGUAGE PLPGSQL;
 DROP TYPE IF EXISTS expense_type CASCADE;
 CREATE TYPE expense_type AS (
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 
@@ -1134,7 +1134,7 @@ LANGUAGE PLPGSQL;
 DROP TYPE IF EXISTS income_type CASCADE;
 CREATE TYPE income_type AS (
     id UUID, 
-    amount MONEY, 
+    amount NUMERIC, 
     categoryId UUID,
     category VARCHAR(50),
     "date" TIMESTAMPTZ, 

@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express'); 
 const helmet = require('helmet'); 
 const cors = require('cors'); 
 const verifyToken = require('./routes/auth');
 const path = require('path'); 
+const { connect } = require('./db/postgres');
 
 const expenses = require('./routes/expenses'); 
 const incomes = require('./routes/incomes'); 
@@ -12,6 +14,7 @@ const categories = require('./routes/categories');
 const users = require('./routes/users'); 
 
 const app = express(); 
+connect();
 
 app.use(express.json()); 
 app.use(helmet()); 

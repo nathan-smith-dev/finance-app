@@ -13,6 +13,7 @@ export const getIncomes = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
+                console.log(`/incomes?month=${month}&year=${year}`);
                 // setTimeout(() => getIncomes(month, year, callback), 125);
             }); 
     }); 
@@ -27,6 +28,7 @@ export const getExpenses = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
+                console.log(`/expenses?month=${month}&year=${year}`);
                 // setTimeout(() => getExpenses(month, year, callback), 125); 
             }); 
     }); 
@@ -44,7 +46,8 @@ export const getIncomeAndExpenses = (month, year, categoryName, callback) => {
                 callback(res.data); 
             })
             .catch(err => {
-                console.log(err.message);    
+                console.log(err.message);   
+                console.log(`/transactions?month=${month}&year=${year}`); 
                 // setTimeout(() => getIncomeAndExpenses(month, year, categoryName, callback), 125); 
             }); 
     }); 
@@ -58,7 +61,8 @@ export const getCategorizedExpenses = (month, year, callback) => {
                 callback(res.data); 
             })
             .catch(err => {
-                console.log(err.message);                
+                console.log(err.message);    
+                console.log(`/categories/totals?month=${month}&year=${year}`);
                 // setTimeout(() => getCategorizedExpenses(month, year, callback), 125); 
             }); 
     }); 
@@ -72,7 +76,8 @@ export const getAnnualCategorizedExpenses = (year, callback) => {
                 callback(res.data); 
             })
             .catch(err => {
-                console.log(err.message);                
+                console.log(err.message); 
+                console.log(`/categories/totals?annual=${year}`);
                 // setTimeout(() => getAnnualCategorizedExpenses(year, callback), 125); 
             }); 
     }); 
@@ -87,6 +92,7 @@ export const getCountOfIncomeAndExpenses = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
+                console.log(`/transactions/dates?month=${month}&year=${year}`);
                 // setTimeout(() => getCountOfIncomeAndExpenses(month, year, callback), 125); 
             }); 
     }); 

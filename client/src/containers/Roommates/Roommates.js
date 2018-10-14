@@ -133,7 +133,7 @@ class Roommates extends Component {
                                     leftIcon={<ContentAdd />} 
                                     onClick={this.toggleNewRoomate} />
                                 <Divider />
-                                <Subheader>Current Roommates</Subheader>   
+                                <Subheader>Current Roommates</Subheader>  
                                 {
                                     this.props.mates 
                                         ? this.props.mates.map((user) => {
