@@ -37,7 +37,7 @@ const reqPath = path.join(__dirname, '../', 'build');
 app.use(express.static(reqPath));
 app.use((req, res) => res.sendFile(`${reqPath}\\index.html`)); 
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`); 
 }); 

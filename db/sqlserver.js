@@ -1,8 +1,9 @@
-const sql = require('mssql'); 
+// const sql = require('mssql'); 
+const sql = {};
 
-sql.on('error', err => {
-    console.log(err.message); 
-})
+// sql.on('error', err => {
+//     console.log(err.message); 
+// })
 
 const config = {
     user: 'webapp',

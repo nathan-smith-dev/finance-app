@@ -2,7 +2,7 @@ import axios from 'axios';
 import { withAuth } from '../firebase/auth'; 
 
 
-const instance = axios.create({ baseURL: 'https://budget-space.com/api/', timeout: 1000 }); 
+const instance = axios.create({ baseURL: '/api/', timeout: 1000 }); 
 
 export const getIncomes = (month, year, callback) => {
     withAuth(authToken => {
@@ -13,7 +13,7 @@ export const getIncomes = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getIncomes(month, year, callback), 125);
+                // setTimeout(() => getIncomes(month, year, callback), 125);
             }); 
     }); 
 }; 
@@ -27,7 +27,7 @@ export const getExpenses = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getExpenses(month, year, callback), 125); 
+                // setTimeout(() => getExpenses(month, year, callback), 125); 
             }); 
     }); 
 }; 
@@ -45,7 +45,7 @@ export const getIncomeAndExpenses = (month, year, categoryName, callback) => {
             })
             .catch(err => {
                 console.log(err.message);    
-                setTimeout(() => getIncomeAndExpenses(month, year, categoryName, callback), 125); 
+                // setTimeout(() => getIncomeAndExpenses(month, year, categoryName, callback), 125); 
             }); 
     }); 
 }; 
@@ -59,7 +59,7 @@ export const getCategorizedExpenses = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message);                
-                setTimeout(() => getCategorizedExpenses(month, year, callback), 125); 
+                // setTimeout(() => getCategorizedExpenses(month, year, callback), 125); 
             }); 
     }); 
 }; 
@@ -73,7 +73,7 @@ export const getAnnualCategorizedExpenses = (year, callback) => {
             })
             .catch(err => {
                 console.log(err.message);                
-                setTimeout(() => getAnnualCategorizedExpenses(year, callback), 125); 
+                // setTimeout(() => getAnnualCategorizedExpenses(year, callback), 125); 
             }); 
     }); 
 }; 
@@ -87,7 +87,7 @@ export const getCountOfIncomeAndExpenses = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getCountOfIncomeAndExpenses(month, year, callback), 125); 
+                // setTimeout(() => getCountOfIncomeAndExpenses(month, year, callback), 125); 
             }); 
     }); 
 }
@@ -101,7 +101,7 @@ export const getCountOfIncomeAndExpenseCategories = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getCountOfIncomeAndExpenseCategories(month, year, callback), 125); 
+                // setTimeout(() => getCountOfIncomeAndExpenseCategories(month, year, callback), 125); 
             }); 
     }); 
 }
@@ -115,7 +115,7 @@ export const getNetIncomeAndExpense = (month, year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getNetIncomeAndExpense(month, year, callback), 125); 
+                // setTimeout(() => getNetIncomeAndExpense(month, year, callback), 125); 
             }); 
     }); 
 }
@@ -129,7 +129,7 @@ export const getAnnualNetIncomeAndExpense = (year, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getAnnualNetIncomeAndExpense(year, callback), 125); 
+                // setTimeout(() => getAnnualNetIncomeAndExpense(year, callback), 125); 
             }); 
     }); 
 }
@@ -143,7 +143,7 @@ export const getUserCategories = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getUserCategories(callback), 125); 
+                // setTimeout(() => getUserCategories(callback), 125); 
             }); 
     }); 
 }
@@ -157,7 +157,7 @@ export const getAllCategories = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getAllCategories(callback), 125); 
+                // setTimeout(() => getAllCategories(callback), 125); 
             }); 
     }); 
 }
@@ -171,7 +171,7 @@ export const getAllUsers = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getAllUsers(callback), 125); 
+                // setTimeout(() => getAllUsers(callback), 125); 
             }); 
     }); 
 }
@@ -185,7 +185,7 @@ export const getUser = (id, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getUser(id, callback), 125); 
+                // setTimeout(() => getUser(id, callback), 125); 
             }); 
     }); 
 }
@@ -199,7 +199,7 @@ export const getRoommates = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getRoommates(callback), 125); 
+                // setTimeout(() => getRoommates(callback), 125); 
             }); 
     }); 
 }
@@ -213,7 +213,7 @@ export const getRoommateNotifications = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getRoommateNotifications(callback), 125); 
+                // setTimeout(() => getRoommateNotifications(callback), 125); 
             }); 
     }); 
 }
@@ -227,7 +227,7 @@ export const getRoommateRequests = (callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getRoommateRequests(callback), 125); 
+                // setTimeout(() => getRoommateRequests(callback), 125); 
             }); 
     }); 
 }
@@ -252,7 +252,7 @@ export const getRoommateIncomesAndExpenses = (roommatesArr, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => getRoommateIncomesAndExpenses(roommatesArr, callback), 125); 
+                // setTimeout(() => getRoommateIncomesAndExpenses(roommatesArr, callback), 125); 
             }); 
     }); 
 }
@@ -267,7 +267,7 @@ export const updateRoommateExpense = (expenseObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => updateRoommateExpense(expenseObj, callback), 125); 
+                // setTimeout(() => updateRoommateExpense(expenseObj, callback), 125); 
             }); 
     }); 
 }
@@ -281,7 +281,7 @@ export const createRoommateExpense = (expenseObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => createRoommateExpense(expenseObj, callback), 125); 
+                // setTimeout(() => createRoommateExpense(expenseObj, callback), 125); 
             }); 
     }); 
 }
@@ -295,7 +295,7 @@ export const acceptRoommateRequests = (id, accept, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => acceptRoommateRequests(id, accept, callback), 125); 
+                // setTimeout(() => acceptRoommateRequests(id, accept, callback), 125); 
             }); 
     }); 
 }
@@ -309,7 +309,7 @@ export const createRoommateRequests = (recipientId, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => createRoommateRequests(recipientId, callback), 125); 
+                // setTimeout(() => createRoommateRequests(recipientId, callback), 125); 
             }); 
     }); 
 }
@@ -323,7 +323,7 @@ export const addUser = (userObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => addUser(userObj, callback), 125); 
+                // setTimeout(() => addUser(userObj, callback), 125); 
             }); 
     }); 
 }
@@ -337,7 +337,7 @@ export const createUserCategory = (categoryObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => createUserCategory(categoryObj, callback), 125); 
+                // setTimeout(() => createUserCategory(categoryObj, callback), 125); 
             }); 
     }); 
 }
@@ -353,7 +353,7 @@ export const createTransaction = (transObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => createTransaction(transObj, callback), 125); 
+                // setTimeout(() => createTransaction(transObj, callback), 125); 
             }); 
     }); 
 }
@@ -370,7 +370,7 @@ export const updateTransaction = (transObj, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => updateTransaction(transObj, callback), 125); 
+                // setTimeout(() => updateTransaction(transObj, callback), 125); 
             }); 
     }); 
 }
@@ -384,7 +384,7 @@ export const deleteUserCategory = (id, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => deleteUserCategory(id, callback), 125); 
+                // setTimeout(() => deleteUserCategory(id, callback), 125); 
             }); 
     }); 
 }
@@ -400,7 +400,7 @@ export const deleteTransaction = (id, type, callback) => {
             })
             .catch(err => {
                 console.log(err.message); 
-                setTimeout(() => deleteTransaction(id, type, callback), 125); 
+                // setTimeout(() => deleteTransaction(id, type, callback), 125); 
             }); 
     }); 
 }
