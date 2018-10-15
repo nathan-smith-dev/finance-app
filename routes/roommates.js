@@ -175,7 +175,7 @@ router.post('/expenses', (req, res) => {
         createRoommateExpense(value.roommateId, decodedToken.uid, value.amount, value.desc, formatDate(value.date), null, value.categoryId)
         .then(result => {
             res.body = result[0];
-            res.status(200).status(result[0]);
+            res.status(200).send(result[0]);
         })
         .catch(err => {
             console.log(err.message);
