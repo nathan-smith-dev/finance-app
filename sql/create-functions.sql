@@ -530,7 +530,7 @@ CREATE FUNCTION get_roommate_expense_notifications(
 	dte DATE DEFAULT null
 )
 RETURNS TABLE(
-    "roommateId" VARCHAR(28),
+    "roomateId" VARCHAR(28),
     notifications BIGINT
 ) AS 
 $BODY$
@@ -938,11 +938,11 @@ CREATE FUNCTION get_roommate_expense(expenseId UUID)
 RETURNS TABLE(
     id UUID, 
     category VARCHAR(50),
-    categoryId UUID,
+    "categoryId" UUID,
     amount NUMERIC, 
     "date" TIMESTAMPTZ, 
     "desc" TEXT, 
-    roommateId VARCHAR(28), 
+    "roommateId" VARCHAR(28), 
     acknowledged BOOLEAN,
     resolved BOOLEAN
 ) AS

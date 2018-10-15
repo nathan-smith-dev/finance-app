@@ -123,7 +123,7 @@ async function getRoommateExpenseNotifications(userId, date) {
         values: [userId, date],
     };
     const result = await client.query(query);
-    return result.rowCount ? result.rows : null;
+    return result.rowCount ? mapPgNumericToNumber(result.rows) : null;
 }
 
 async function getRoommateIncomesAndExpenses(userId, roommateId) {
@@ -315,6 +315,8 @@ function mapPgNumericToNumber(arr) {
             return { ...r, incomes: +r.incomes, expenses: +r.expenses };
         else if(r.amount)
             return { ...r, amount: +r.amount };
+        else if(r.notifications)
+            return { ...r, notifications: +r.notifications };
         else if(r.total)
             return { ...r, total: +r.total };
         else return r;

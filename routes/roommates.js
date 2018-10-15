@@ -51,6 +51,7 @@ router.get('/', (req, res) => {
     verifyToken(idToken, decodedToken => {
         getUserRoommates(decodedToken.uid)
         .then(result => {
+            console.log(result);
             res.body = result;
             res.status(200).send(result);
         })
@@ -150,6 +151,8 @@ router.get('/expenses/notifications', (req, res) => {
     if(!idToken) return res.status(401).send('No auth token.'); 
 
     verifyToken(idToken, decodedToken => {
+        const today = new Date();
+        const date = `'${today.getFullYear()}-${today.getMonth() + 1}-01'`;
         getRoommateExpenseNotifications(decodedToken.uid, date)
         .then(result => {
             res.body = result;
