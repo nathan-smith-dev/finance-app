@@ -28,11 +28,13 @@
     "express": "^4.16.4",
     "firebase-admin": "^6.0.0",
     "graphql": "^14.1.1",
+    "graphql-iso-date": "^3.6.1",
     "graphql-tools": "^4.0.4",
     "helmet": "^3.14.0",
     "humps": "^2.0.1",
     "joi": "^13.7.0",
-    "pg": "^7.5.0"
+    "pg": "^7.5.0",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "concurrently": "^4.0.1"

@@ -301,6 +301,7 @@ function mapPgNumericToNumber(arr) {
 }
 
 module.exports = {
+    query,
     createUser,
     createExpense,
     createIncome,

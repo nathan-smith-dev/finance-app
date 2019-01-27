@@ -4,7 +4,9 @@ const helmet = require('helmet');
 const cors = require('cors'); 
 const verifyToken = require('./routes/auth');
 const path = require('path'); 
+const { ApolloServer } = require('apollo-server-express');
 
+const { typeDefs, resolvers, context } = require('./graphql');
 const expenses = require('./routes/expenses'); 
 const incomes = require('./routes/incomes'); 
 const transactions = require('./routes/transactions'); 
@@ -13,6 +15,8 @@ const categories = require('./routes/categories');
 const users = require('./routes/users'); 
 
 const app = express(); 
+const server = new ApolloServer({ typeDefs, resolvers, context });
+server.applyMiddleware({ app });
 
 app.use(express.json()); 
 app.use(helmet()); 
@@ -25,6 +29,14 @@ app.use('/api/transactions', transactions);
 app.use('/api/roommates', roommates); 
 app.use('/api/users', users); 
 app.use('/api/categories', categories); 
+// app.use('/api/graphql', graphqlExpress(() => ({
+//     schema, 
+//     context: {
+//       loaders: loaders()
+//     }
+//   })));
+// app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+
 
 app.get('/api/temp', (req, res) => {
     const idToken = req.header('x-auth-token'); 
@@ -40,4 +52,5 @@ app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Listening on port: ${port}`); 
+    console.log(`${server.graphqlPath}`);
 }); 
