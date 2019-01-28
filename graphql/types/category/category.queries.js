@@ -41,7 +41,28 @@ async function getCategoriesByIds(ids) {
     }
 }
 
+async function getUserCategoriesFromUserId(userId) {
+    const sql = `select c.* 
+    from user_categories as uc
+    join categories as c on uc.category_id = c.id
+    where uc.user_id = $1
+    order by c.name asc`;
+    
+    const params = [userId];
+
+    try {
+        const result = await query(sql, params);
+
+        return result.rows;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+
+}
+
 module.exports = {
     getCategorById,
-    getCategoriesByIdsLoader
+    getCategoriesByIdsLoader,
+    getUserCategoriesFromUserId
 }

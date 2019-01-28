@@ -1,6 +1,6 @@
 const { merge } = require('ramda');
 const { getAllExpenses, expenseResolver } = require('./types/expense');
-const { categoryResolver } = require('./types/category');
+const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
 
@@ -15,10 +15,15 @@ const rootResolver = {
         },
         user: (root, args, context) => {
             const { loaders, user } = context;
-            console.log('user', user);
             const { getUsersByIdsLoader } = loaders;
 
             return getUsersByIdsLoader.load([user.id]);
+        },
+        categories: (root, args, context) => {
+            const { user } = context;
+
+            return getUserCategoriesFromUserId(user.id);
+
         }
     },
     Date: GraphQLDateTime
