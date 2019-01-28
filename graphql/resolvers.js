@@ -12,6 +12,13 @@ const rootResolver = {
             const categoryId = args.categoryId ? args.categoryId : null;
             
             return getAllExpenses(context.user.id, month, year, categoryId);
+        },
+        user: (root, args, context) => {
+            const { loaders, user } = context;
+            console.log('user', user);
+            const { getUsersByIdsLoader } = loaders;
+
+            return getUsersByIdsLoader.load([user.id]);
         }
     },
     Date: GraphQLDateTime

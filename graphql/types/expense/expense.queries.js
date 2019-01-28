@@ -3,8 +3,6 @@ const { nextMonthAndYear } = require('../../../utilities/utilities');
 
 
 async function getAllExpenses(userId, month, year, categoryId) {
-    // const orderBy = ORDER_BY[args.orderBy];
-    console.log(month, year);
     const orderBy = 'date desc';
     const sql = `select * from expenses
     where 

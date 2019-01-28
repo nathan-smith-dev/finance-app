@@ -1,5 +1,4 @@
 const { expenseType } = require('./expense.typedef');
-const { getCategorById } = require('../category');
 
 const expenseResolver = {
     [expenseType]: {
