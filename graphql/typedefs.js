@@ -1,4 +1,4 @@
-const { expenseType, expenseTypeDef } = require('./types/expense');
+const { transactionType, transactionTypeDef } = require('./types/transaction');
 const { categoryType, categoryTypeDef } = require('./types/category');
 const { userType, userTypeDef } = require('./types/user');
 
@@ -9,11 +9,12 @@ const typeDefs = `
         query: Query
     }
     type Query {
-        expenses(month: Int, year: Int, categoryId: ID): [${expenseType}]
+        expenses(month: Int, year: Int, categoryId: ID): [${transactionType}]
+        incomes(month: Int, year: Int, categoryId: ID): [${transactionType}]
         user: ${userType}
         categories: [${categoryType}]
     }
-    ${expenseTypeDef}
+    ${transactionTypeDef}
     ${categoryTypeDef}
     ${userTypeDef}
 `;

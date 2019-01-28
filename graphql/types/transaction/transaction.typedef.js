@@ -1,9 +1,9 @@
 const { categoryType } = require('../category');
 
-const expenseType = 'Expense';
+const transactionType = 'Transaction';
 
-const expenseTypeDef = `
-    type ${expenseType} {
+const transactionTypeDef = `
+    type ${transactionType} {
         id: ID!
         userId: ID!
         amount: String
@@ -14,6 +14,6 @@ const expenseTypeDef = `
 `;
 
 module.exports = {
-    expenseType, 
-    expenseTypeDef
+    transactionType, 
+    transactionTypeDef
 }
