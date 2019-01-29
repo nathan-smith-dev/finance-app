@@ -1,10 +1,11 @@
 const { query } = require('../../../db/postgres');
-const { nextMonthAndYear } = require('../../../utilities/utilities');
-
+const {  addWhereCategory, addWhereMonthAndYear} = require('../../query.helper');
 
 async function getAllExpenses(userId, month, year, categoryId) {
     const orderBy = 'date desc';
-    const sql = `select * from expenses
+    const sql = `select *,
+    cast(amount as numeric) 
+    from expenses
     where 
         expenses.user_id = $1
         ${addWhereMonthAndYear('expenses', month, year)}
@@ -25,7 +26,9 @@ async function getAllExpenses(userId, month, year, categoryId) {
 
 async function getAllIncomes(userId, month, year, categoryId) {
     const orderBy = 'date desc';
-    const sql = `select * from incomes
+    const sql = `select *,
+    cast(amount as numeric) 
+    from incomes
     where 
         incomes.user_id = $1
         ${addWhereMonthAndYear('incomes', month, year)}
@@ -42,43 +45,6 @@ async function getAllIncomes(userId, month, year, categoryId) {
         console.log(err);
         throw err;
     }
-}
-
-function addWhereMonthAndYear(type, month, year) {
-    if(!month && !year) return '';
-
-    else if(year && !month) {
-        const sql = `
-        AND 
-            ${type}.date >= '${year}-01-01'::date 
-        AND 
-            ${type}.date < '${year+1}-01-01'::date
-        `;
-        return sql;
-    }
-
-    else {
-        const belowMonthAndYear = nextMonthAndYear(month, year);
-        const sql = `
-        AND 
-            ${type}.date >= '${year}-${month}-01'::date 
-        AND 
-            ${type}.date < '${belowMonthAndYear.year}-${belowMonthAndYear.month}-01'::date
-        `;
-    
-        return sql;
-    }
-}
-
-function addWhereCategory(type, categoryId) {
-    if(!categoryId) return '';
-
-    const sql = `
-    AND 
-        ${type}.category_id = '${categoryId}'::uuid 
-    `;
-
-    return sql;
 }
 
 module.exports = {
