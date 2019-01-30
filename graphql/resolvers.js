@@ -1,5 +1,5 @@
 const { mergeAll } = require('ramda');
-const { getAllExpenses, transactionResolver, getAllIncomes } = require('./types/transaction');
+const { getAllTransactions, transactionResolver } = require('./types/transaction');
 const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { totalResolver, getTotals } = require('./types/total');
 const { GraphQLDateTime } = require('graphql-iso-date');
@@ -7,19 +7,11 @@ const { GraphQLDateTime } = require('graphql-iso-date');
 
 const rootResolver = {
     Query: {
-        expenses: (root, args, context) => {
-            const month = args.month ? args.month : null;
-            const year = args.year ? args.year : null;
-            const categoryId = args.categoryId ? args.categoryId : null;
+        transactions: (root, args, context) => {
+            const { month, year, categoryId, transactionType } = args; 
+            const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
             
-            return getAllExpenses(context.user.id, month, year, categoryId);
-        },
-        incomes: (root, args, context) => {
-            const month = args.month ? args.month : null;
-            const year = args.year ? args.year : null;
-            const categoryId = args.categoryId ? args.categoryId : null;
-            
-            return getAllIncomes(context.user.id, month, year, categoryId);
+            return getAllTransactions(context.user.id, type, month, year, categoryId);
         },
         user: (root, args, context) => {
             const { loaders, user } = context;
@@ -36,9 +28,8 @@ const rootResolver = {
         totals: (root, args, context) => {
             const { user } = context;
             
-            const type = args.transactionType === 'INCOME' ? 'incomes' : 'expenses';
-            const month = args.month ? args.month : null;
-            const year = args.year ? args.year : null;
+            const { month, year, transactionType } = args; 
+            const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
 
 
             return getTotals(user.id, type, month, year);

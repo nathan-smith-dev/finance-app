@@ -10,8 +10,7 @@ const typeDefs = `
         query: Query
     }
     type Query {
-        expenses(month: Int, year: Int, categoryId: ID): [${transactionType}]
-        incomes(month: Int, year: Int, categoryId: ID): [${transactionType}]
+        transactions(transactionType: ${transactionEnum}!, month: Int, year: Int, categoryId: ID): [${transactionType}]
         user: ${userType}
         categories: [${categoryType}]
         totals(transactionType: ${transactionEnum}!, month: Int, year: Int): ${totalType}
