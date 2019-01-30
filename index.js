@@ -16,7 +16,7 @@ const users = require('./routes/users');
 
 const app = express(); 
 const server = new ApolloServer({ typeDefs, resolvers, context });
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, path: '/api/graphql' });
 
 app.use(express.json()); 
 app.use(helmet()); 
@@ -29,13 +29,6 @@ app.use('/api/transactions', transactions);
 app.use('/api/roommates', roommates); 
 app.use('/api/users', users); 
 app.use('/api/categories', categories); 
-// app.use('/api/graphql', graphqlExpress(() => ({
-//     schema, 
-//     context: {
-//       loaders: loaders()
-//     }
-//   })));
-// app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 
 app.get('/api/temp', (req, res) => {
