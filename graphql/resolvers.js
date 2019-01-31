@@ -1,5 +1,5 @@
 const { mergeAll } = require('ramda');
-const { getAllTransactions, transactionResolver } = require('./types/transaction');
+const { getAllTransactionsByType, getAllTransactions, transactionResolver } = require('./types/transaction');
 const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { totalResolver, getTotals } = require('./types/total');
 const { GraphQLDateTime } = require('graphql-iso-date');
@@ -9,9 +9,14 @@ const rootResolver = {
     Query: {
         transactions: (root, args, context) => {
             const { month, year, categoryId, transactionType } = args; 
-            const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
+            const { user } = context;
             
-            return getAllTransactions(context.user.id, type, month, year, categoryId);
+            if(transactionType === 'BOTH') {
+                return getAllTransactions(user.id, month, year);
+            }
+
+            const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
+            return getAllTransactionsByType(user.id, type, month, year, categoryId);
         },
         user: (root, args, context) => {
             const { loaders, user } = context;

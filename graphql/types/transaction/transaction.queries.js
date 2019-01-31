@@ -1,10 +1,13 @@
 const { query } = require('../../../db/postgres');
-const {  addWhereCategory, addWhereMonthAndYear} = require('../../query.helper');
+const {  addWhereCategory, addWhereMonthAndYear, getTransactionTypeFromTransactionTypeEnum} = require('../../query.helper');
 
-async function getAllTransactions(userId, type, month, year, categoryId) {
+async function getAllTransactionsByType(userId, type, month, year, categoryId) {
     const orderBy = 'date desc';
-    const sql = `select *,
-    cast(amount as numeric) 
+    const transType = getTransactionTypeFromTransactionTypeEnum(type);
+    const sql = `select 
+        *,
+        cast(amount as numeric) ,
+        '${transType}' as "type"
     from ${type}
     where 
         ${type}.user_id = $1
@@ -24,6 +27,57 @@ async function getAllTransactions(userId, type, month, year, categoryId) {
     }
 }
 
+async function getAllTransactions(userId, month, year) {
+    const sql = `
+    SELECT 
+        i.id,
+        CAST(i.amount AS NUMERIC), 
+        i.category_id AS "categoryId",
+        ca.name AS "category",
+        i.date, 
+        i.description AS "desc",
+        'Income' AS "type"
+    FROM 
+        incomes i 
+    JOIN 
+        categories ca ON i.category_id = ca.id
+    WHERE 
+        i.user_id = $1
+        ${addWhereMonthAndYear('i', month, year)}
+    UNION ALL 
+
+    SELECT 
+        e.id,
+        CAST(e.amount AS NUMERIC), 
+        e.category_id AS "categoryId",
+        ca.name AS "category",
+        e.date, 
+        e.description AS "desc",
+        'Expense' AS "type"
+    FROM 
+        expenses e 
+    JOIN 
+        categories ca ON e.category_id = ca.id
+    WHERE 
+        e.user_id = $1
+        ${addWhereMonthAndYear('e', month, year)}
+
+    ORDER BY date DESC;
+    `;
+
+    const params = [userId];
+
+    try {
+        const result = await query(sql, params);
+
+        return result.rows;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = {
+    getAllTransactionsByType,
     getAllTransactions
 }

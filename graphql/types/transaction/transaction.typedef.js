@@ -7,14 +7,16 @@ const transactionTypeDef = `
     type ${transactionType} {
         id: ID!
         userId: ID!
-        amount: Float
-        category: ${categoryType}
+        amount: Float!
+        category: ${categoryType}!
         description: String
-        date: Date
+        date: Date!
+        type: String!
     }
     enum ${transactionEnum} {
         INCOME
         EXPENSE
+        BOTH
     }
 `;
 

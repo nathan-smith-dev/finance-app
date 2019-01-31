@@ -46,7 +46,21 @@ function nextMonthAndYear(month, year) {
     return { month: nextMonth, year: adjustedYear };
 }
 
+function getTransactionTypeFromTransactionTypeEnum(enumType) {
+    switch(enumType) {
+        case 'EXPENSE':
+        case 'expenses':
+            return 'Expense';
+        case 'INCOME':
+        case 'incomes':
+            return 'Income';
+        default:
+            throw Error('Transaction enum type not defined');
+    }
+}
+
 module.exports = {
     addWhereCategory,
-    addWhereMonthAndYear
+    addWhereMonthAndYear,
+    getTransactionTypeFromTransactionTypeEnum
 }
