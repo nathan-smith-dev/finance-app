@@ -3,6 +3,7 @@ const { categoryType } = require('../category');
 const transactionType = 'Transaction';
 const transactionEnum = 'TransactionTypeEnum';
 const transactionInput = 'TransactionInput';
+const transactionInputPartial = 'TransactionInputPartial';
 
 const transactionTypeDef = `
     type ${transactionType} {
@@ -26,11 +27,16 @@ const transactionTypeDef = `
         categoryId: ID!
         transactionType: ${transactionEnum}!
     }
+    input ${transactionInputPartial} {
+        id: ID!
+        transactionType: ${transactionEnum}!
+    }
 `;
 
 module.exports = {
     transactionType, 
     transactionTypeDef,
     transactionEnum,
-    transactionInput
+    transactionInput,
+    transactionInputPartial
 }

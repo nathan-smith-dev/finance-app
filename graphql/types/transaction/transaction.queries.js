@@ -1,3 +1,4 @@
+const { ApolloError } = require('apollo-server-express');
 const { query } = require('../../../db/postgres');
 const {  addWhereCategory, addWhereMonthAndYear, getTransactionTypeFromTransactionTypeEnum} = require('../../query.helper');
 
@@ -93,6 +94,39 @@ async function createTransaction(userId, type, date, categoryId, amount, descrip
     try {
         const result = await query(sql, params);
 
+        if(!result.rowCount) {
+            throw new ApolloError('Transaction does not exist.')
+        }
+        
+        return result.rows[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+async function deleteTransaction(userId, transactionId, type) {
+    const transType = getTransactionTypeFromTransactionTypeEnum(type);
+    
+    const sql = `
+    DELETE 
+    FROM ${type}
+    WHERE user_id = $1 AND id = $2
+    RETURNING 
+        *, 
+        CAST(amount as NUMERIC) as "amount",
+        '${transType}' as "type";
+    `;
+
+    const params = [userId, transactionId];
+
+    try {
+        const result = await query(sql, params);
+
+        if(!result.rowCount) {
+            throw new ApolloError('Transaction does not exist.')
+        }
+
         return result.rows[0];
     } catch (err) {
         console.log(err);
@@ -103,5 +137,6 @@ async function createTransaction(userId, type, date, categoryId, amount, descrip
 module.exports = {
     getAllTransactionsByType,
     getAllTransactions, 
-    createTransaction
+    createTransaction,
+    deleteTransaction
 }

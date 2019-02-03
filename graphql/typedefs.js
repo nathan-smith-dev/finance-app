@@ -1,4 +1,4 @@
-const { transactionType, transactionTypeDef, transactionEnum, transactionInput } = require('./types/transaction');
+const { transactionType, transactionTypeDef, transactionEnum, transactionInput, transactionInputPartial } = require('./types/transaction');
 const { categoryType, categoryTypeDef } = require('./types/category');
 const { userType, userTypeDef } = require('./types/user');
 const { totalType, totalTypeDef, categoryTotalsTypeDef } = require('./types/total');
@@ -18,6 +18,7 @@ const typeDefs = `
     }
     type Mutation {
         createTransaction(transaction: ${transactionInput}!): ${transactionType}!
+        deleteTransaction(transaction: ${transactionInputPartial}!): ${transactionType}!
     }
     ${transactionTypeDef}
     ${categoryTypeDef}

@@ -1,7 +1,6 @@
 const { mergeAll } = require('ramda');
 const { ApolloError } = require('apollo-server-express');
-const { createExpense, createIncome, formatDate } = require('../db/postgres');
-const { getAllTransactionsByType, getAllTransactions, transactionResolver, createTransaction } = require('./types/transaction');
+const { getAllTransactionsByType, getAllTransactions, transactionResolver, createTransaction, deleteTransaction } = require('./types/transaction');
 const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { totalResolver, getTotals } = require('./types/total');
 const { GraphQLDateTime } = require('graphql-iso-date');
@@ -52,6 +51,17 @@ const rootResolver = {
             }
 
             return createTransaction(user.id, type, date, categoryId, amount, description);
+        }, 
+        deleteTransaction: (root, args, context) => {
+            const { user } = context; 
+            const { id, transactionType } = args.transaction;
+
+            const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
+            if(transactionType === 'BOTH') {
+                throw new ApolloError('Invalid transaction type.', 400);
+            }
+
+            return deleteTransaction(user.id, id, type);
         }
     },
     Date: GraphQLDateTime
