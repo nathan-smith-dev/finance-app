@@ -2,6 +2,7 @@ const { categoryType } = require('../category');
 
 const transactionType = 'Transaction';
 const transactionEnum = 'TransactionTypeEnum';
+const transactionInput = 'TransactionInput';
 
 const transactionTypeDef = `
     type ${transactionType} {
@@ -18,10 +19,18 @@ const transactionTypeDef = `
         EXPENSE
         BOTH
     }
+    input ${transactionInput} {
+        amount: Float!
+        description: String
+        date: Date!
+        categoryId: ID!
+        transactionType: ${transactionEnum}!
+    }
 `;
 
 module.exports = {
     transactionType, 
     transactionTypeDef,
-    transactionEnum
+    transactionEnum,
+    transactionInput
 }

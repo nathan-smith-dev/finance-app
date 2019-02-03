@@ -77,7 +77,31 @@ async function getAllTransactions(userId, month, year) {
     }
 }
 
+async function createTransaction(userId, type, date, categoryId, amount, description = null) {
+    const transType = getTransactionTypeFromTransactionTypeEnum(type);
+    
+    const sql = `
+    INSERT INTO ${type}(user_id, amount, category_id, description, date)
+	VALUES ($1, $2, $3, $4, $5)
+        RETURNING 
+            *, 
+            '${transType}' as "type";
+    `;
+
+    const params = [userId, amount, categoryId, description, date];
+
+    try {
+        const result = await query(sql, params);
+
+        return result.rows[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = {
     getAllTransactionsByType,
-    getAllTransactions
+    getAllTransactions, 
+    createTransaction
 }
