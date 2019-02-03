@@ -7,7 +7,7 @@ async function getAllTransactionsByType(userId, type, month, year, categoryId) {
     const transType = getTransactionTypeFromTransactionTypeEnum(type);
     const sql = `select 
         *,
-        cast(amount as numeric) ,
+        cast(amount as numeric),
         '${transType}' as "type"
     from ${type}
     where 
@@ -36,7 +36,7 @@ async function getAllTransactions(userId, month, year) {
         i.category_id AS "categoryId",
         ca.name AS "category",
         i.date, 
-        i.description AS "desc",
+        i.description,
         'Income' AS "type"
     FROM 
         incomes i 
@@ -53,7 +53,7 @@ async function getAllTransactions(userId, month, year) {
         e.category_id AS "categoryId",
         ca.name AS "category",
         e.date, 
-        e.description AS "desc",
+        e.description,
         'Expense' AS "type"
     FROM 
         expenses e 
