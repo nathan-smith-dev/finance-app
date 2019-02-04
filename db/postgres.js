@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const humps = require('humps');
+let queryCounter = 0;
 
 const pool = new Pool({
     connectionString: process.env.DB_CONNECTION_STRING,
@@ -9,6 +10,8 @@ async function query(sql, params) {
     const client = await pool.connect();
     try {
         console.log(sql, params);
+        queryCounter++;
+        console.log('Count', queryCounter); // temp for development
         const result = await client.query(sql, params);
         const rows = humps.camelizeKeys(result.rows);
         return { ...result, rows };

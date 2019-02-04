@@ -2,6 +2,7 @@ const { transactionType, transactionTypeDef, transactionEnum, transactionInput, 
 const { categoryType, categoryTypeDef } = require('./types/category');
 const { userType, userTypeDef } = require('./types/user');
 const { totalType, totalTypeDef, categoryTotalsTypeDef } = require('./types/total');
+const { roommatType, roommateTypeDef } = require('./types/roommate');
 
 const typeDefs = `
     scalar Date
@@ -15,6 +16,7 @@ const typeDefs = `
         user: ${userType}
         categories: [${categoryType}]
         totals(transactionType: ${transactionEnum}!, month: Int, year: Int): ${totalType}
+        roommates: [${roommatType}]
     }
     type Mutation {
         createTransaction(transaction: ${transactionInput}!): ${transactionType}!
@@ -25,6 +27,7 @@ const typeDefs = `
     ${userTypeDef}
     ${totalTypeDef}
     ${categoryTotalsTypeDef}
+    ${roommateTypeDef}
 `;
 
 module.exports = typeDefs;

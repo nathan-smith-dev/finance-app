@@ -3,6 +3,7 @@ const { ApolloError } = require('apollo-server-express');
 const { getAllTransactionsByType, getAllTransactions, transactionResolver, createTransaction, deleteTransaction } = require('./types/transaction');
 const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { totalResolver, getTotals } = require('./types/total');
+const { getRoommates, roommateResolver, roommateExpenseResolver } = require('./types/roommate');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
 
@@ -38,6 +39,13 @@ const rootResolver = {
             const type = transactionType === 'INCOME' ? 'incomes' : 'expenses';
             
             return getTotals(user.id, type, month, year);
+        },
+        roommates: (root, args, context) => {
+            const { loaders, user } = context;
+            const { getUsersByIdsLoader } = loaders;
+
+            return getRoommates(user.id);
+
         }
     },
     Mutation: {
@@ -66,6 +74,6 @@ const rootResolver = {
     },
     Date: GraphQLDateTime
 }
-const resolvers = mergeAll([rootResolver, totalResolver, transactionResolver, categoryResolver]);
+const resolvers = mergeAll([rootResolver, totalResolver, transactionResolver, categoryResolver, roommateResolver, roommateExpenseResolver]);
 
 module.exports = resolvers;
