@@ -3,7 +3,7 @@ const { ApolloError } = require('apollo-server-express');
 const { getAllTransactionsByType, getAllTransactions, transactionResolver, createTransaction, deleteTransaction } = require('./types/transaction');
 const { categoryResolver, getUserCategoriesFromUserId } = require('./types/category');
 const { totalResolver, getTotals } = require('./types/total');
-const { getRoommates, roommateResolver, roommateExpenseResolver } = require('./types/roommate');
+const { getRoommates, roommateResolver, roommateExpenseResolver, createRoommateExpense } = require('./types/roommate');
 const { GraphQLDateTime } = require('graphql-iso-date');
 
 
@@ -70,6 +70,12 @@ const rootResolver = {
             }
 
             return deleteTransaction(user.id, id, type);
+        },
+        createRoommateExpense: (root, args, context) => {
+            const { user } = context; 
+            const { amount, categoryId, roommateId, date, description } = args.expense;
+
+            return createRoommateExpense(user.id, roommateId, amount, categoryId, description, date);
         }
     },
     Date: GraphQLDateTime

@@ -3,6 +3,7 @@ const { categoryType } = require('../category');
 
 const roommatType = 'Roommate';
 const roommateExpenseType = 'RoommateExpense';
+const roommateExpenseInput = 'RoommateExpenseInput';
 
 const roommateTypeDef = `
     type ${roommatType} {
@@ -18,10 +19,18 @@ const roommateTypeDef = `
         description: String
         direction: String
     }
+    input ${roommateExpenseInput} {
+        amount: Float!
+        description: String
+        date: Date!
+        categoryId: ID!
+        roommateId: ID!
+    }
 `;
 
 module.exports = {
     roommatType, 
     roommateExpenseType, 
-    roommateTypeDef
+    roommateTypeDef, 
+    roommateExpenseInput
 }

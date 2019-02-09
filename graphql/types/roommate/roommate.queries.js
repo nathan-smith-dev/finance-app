@@ -78,7 +78,29 @@ async function getRoomateExpenses(userId, roommateId) {
     }
 }
 
+async function createRoommateExpense(userId, rommateId, amount, categoryId, description, date) {
+    const sql = `
+    INSERT INTO roommate_expenses(expense_from, expense_to, amount, category_id, acknowledge, resolved, description, date)
+    VALUES($1, $2, $3, $4, false, false, $5, $6)
+    RETURNING *,
+	   CAST(amount as NUMERIC) as "amount",
+	   acknowledge as "acknowledged"
+    `;
+
+    const params = [userId, rommateId, amount, categoryId, description, date];
+
+    try {
+        const result = await query(sql, params);
+
+        return result.rows[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = {
     getRoommates,
-    getRoomateExpenses
+    getRoomateExpenses,
+    createRoommateExpense
 }
