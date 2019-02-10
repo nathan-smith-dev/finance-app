@@ -2,7 +2,7 @@ const { transactionType, transactionTypeDef, transactionEnum, transactionInput, 
 const { categoryType, categoryTypeDef } = require('./types/category');
 const { userType, userTypeDef } = require('./types/user');
 const { totalType, totalTypeDef, categoryTotalsTypeDef } = require('./types/total');
-const { roommatType, roommateTypeDef, roommateExpenseInput, roommateExpenseType } = require('./types/roommate');
+const { roommatType, roommateTypeDef, roommateExpenseInput, roommateExpenseType, roommateExpenseInputPartial } = require('./types/roommate');
 
 const typeDefs = `
     scalar Date
@@ -22,6 +22,7 @@ const typeDefs = `
         createTransaction(transaction: ${transactionInput}!): ${transactionType}!
         deleteTransaction(transaction: ${transactionInputPartial}!): ${transactionType}!
         createRoommateExpense(expense: ${roommateExpenseInput}!): ${roommateExpenseType}!
+        deleteRoommateExpense(expense: ${roommateExpenseInputPartial}!): ${roommateExpenseType}!
     }
     ${transactionTypeDef}
     ${categoryTypeDef}

@@ -4,6 +4,7 @@ const { categoryType } = require('../category');
 const roommatType = 'Roommate';
 const roommateExpenseType = 'RoommateExpense';
 const roommateExpenseInput = 'RoommateExpenseInput';
+const roommateExpenseInputPartial = 'RoommateExpenseInputPartial';
 
 const roommateTypeDef = `
     type ${roommatType} {
@@ -26,11 +27,15 @@ const roommateTypeDef = `
         categoryId: ID!
         roommateId: ID!
     }
+    input ${roommateExpenseInputPartial} {
+        id: ID!
+    }
 `;
 
 module.exports = {
     roommatType, 
     roommateExpenseType, 
     roommateTypeDef, 
-    roommateExpenseInput
+    roommateExpenseInput,
+    roommateExpenseInputPartial
 }

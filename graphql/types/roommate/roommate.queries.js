@@ -99,8 +99,30 @@ async function createRoommateExpense(userId, rommateId, amount, categoryId, desc
     }
 }
 
+async function deleteRoommateExpense(id) {
+    const sql = `
+        DELETE FROM roommate_expenses
+        WHERE id = $1
+        RETURNING *,
+            CAST(amount as NUMERIC) as "amount",
+            acknowledge as "acknowledged"
+    `;
+
+    const params = [id];
+
+    try {
+        const result = await query(sql, params);
+
+        return result.rows[0];
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = {
     getRoommates,
     getRoomateExpenses,
-    createRoommateExpense
+    createRoommateExpense,
+    deleteRoommateExpense
 }
